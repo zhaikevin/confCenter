@@ -20,30 +20,24 @@ public class ZKConfig {
     /**
      * ZK 连接超时时间
      */
-    private int timeoutMs = 30000;
+    private int zkSessionTimeoutMs = 30000;
 
     /**
      * 最大等待连接时间
      */
-    private int maxConnectionWaitTimeMs = 30000;
-
-    /**
-     * 间隔多长时间检查连接是否成功
-     */
-    private int connectedCheckDelayMs = 5000;
+    private int zkConnectionTimeoutMs = 30000;
 
 
     public ZKConfig(String zkConnet) {
         this.zkConnet = zkConnet;
     }
 
-    public ZKConfig(String zkRoot, String zkConnet, int timeoutMs, int maxConnectionWaitTimeMs,
-                    int connectedCheckDelayMs) {
+    public ZKConfig(String zkRoot, String zkConnet, int zkSessionTimeoutMs,
+                    int zkConnectionTimeoutMs) {
         this.zkRoot = zkRoot;
         this.zkConnet = zkConnet;
-        this.timeoutMs = timeoutMs;
-        this.maxConnectionWaitTimeMs = maxConnectionWaitTimeMs;
-        this.connectedCheckDelayMs = connectedCheckDelayMs;
+        this.zkSessionTimeoutMs = zkSessionTimeoutMs;
+        this.zkConnectionTimeoutMs = zkConnectionTimeoutMs;
     }
 
     public String getZkRoot() {
@@ -62,28 +56,20 @@ public class ZKConfig {
         this.zkConnet = zkConnet;
     }
 
-    public int getTimeoutMs() {
-        return timeoutMs;
+    public int getZkSessionTimeoutMs() {
+        return zkSessionTimeoutMs;
     }
 
-    public void setTimeoutMs(int timeoutMs) {
-        this.timeoutMs = timeoutMs;
+    public void setZkSessionTimeoutMs(int zkSessionTimeoutMs) {
+        this.zkSessionTimeoutMs = zkSessionTimeoutMs;
     }
 
-    public int getMaxConnectionWaitTimeMs() {
-        return maxConnectionWaitTimeMs;
+    public int getZkConnectionTimeoutMs() {
+        return zkConnectionTimeoutMs;
     }
 
-    public void setMaxConnectionWaitTimeMs(int maxConnectionWaitTimeMs) {
-        this.maxConnectionWaitTimeMs = maxConnectionWaitTimeMs;
-    }
-
-    public int getConnectedCheckDelayMs() {
-        return connectedCheckDelayMs;
-    }
-
-    public void setConnectedCheckDelayMs(int connectedCheckDelayMs) {
-        this.connectedCheckDelayMs = connectedCheckDelayMs;
+    public void setZkConnectionTimeoutMs(int zkConnectionTimeoutMs) {
+        this.zkConnectionTimeoutMs = zkConnectionTimeoutMs;
     }
 
     @Override
@@ -91,9 +77,8 @@ public class ZKConfig {
         return "ZKConfig{" +
                 "zkRoot='" + zkRoot + '\'' +
                 ", zkConnet='" + zkConnet + '\'' +
-                ", timeoutMs=" + timeoutMs +
-                ", maxConnectionWaitTimeMs=" + maxConnectionWaitTimeMs +
-                ", connectedCheckDelayMs=" + connectedCheckDelayMs +
+                ", zkSessionTimeoutMs=" + zkSessionTimeoutMs +
+                ", zkConnectionTimeoutMs=" + zkConnectionTimeoutMs +
                 '}';
     }
 }
