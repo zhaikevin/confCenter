@@ -4,10 +4,10 @@ import com.kevin.confcenter.common.bean.vo.ClientDataSource;
 
 /**
  * @Author: kevin
- * @Description: 配置中心客户端
- * @Date: Created In 2018/3/6 9:32
+ * @Description: api
+ * @Date: Created In 2018/3/10 14:50
  */
-public interface ConfCenterClient {
+public interface ConfCenterApi {
 
     /**
      * 根据key获取数据源信息
@@ -16,4 +16,5 @@ public interface ConfCenterClient {
      * @return
      */
     ClientDataSource getDataSource(String sourceKey);
+
 }

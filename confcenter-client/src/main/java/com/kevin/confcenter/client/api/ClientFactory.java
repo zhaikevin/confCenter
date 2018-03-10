@@ -10,5 +10,5 @@ public interface ClientFactory {
     /**
      * 创建客户端
      */
-    void createClient();
+    ConfCenterClient createClient();
 }

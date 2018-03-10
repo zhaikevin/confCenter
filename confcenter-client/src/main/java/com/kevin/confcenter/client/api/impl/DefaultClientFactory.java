@@ -1,6 +1,7 @@
 package com.kevin.confcenter.client.api.impl;
 
 import com.kevin.confcenter.client.api.ClientFactory;
+import com.kevin.confcenter.client.api.ConfCenterClient;
 import com.kevin.confcenter.common.bean.vo.ConfCenterClientConf;
 import com.kevin.confcenter.common.bean.vo.ZKConfig;
 import com.kevin.confcenter.common.exception.IllegalParameterException;
@@ -48,11 +49,22 @@ public class DefaultClientFactory implements ClientFactory {
         return confCenterZookeeper;
     }
 
+    public ZkClient getZkClient() {
+        return zkClient;
+    }
+
+    public DefaultClientFactory() {
+
+    }
+
     public DefaultClientFactory(ConfCenterClientConf clientConf) {
         this.clientConf = clientConf;
         this.initZk();
     }
 
+    /**
+     * 初始化zk
+     */
     private void initZk() {
         ZKConfig zkConfig = this.clientConf.getZkConfig();
         if (zkConfig == null) {
@@ -70,7 +82,7 @@ public class DefaultClientFactory implements ClientFactory {
 
 
     @Override
-    public void createClient() {
-
+    public ConfCenterClient createClient() {
+        return null;
     }
 }
