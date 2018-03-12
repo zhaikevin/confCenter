@@ -1,6 +1,5 @@
 package com.kevin.confcenter.client.api.impl;
 
-import com.kevin.confcenter.client.api.ClientFactory;
 import com.kevin.confcenter.client.api.ConfCenterApi;
 import com.kevin.confcenter.client.api.ConfCenterClient;
 import com.kevin.confcenter.common.bean.vo.ClientDataSource;
@@ -28,23 +27,18 @@ public class DefaultConfCenterApi implements ConfCenterApi {
      */
     private ConfCenterClient client;
 
-    /**
-     * client 配置
-     */
-    private ConfCenterClientConf clientConf;
 
     public DefaultConfCenterApi() {
         this(DEFAULT_CONFIG_FILE_NAME);
     }
 
     public DefaultConfCenterApi(String configFileName) {
-        this.clientConf = this.getConf(configFileName);
-        init();
+        ConfCenterClientConf clientConf = this.getConf(configFileName);
+        this.client = new DefaultConfCenterClient(clientConf);
     }
 
     public DefaultConfCenterApi(ConfCenterClientConf clientConf) {
-        this.clientConf = clientConf;
-        init();
+        this.client = new DefaultConfCenterClient(clientConf);
     }
 
     private ConfCenterClientConf getConf(String fileName) {
@@ -55,7 +49,7 @@ public class DefaultConfCenterApi implements ConfCenterApi {
         }
         ZKConfig zkConfig = new ZKConfig(zkConnect);
         String zkRoot = configuration.getString("zkRoot");
-        if(StringUtils.isNotEmpty(zkRoot)) {
+        if (StringUtils.isNotEmpty(zkRoot)) {
             zkConfig.setZkRoot(zkRoot);
         }
         String serverUrl = configuration.getString("serverUrl");
@@ -68,15 +62,10 @@ public class DefaultConfCenterApi implements ConfCenterApi {
         }
         ConfCenterClientConf clientConf = new ConfCenterClientConf(zkConfig, serverUrl, projectName);
         String heartBeatTimeMs = configuration.getString("heartBeatTimeMs");
-        if(StringUtils.isNotEmpty(heartBeatTimeMs)) {
+        if (StringUtils.isNotEmpty(heartBeatTimeMs)) {
             clientConf.setHeartBeatTimeMs(Integer.valueOf(heartBeatTimeMs));
         }
         return clientConf;
-    }
-
-    private void init() {
-        ClientFactory factory = new DefaultClientFactory(this.clientConf);
-        this.client = factory.createClient();
     }
 
     @Override
