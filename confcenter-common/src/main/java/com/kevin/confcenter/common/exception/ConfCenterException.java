@@ -1,16 +1,9 @@
-/**
- * ucarinc.com Inc.
- * Copyright (c) 2014-2016 All Rights Reserved.
- */
 package com.kevin.confcenter.common.exception;
 
 /**
- * 基础异常类
- * @title ConfCenterException
- * @description 基础异常类. 
- * @author kevin
- * @date 2016年10月19日
- * @version 1.0
+ * @Author: kevin
+ * @Description: 基础异常类
+ * @Date: Created In 2018/3/10 14:51
  */
 public abstract class ConfCenterException extends RuntimeException {
     /**

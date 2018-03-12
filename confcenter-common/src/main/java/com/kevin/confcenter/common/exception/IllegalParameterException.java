@@ -2,12 +2,9 @@
 package com.kevin.confcenter.common.exception;
 
 /**
- * 非法传参异常.
- * @title IllegalParameterException
- * @description 非法传参异常. 
- * @author kevin
- * @date 2016年10月19日
- * @version 1.0
+ * @Author: kevin
+ * @Description: 非法传参异常.
+ * @Date: Created In 2018/3/10 14:51
  */
 public class IllegalParameterException extends ConfCenterException {
     /**

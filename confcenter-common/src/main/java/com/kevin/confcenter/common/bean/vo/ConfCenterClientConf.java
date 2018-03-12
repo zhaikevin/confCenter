@@ -27,15 +27,17 @@ public class ConfCenterClientConf {
      */
     private String projectName;
 
-    public ConfCenterClientConf(ZKConfig zkConfig, String serverUrl) {
+    public ConfCenterClientConf(ZKConfig zkConfig, String serverUrl, String projectName) {
         this.zkConfig = zkConfig;
         this.serverUrl = serverUrl;
+        this.projectName = projectName;
     }
 
-    public ConfCenterClientConf(ZKConfig zkConfig, String serverUrl, int heartBeatTimeMs) {
+    public ConfCenterClientConf(ZKConfig zkConfig, String serverUrl, int heartBeatTimeMs, String projectName) {
         this.zkConfig = zkConfig;
         this.serverUrl = serverUrl;
         this.heartBeatTimeMs = heartBeatTimeMs;
+        this.projectName = projectName;
     }
 
     public ZKConfig getZkConfig() {

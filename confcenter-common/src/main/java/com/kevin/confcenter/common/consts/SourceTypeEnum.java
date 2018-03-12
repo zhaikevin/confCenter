@@ -1,12 +1,9 @@
 package com.kevin.confcenter.common.consts;
 
 /**
- * 数据源类型
- *
- * @author kevin
- * @version 1.0
- * @description 0:普通,1:公共
- * @date 2017年11月2日
+ * @Author: kevin
+ * @Description: 数据源类型
+ * @Date: Created In 2018/3/10 14:51
  */
 public enum SourceTypeEnum {
     /**

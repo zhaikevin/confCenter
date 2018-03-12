@@ -53,10 +53,6 @@ public class DefaultClientFactory implements ClientFactory {
         return zkClient;
     }
 
-    public DefaultClientFactory() {
-
-    }
-
     public DefaultClientFactory(ConfCenterClientConf clientConf) {
         this.clientConf = clientConf;
         this.initZk();
