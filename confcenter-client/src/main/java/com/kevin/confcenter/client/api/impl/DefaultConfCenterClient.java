@@ -1,6 +1,8 @@
 package com.kevin.confcenter.client.api.impl;
 
 import com.kevin.confcenter.client.api.ConfCenterClient;
+import com.kevin.confcenter.client.storage.DataStorageManager;
+import com.kevin.confcenter.client.storage.DefaultDataStorageManager;
 import com.kevin.confcenter.common.bean.vo.ClientDataSource;
 import com.kevin.confcenter.common.bean.vo.ConfCenterClientConf;
 import com.kevin.confcenter.common.bean.vo.ZKConfig;
@@ -37,6 +39,11 @@ public class DefaultConfCenterClient implements ConfCenterClient {
      */
     private ConfCenterZookeeper confCenterZookeeper;
 
+    /**
+     * 存储
+     */
+    private DataStorageManager dataStorageManager;
+
     public ConfCenterClientConf getClientConf() {
         return clientConf;
     }
@@ -55,6 +62,7 @@ public class DefaultConfCenterClient implements ConfCenterClient {
 
     public DefaultConfCenterClient(ConfCenterClientConf clientConf) {
         this.clientConf = clientConf;
+        this.dataStorageManager = new DefaultDataStorageManager();
         this.initZk();
     }
 
@@ -78,6 +86,6 @@ public class DefaultConfCenterClient implements ConfCenterClient {
 
     @Override
     public ClientDataSource getDataSource(String sourceKey) {
-        return null;
+        return this.dataStorageManager.getDataSource(sourceKey);
     }
 }
