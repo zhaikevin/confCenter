@@ -20,9 +20,14 @@ public class ConfCenterZookeeper {
     private ZKConfig zkConfig;
 
     /**
-     * 数据源路径
+     * 普通数据源路径
      */
-    private String dataSourcePath;
+    private String normalDataSourcePath;
+
+    /**
+     * 公共数据源路径
+     */
+    private String publicDataSourcePath;
 
     public String getZkRoot() {
         return zkRoot;
@@ -32,14 +37,19 @@ public class ConfCenterZookeeper {
         return zkConfig;
     }
 
-    public String getDataSourcePath() {
-        return dataSourcePath;
+    public String getNormalDataSourcePath() {
+        return normalDataSourcePath;
+    }
+
+    public String getPublicDataSourcePath() {
+        return publicDataSourcePath;
     }
 
     public ConfCenterZookeeper(ZKConfig zkConfig, String zkRoot, String projectName) {
         this.zkConfig = zkConfig;
         this.zkRoot = this.normalize(zkRoot);
-        this.dataSourcePath = this.zkRoot + "/" + projectName;
+        this.normalDataSourcePath = this.zkRoot + "/" + projectName;
+        this.publicDataSourcePath = this.zkRoot + "/public";
     }
 
     /**

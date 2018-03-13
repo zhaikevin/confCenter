@@ -1,6 +1,7 @@
 package com.kevin.confcenter.client.api.impl;
 
 import com.kevin.confcenter.client.api.ConfCenterClient;
+import com.kevin.confcenter.client.storage.ClientZookeeper;
 import com.kevin.confcenter.client.storage.DataStorageManager;
 import com.kevin.confcenter.client.storage.DefaultDataStorageManager;
 import com.kevin.confcenter.common.bean.vo.ClientDataSource;
@@ -44,6 +45,11 @@ public class DefaultConfCenterClient implements ConfCenterClient {
      */
     private DataStorageManager dataStorageManager;
 
+    /**
+     * 客户端 ZK
+     */
+    private ClientZookeeper clientZookeeper;
+
     public ConfCenterClientConf getClientConf() {
         return clientConf;
     }
@@ -62,8 +68,10 @@ public class DefaultConfCenterClient implements ConfCenterClient {
 
     public DefaultConfCenterClient(ConfCenterClientConf clientConf) {
         this.clientConf = clientConf;
-        this.dataStorageManager = new DefaultDataStorageManager();
         this.initZk();
+        this.dataStorageManager = new DefaultDataStorageManager();
+        this.clientZookeeper = new ClientZookeeper(this.zkClient, this.confCenterZookeeper, this.dataStorageManager);
+        clientZookeeper.loadDataFromZk();
     }
 
     /**
@@ -76,6 +84,9 @@ public class DefaultConfCenterClient implements ConfCenterClient {
         }
         if (StringUtils.isEmpty(zkConfig.getZkConnet())) {
             throw new IllegalParameterException("ZK server地址不能为空");
+        }
+        if (StringUtils.isEmpty(this.clientConf.getProjectName())) {
+            throw new IllegalParameterException("配置中心项目名称不能为空");
         }
         this.zkConfig = zkConfig;
         this.confCenterZookeeper = new ConfCenterZookeeper(this.zkConfig,
