@@ -27,23 +27,41 @@ public class DefaultConfCenterApi implements ConfCenterApi {
     /**
      * client
      */
-    private ConfCenterClient client;
+    private static ConfCenterClient client;
+
+    /**
+     * instance
+     */
+    private static volatile DefaultConfCenterApi instance;
 
 
-    public DefaultConfCenterApi() {
-        this(DEFAULT_CONFIG_FILE_NAME);
+    private DefaultConfCenterApi() {
+
     }
 
-    public DefaultConfCenterApi(String configFileName) {
-        ConfCenterClientConf clientConf = this.getConf(configFileName);
-        this.client = new DefaultConfCenterClient(clientConf);
+    public static DefaultConfCenterApi getInstance() {
+        return getInstance(DEFAULT_CONFIG_FILE_NAME);
     }
 
-    public DefaultConfCenterApi(ConfCenterClientConf clientConf) {
-        this.client = new DefaultConfCenterClient(clientConf);
+    public static DefaultConfCenterApi getInstance(String configFileName) {
+        ConfCenterClientConf clientConf = getConf(configFileName);
+        return getInstance(clientConf);
     }
 
-    private ConfCenterClientConf getConf(String fileName) {
+    public static DefaultConfCenterApi getInstance(ConfCenterClientConf clientConf) {
+        if (instance == null) {
+            synchronized (DefaultConfCenterApi.class) {
+                if (instance == null) {
+                    instance = new DefaultConfCenterApi();
+                    client = new DefaultConfCenterClient(clientConf);
+                }
+            }
+        }
+        return instance;
+    }
+
+
+    private static ConfCenterClientConf getConf(String fileName) {
         Configuration configuration = CommonConfigUtil.getConfig(fileName);
         String zkConnect = configuration.getString("zkConnect");
         if (StringUtils.isEmpty(zkConnect)) {
@@ -72,11 +90,11 @@ public class DefaultConfCenterApi implements ConfCenterApi {
 
     @Override
     public ClientDataSource getDataSource(String sourceKey) {
-        return this.client.getDataSource(sourceKey);
+        return client.getDataSource(sourceKey);
     }
 
     @Override
     public Map<String, ClientDataSource> getAllDataSource() {
-        return this.client.getAllDataSource();
+        return client.getAllDataSource();
     }
 }
