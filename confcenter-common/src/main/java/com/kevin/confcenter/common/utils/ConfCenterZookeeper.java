@@ -41,18 +41,6 @@ public class ConfCenterZookeeper {
      */
     private ZkClient zkClient;
 
-    public String getZkRoot() {
-        return zkRoot;
-    }
-
-    public ZKConfig getZkConfig() {
-        return zkConfig;
-    }
-
-    public ZkClient getZkClient() {
-        return zkClient;
-    }
-
     public String getNormalDataSourcePath() {
         return normalDataSourcePath;
     }

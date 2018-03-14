@@ -1,5 +1,6 @@
 package com.kevin.confcenter.client.storage;
 
+import com.kevin.confcenter.client.api.DataChangeListener;
 import com.kevin.confcenter.common.bean.vo.ClientDataSource;
 import com.kevin.confcenter.common.consts.SourceTypeEnum;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +26,15 @@ public class DefaultDataStorageManager implements DataStorageManager {
      * 公共数据源
      */
     private Map<String, ClientDataSource> publicDataSourceMap = new ConcurrentHashMap<>();
+
+    /**
+     * listeners
+     */
+    private List<DataChangeListener> listeners;
+
+    public DefaultDataStorageManager(List<DataChangeListener> listeners) {
+        this.listeners = listeners;
+    }
 
     @Override
     public Map<String, ClientDataSource> getAllDataSource() {

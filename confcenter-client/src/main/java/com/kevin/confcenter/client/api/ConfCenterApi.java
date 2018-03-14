@@ -26,4 +26,11 @@ public interface ConfCenterApi {
      */
     Map<String, ClientDataSource> getAllDataSource();
 
+    /**
+     * 添加listener
+     *
+     * @param listener
+     */
+    void addListener(DataChangeListener listener);
+
 }

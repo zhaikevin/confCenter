@@ -1,6 +1,7 @@
 package com.kevin.confcenter.client.api.impl;
 
 import com.kevin.confcenter.client.api.ConfCenterClient;
+import com.kevin.confcenter.client.api.DataChangeListener;
 import com.kevin.confcenter.client.storage.ClientZookeeper;
 import com.kevin.confcenter.client.storage.DataStorageManager;
 import com.kevin.confcenter.client.storage.DefaultDataStorageManager;
@@ -13,6 +14,7 @@ import com.kevin.confcenter.common.utils.ZkUtil;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,26 +54,17 @@ public class DefaultConfCenterClient implements ConfCenterClient {
      */
     private ClientZookeeper clientZookeeper;
 
-    public ConfCenterClientConf getClientConf() {
-        return clientConf;
-    }
+    /**
+     * listeners
+     */
+    private List<DataChangeListener> listeners;
 
-    public ZKConfig getZkConfig() {
-        return zkConfig;
-    }
 
-    public ConfCenterZookeeper getConfCenterZookeeper() {
-        return confCenterZookeeper;
-    }
-
-    public ZkClient getZkClient() {
-        return zkClient;
-    }
-
-    public DefaultConfCenterClient(ConfCenterClientConf clientConf) {
+    public DefaultConfCenterClient(ConfCenterClientConf clientConf, List<DataChangeListener> listeners) {
         this.clientConf = clientConf;
+        this.listeners = listeners;
         this.initZk();
-        this.dataStorageManager = new DefaultDataStorageManager();
+        this.dataStorageManager = new DefaultDataStorageManager(this.listeners);
         this.clientZookeeper = new ClientZookeeper(this.zkClient, this.confCenterZookeeper, this.dataStorageManager);
         clientZookeeper.loadDataFromZk();
     }
@@ -92,7 +85,7 @@ public class DefaultConfCenterClient implements ConfCenterClient {
         }
         this.zkConfig = zkConfig;
         this.confCenterZookeeper = new ConfCenterZookeeper(this.zkConfig,
-                this.zkConfig.getZkRoot(), this.clientConf.getProjectName(),this.zkClient);
+                this.zkConfig.getZkRoot(), this.clientConf.getProjectName(), this.zkClient);
         this.zkClient = new ZkClient(this.zkConfig.getZkConnet(), this.zkConfig.getZkSessionTimeoutMs(),
                 this.zkConfig.getZkConnectionTimeoutMs(), new ZkUtil.StringSerializer());
     }

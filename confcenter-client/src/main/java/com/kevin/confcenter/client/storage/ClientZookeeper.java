@@ -30,18 +30,6 @@ public class ClientZookeeper {
      */
     private DataStorageManager dataStorageManager;
 
-    public ZkClient getZkClient() {
-        return zkClient;
-    }
-
-    public ConfCenterZookeeper getConfCenterZookeeper() {
-        return confCenterZookeeper;
-    }
-
-    public DataStorageManager getDataStorageManager() {
-        return dataStorageManager;
-    }
-
     public ClientZookeeper(ZkClient zkClient, ConfCenterZookeeper confCenterZookeeper,
                            DataStorageManager dataStorageManager) {
         this.zkClient = zkClient;
@@ -53,15 +41,15 @@ public class ClientZookeeper {
      * 从zk拉取数据
      */
     public void loadDataFromZk() {
-        DataChangeListener normalDataListener = new DataChangeListener(SourceTypeEnum.NORMAL.getVal());
-        DataChangeListener publicDataListener = new DataChangeListener(SourceTypeEnum.PUBLIC.getVal());
+        DataChangeZkListener normalDataListener = new DataChangeZkListener(SourceTypeEnum.NORMAL.getVal());
+        DataChangeZkListener publicDataListener = new DataChangeZkListener(SourceTypeEnum.PUBLIC.getVal());
         this.zkClient.subscribeChildChanges(this.confCenterZookeeper.getNormalDataSourcePath(), normalDataListener);
         this.zkClient.subscribeChildChanges(this.confCenterZookeeper.getPublicDataSourcePath(), publicDataListener);
         normalDataListener.syncedUpdateData();
         publicDataListener.syncedUpdateData();
     }
 
-    final class DataChangeListener implements IZkChildListener {
+    final class DataChangeZkListener implements IZkChildListener {
 
         /**
          * 数据源类型
@@ -72,7 +60,7 @@ public class ClientZookeeper {
             return sourceType;
         }
 
-        public DataChangeListener(Integer sourceType) {
+        public DataChangeZkListener(Integer sourceType) {
             this.sourceType = sourceType;
         }
 

@@ -2,6 +2,7 @@ package com.kevin.confcenter.client.api.impl;
 
 import com.kevin.confcenter.client.api.ConfCenterApi;
 import com.kevin.confcenter.client.api.ConfCenterClient;
+import com.kevin.confcenter.client.api.DataChangeListener;
 import com.kevin.confcenter.common.bean.vo.ClientDataSource;
 import com.kevin.confcenter.common.bean.vo.ConfCenterClientConf;
 import com.kevin.confcenter.common.bean.vo.ZKConfig;
@@ -10,6 +11,8 @@ import com.kevin.confcenter.common.utils.CommonConfigUtil;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +37,10 @@ public class DefaultConfCenterApi implements ConfCenterApi {
      */
     private static volatile DefaultConfCenterApi instance;
 
+    /**
+     * 监听器
+     */
+    private static List<DataChangeListener> listeners = new ArrayList<>();
 
     private DefaultConfCenterApi() {
 
@@ -53,7 +60,7 @@ public class DefaultConfCenterApi implements ConfCenterApi {
             synchronized (DefaultConfCenterApi.class) {
                 if (instance == null) {
                     instance = new DefaultConfCenterApi();
-                    client = new DefaultConfCenterClient(clientConf);
+                    client = new DefaultConfCenterClient(clientConf,listeners);
                 }
             }
         }
@@ -96,5 +103,10 @@ public class DefaultConfCenterApi implements ConfCenterApi {
     @Override
     public Map<String, ClientDataSource> getAllDataSource() {
         return client.getAllDataSource();
+    }
+
+    @Override
+    public void addListener(DataChangeListener listener) {
+        listeners.add(listener);
     }
 }
