@@ -2,14 +2,14 @@ package com.kevin.confcenter.common.consts;
 
 /**
  * @Author: kevin
- * @Description: 数据源类型
+ * @Description: 数据源改变类型
  * @Date: Created In 2018/3/10 14:51
  */
-public enum SourceTypeEnum {
+public enum DataChangeTypeEnum {
     /**
      * 枚举列表
      */
-    NORMAL(0, "普通数据源"), PUBLIC(1, "公共数据源");
+    ADD(0, "增加"), REDUCE(1, "减少"), UPDATE(2, "更新");
 
     /**
      * 对应数值
@@ -26,7 +26,7 @@ public enum SourceTypeEnum {
      * @param val   枚举数值
      * @param label 显示值
      */
-    SourceTypeEnum(int val, String label) {
+    DataChangeTypeEnum(int val, String label) {
         this.val = val;
         this.label = label;
     }
@@ -37,9 +37,9 @@ public enum SourceTypeEnum {
      * @param val 枚举数值
      * @return 对应的枚举, 可能为null.
      */
-    public static SourceTypeEnum valueOf(int val) {
-        SourceTypeEnum[] ems = SourceTypeEnum.values();
-        for (SourceTypeEnum em : ems) {
+    public static DataChangeTypeEnum valueOf(int val) {
+        DataChangeTypeEnum[] ems = DataChangeTypeEnum.values();
+        for (DataChangeTypeEnum em : ems) {
             if (em.val == val) {
                 return em;
             }
