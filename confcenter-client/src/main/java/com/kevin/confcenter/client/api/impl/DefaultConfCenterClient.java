@@ -13,6 +13,8 @@ import com.kevin.confcenter.common.utils.ZkUtil;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Map;
+
 /**
  * @Author: kevin
  * @Description: 客户端默认实现
@@ -90,7 +92,7 @@ public class DefaultConfCenterClient implements ConfCenterClient {
         }
         this.zkConfig = zkConfig;
         this.confCenterZookeeper = new ConfCenterZookeeper(this.zkConfig,
-                this.zkConfig.getZkRoot(), this.clientConf.getProjectName());
+                this.zkConfig.getZkRoot(), this.clientConf.getProjectName(),this.zkClient);
         this.zkClient = new ZkClient(this.zkConfig.getZkConnet(), this.zkConfig.getZkSessionTimeoutMs(),
                 this.zkConfig.getZkConnectionTimeoutMs(), new ZkUtil.StringSerializer());
     }
@@ -98,5 +100,10 @@ public class DefaultConfCenterClient implements ConfCenterClient {
     @Override
     public ClientDataSource getDataSource(String sourceKey) {
         return this.dataStorageManager.getDataSource(sourceKey);
+    }
+
+    @Override
+    public Map<String, ClientDataSource> getAllDataSource() {
+        return this.dataStorageManager.getAllDataSource();
     }
 }

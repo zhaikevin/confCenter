@@ -1,5 +1,6 @@
 package com.kevin.confcenter.client.storage;
 
+import com.kevin.confcenter.common.bean.vo.ClientDataSource;
 import com.kevin.confcenter.common.consts.SourceTypeEnum;
 import com.kevin.confcenter.common.utils.ConfCenterZookeeper;
 import org.I0Itec.zkclient.IZkChildListener;
@@ -84,7 +85,8 @@ public class ClientZookeeper {
          * 异步更新数据
          */
         void syncedUpdateData() {
-
+            List<ClientDataSource> dataSourceList = ClientZookeeper.this.confCenterZookeeper.getAllDataSource(this.sourceType);
+            ClientZookeeper.this.dataStorageManager.refresh(dataSourceList, this.sourceType);
         }
     }
 

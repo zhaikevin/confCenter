@@ -10,6 +10,8 @@ import com.kevin.confcenter.common.utils.CommonConfigUtil;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Map;
+
 /**
  * @Author: kevin
  * @Description: api实现
@@ -71,5 +73,10 @@ public class DefaultConfCenterApi implements ConfCenterApi {
     @Override
     public ClientDataSource getDataSource(String sourceKey) {
         return this.client.getDataSource(sourceKey);
+    }
+
+    @Override
+    public Map<String, ClientDataSource> getAllDataSource() {
+        return this.client.getAllDataSource();
     }
 }

@@ -2,6 +2,8 @@ package com.kevin.confcenter.client.api;
 
 import com.kevin.confcenter.common.bean.vo.ClientDataSource;
 
+import java.util.Map;
+
 /**
  * @Author: kevin
  * @Description: 配置中心客户端
@@ -16,4 +18,11 @@ public interface ConfCenterClient {
      * @return
      */
     ClientDataSource getDataSource(String sourceKey);
+
+    /**
+     * 获取所有数据源
+     *
+     * @return
+     */
+    Map<String, ClientDataSource> getAllDataSource();
 }
