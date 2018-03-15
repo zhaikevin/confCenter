@@ -23,18 +23,20 @@ public final class CommonThreadPool {
 
     public static final String LONG_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    private static ExecutorService execute = getThreadPool(new ThreadPoolParameterVO());
+    private ExecutorService execute;
 
     private static final long EXECUTETIME = 10000L;
 
-    private CommonThreadPool() {
-
+    public CommonThreadPool(Integer poolSize) {
+        ThreadPoolParameterVO threadPoolParameterVO = new ThreadPoolParameterVO();
+        threadPoolParameterVO.setCorePoolSize(poolSize);
+        execute = getThreadPool(new ThreadPoolParameterVO());
     }
 
     /**
      * 异步执行公共执行方法
      */
-    public static Future<Object> execute(AsynchronousHandler command) {
+    public Future<Object> execute(AsynchronousHandler command) {
 
         ThreadPoolAdaptor handler = new ThreadPoolAdaptor(command, EXECUTETIME);
         Future<Object> future = execute.submit(handler);
@@ -46,8 +48,7 @@ public final class CommonThreadPool {
     /**
      * 关闭线程池
      */
-    @SuppressWarnings("unused")
-    private static boolean shutDown() {
+    public boolean shutDown() {
         if (execute != null) {
             execute.shutdown();
             return true;
@@ -58,7 +59,7 @@ public final class CommonThreadPool {
     /**
      * 获取线程池对象
      */
-    public static ThreadPoolExecutorExtend getThreadPool(ThreadPoolParameterVO vo) {
+    private ThreadPoolExecutorExtend getThreadPool(ThreadPoolParameterVO vo) {
         int corePoolSize = vo.getCorePoolSize();
         int maximumPoolSize = vo.getMaximumPoolSize();
         int initialCapacity = vo.getInitialCapacity();
@@ -80,7 +81,7 @@ public final class CommonThreadPool {
      *
      * @return
      */
-    public static boolean isMemoryThreshold() {
+    private static boolean isMemoryThreshold() {
 
         long size = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed();
         long thresholdSize = (long) (ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getMax() * 0.7);

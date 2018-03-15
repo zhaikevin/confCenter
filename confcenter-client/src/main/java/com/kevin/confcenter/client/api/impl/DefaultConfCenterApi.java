@@ -60,7 +60,7 @@ public class DefaultConfCenterApi implements ConfCenterApi {
             synchronized (DefaultConfCenterApi.class) {
                 if (instance == null) {
                     instance = new DefaultConfCenterApi();
-                    client = new DefaultConfCenterClient(clientConf,listeners);
+                    client = new DefaultConfCenterClient(clientConf, listeners);
                 }
             }
         }
@@ -91,6 +91,10 @@ public class DefaultConfCenterApi implements ConfCenterApi {
         String heartBeatTimeMs = configuration.getString("heartBeatTimeMs");
         if (StringUtils.isNotEmpty(heartBeatTimeMs)) {
             clientConf.setHeartBeatTimeMs(Integer.valueOf(heartBeatTimeMs));
+        }
+        String poolSize = configuration.getString("poolSize");
+        if (StringUtils.isNotEmpty(poolSize)) {
+            clientConf.setPoolSize(Integer.valueOf(poolSize));
         }
         return clientConf;
     }

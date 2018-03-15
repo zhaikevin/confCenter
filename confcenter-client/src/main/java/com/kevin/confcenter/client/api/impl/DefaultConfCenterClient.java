@@ -11,6 +11,7 @@ import com.kevin.confcenter.common.bean.vo.ZKConfig;
 import com.kevin.confcenter.common.exception.IllegalParameterException;
 import com.kevin.confcenter.common.utils.ConfCenterZookeeper;
 import com.kevin.confcenter.common.utils.ZkUtil;
+import com.kevin.confcenter.common.utils.threadPool.CommonThreadPool;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.lang.StringUtils;
 
@@ -59,6 +60,11 @@ public class DefaultConfCenterClient implements ConfCenterClient {
      */
     private List<DataChangeListener> listeners;
 
+    /**
+     * 线程池
+     */
+    private CommonThreadPool threadPool;
+
 
     public DefaultConfCenterClient(ConfCenterClientConf clientConf, List<DataChangeListener> listeners) {
         this.clientConf = clientConf;
@@ -66,6 +72,7 @@ public class DefaultConfCenterClient implements ConfCenterClient {
         this.initZk();
         this.dataStorageManager = new DefaultDataStorageManager(this.listeners);
         this.clientZookeeper = new ClientZookeeper(this.zkClient, this.confCenterZookeeper, this.dataStorageManager);
+        this.threadPool = new CommonThreadPool(clientConf.getPoolSize());
         clientZookeeper.loadDataFromZk();
     }
 

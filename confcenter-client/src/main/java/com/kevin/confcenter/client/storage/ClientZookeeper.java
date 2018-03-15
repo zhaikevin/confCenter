@@ -56,10 +56,6 @@ public class ClientZookeeper {
          */
         private Integer sourceType;
 
-        public Integer getSourceType() {
-            return sourceType;
-        }
-
         public DataChangeZkListener(Integer sourceType) {
             this.sourceType = sourceType;
         }

@@ -27,17 +27,23 @@ public class ConfCenterClientConf {
      */
     private String projectName;
 
+    /**
+     * 线程池大小
+     */
+    private Integer poolSize = 5;
+
     public ConfCenterClientConf(ZKConfig zkConfig, String serverUrl, String projectName) {
         this.zkConfig = zkConfig;
         this.serverUrl = serverUrl;
         this.projectName = projectName;
     }
 
-    public ConfCenterClientConf(ZKConfig zkConfig, String serverUrl, int heartBeatTimeMs, String projectName) {
+    public ConfCenterClientConf(ZKConfig zkConfig, String serverUrl, int heartBeatTimeMs, String projectName, Integer poolSize) {
         this.zkConfig = zkConfig;
         this.serverUrl = serverUrl;
         this.heartBeatTimeMs = heartBeatTimeMs;
         this.projectName = projectName;
+        this.poolSize = poolSize;
     }
 
     public ZKConfig getZkConfig() {
@@ -72,6 +78,14 @@ public class ConfCenterClientConf {
         this.projectName = projectName;
     }
 
+    public Integer getPoolSize() {
+        return poolSize;
+    }
+
+    public void setPoolSize(Integer poolSize) {
+        this.poolSize = poolSize;
+    }
+
     @Override
     public String toString() {
         return "ConfCenterClientConf{" +
@@ -79,6 +93,7 @@ public class ConfCenterClientConf {
                 ", serverUrl='" + serverUrl + '\'' +
                 ", heartBeatTimeMs=" + heartBeatTimeMs +
                 ", projectName='" + projectName + '\'' +
+                ", poolSize=" + poolSize +
                 '}';
     }
 }
