@@ -15,5 +15,5 @@ public interface DataChangeListener {
      * @param dataSource 数据源
      * @param changeType 改变类型，{@link com.kevin.confcenter.common.consts.DataChangeTypeEnum}
      */
-    void excute(ClientDataSource dataSource, Integer changeType);
+    void execute(ClientDataSource dataSource, Integer changeType);
 }

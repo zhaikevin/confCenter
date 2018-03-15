@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @Description: 数据源类
  * @Date: Created In 2018/3/10 14:56
  */
-public class ClientDataSource implements Serializable{
+public class ClientDataSource implements Serializable {
 
 
     private static final long serialVersionUID = 1006411768675349316L;
@@ -58,5 +58,23 @@ public class ClientDataSource implements Serializable{
                 ", sourceKey='" + sourceKey + '\'' +
                 ", sourceValue='" + sourceValue + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null) {
+            return false;
+        }
+        if (object instanceof ClientDataSource) {
+            ClientDataSource dataSource = (ClientDataSource) object;
+            if (sourceType.equals(dataSource.getSourceType()) && sourceKey.equals(dataSource.getSourceKey())
+                    && sourceValue.equals(dataSource.getSourceValue())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
