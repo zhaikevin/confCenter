@@ -2,6 +2,8 @@ package com.kevin.confcenter.client.api.impl;
 
 import com.kevin.confcenter.client.api.ConfCenterClient;
 import com.kevin.confcenter.client.api.DataChangeListener;
+import com.kevin.confcenter.client.schedule.HeartBeatManager;
+import com.kevin.confcenter.client.schedule.ScheduleManager;
 import com.kevin.confcenter.client.storage.ClientZookeeper;
 import com.kevin.confcenter.client.storage.DataStorageManager;
 import com.kevin.confcenter.client.storage.DefaultDataStorageManager;
@@ -65,15 +67,23 @@ public class DefaultConfCenterClient implements ConfCenterClient {
      */
     private CommonThreadPool threadPool;
 
+    /**
+     * 调度
+     */
+    private ScheduleManager scheduleManager;
+
 
     public DefaultConfCenterClient(ConfCenterClientConf clientConf, List<DataChangeListener> listeners) {
         this.clientConf = clientConf;
         this.listeners = listeners;
         this.initZk();
-        this.threadPool = new CommonThreadPool(clientConf.getPoolSize());
-        this.dataStorageManager = new DefaultDataStorageManager(this.listeners, this.threadPool);
-        this.clientZookeeper = new ClientZookeeper(this.zkClient, this.confCenterZookeeper, this.dataStorageManager);
+        threadPool = new CommonThreadPool(clientConf.getPoolSize());
+        dataStorageManager = new DefaultDataStorageManager(this.listeners, threadPool);
+        clientZookeeper = new ClientZookeeper(zkClient, confCenterZookeeper, dataStorageManager);
         clientZookeeper.loadDataFromZk();
+        HeartBeatManager heartBeatManager = new HeartBeatManager(this.clientConf);
+        scheduleManager = new ScheduleManager(this.clientConf, heartBeatManager);
+        scheduleManager.startJob();
     }
 
     /**
