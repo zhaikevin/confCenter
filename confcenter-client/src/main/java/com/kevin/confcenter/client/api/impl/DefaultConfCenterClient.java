@@ -105,10 +105,10 @@ public class DefaultConfCenterClient implements ConfCenterClient {
             throw new IllegalParameterException("配置中心项目名称不能为空");
         }
         this.zkConfig = zkConfig;
-        this.confCenterZookeeper = new ConfCenterZookeeper(this.zkConfig,
-                this.zkConfig.getZkRoot(), this.clientConf.getProjectName(), this.zkClient);
         this.zkClient = new ZkClient(this.zkConfig.getZkConnet(), this.zkConfig.getZkSessionTimeoutMs(),
                 this.zkConfig.getZkConnectionTimeoutMs(), new ZkUtil.StringSerializer());
+        this.confCenterZookeeper = new ConfCenterZookeeper(this.zkConfig,
+                this.zkConfig.getZkRoot(), this.clientConf.getProjectName(), this.zkClient);
     }
 
     @Override

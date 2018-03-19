@@ -12,6 +12,7 @@
         <module>confcenter-client</module>
         <module>confcenter-admin</module>
         <module>confcenter-common</module>
+        <module>confcenter-example</module>
     </modules>
 
     <properties>

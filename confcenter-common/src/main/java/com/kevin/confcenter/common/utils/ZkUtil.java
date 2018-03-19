@@ -40,6 +40,7 @@ public class ZkUtil {
 
     /**
      * 获取子节点
+     *
      * @param client
      * @param path
      * @return
@@ -51,6 +52,7 @@ public class ZkUtil {
 
     /**
      * 获取子节点，可能为null
+     *
      * @param client
      * @param path
      * @return
@@ -58,14 +60,14 @@ public class ZkUtil {
     public static List<String> getChildrenMaybeNull(final ZkClient client, final String path) {
         try {
             return client.getChildren(path);
-        }
-        catch (final ZkNoNodeException e) {
+        } catch (final ZkNoNodeException e) {
             return null;
         }
     }
 
     /**
      * 读取数据
+     *
      * @param client
      * @param path
      * @return
@@ -76,11 +78,52 @@ public class ZkUtil {
 
     /**
      * 读取数据，可能为null
+     *
      * @param client
      * @param path
      * @return
      */
     public static String readDataMaybeNull(final ZkClient client, final String path) {
         return client.readData(path, true);
+    }
+
+    /**
+     * create the parent path
+     */
+    public static void createParentPath(final ZkClient client, final String path) throws Exception {
+        final String parentDir = path.substring(0, path.lastIndexOf('/'));
+        if (parentDir.length() != 0) {
+            client.createPersistent(parentDir, true);
+        }
+    }
+
+
+    public static void writeData(final ZkClient client, final String path, final String data)
+            throws Exception {
+        try {
+            client.writeData(path, data);
+        } catch (final ZkNoNodeException e) {
+            createParentPath(client, path);
+            client.createPersistent(path, data);
+        } catch (final Exception e) {
+            throw e;
+        }
+    }
+
+    public static void deletePath(final ZkClient client, final String path) throws Exception {
+        try {
+            client.delete(path);
+        } catch (final ZkNoNodeException e) {
+
+        } catch (final Exception e) {
+            throw e;
+        }
+    }
+
+    /**
+     * Check if the given path exists
+     */
+    public static boolean pathExists(final ZkClient client, final String path) {
+        return client.exists(path);
     }
 }
