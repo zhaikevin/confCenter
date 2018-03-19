@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.kevin.confcenter.common.bean.vo.ConfCenterClientConf;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.consts.Consts;
+import com.kevin.confcenter.common.exception.RemoteCallException;
 import com.kevin.confcenter.common.utils.HttpUtil;
 import com.kevin.confcenter.common.utils.LocalUtil;
 import org.slf4j.Logger;
@@ -32,22 +33,17 @@ public class HeartBeatManager {
      *
      * @return
      */
-    public Boolean pingToServer() {
+    public void pingToServer() {
         String localIp = LocalUtil.getLocalIp();
         Map<String, Object> params = new HashMap<>();
         params.put(Consts.PING_PARAM_IP, localIp);
         params.put(Consts.PING_PARAM_PROJECT, clientConf.getProjectName());
         String body = JSON.toJSONString(params);
         String url = clientConf.getServerUrl() + Consts.PING_SERVER_URL;
-        try {
-            String response = HttpUtil.doPost(url, body);
-            ResultInfo resultInfo = JSON.parseObject(response, ResultInfo.class);
-            if (resultInfo.getStatus() == Consts.RESULT_CODE_SUCCESS) {
-                return true;
-            }
-        } catch (Exception e) {
-            LOGGER.warn("ping failed:{}", e.getMessage(), e);
+        String response = HttpUtil.doPost(url, body);
+        ResultInfo resultInfo = JSON.parseObject(response, ResultInfo.class);
+        if (resultInfo.getStatus() != Consts.RESULT_CODE_SUCCESS) {
+            throw new RemoteCallException(resultInfo.getStatusInfo());
         }
-        return false;
     }
 }
