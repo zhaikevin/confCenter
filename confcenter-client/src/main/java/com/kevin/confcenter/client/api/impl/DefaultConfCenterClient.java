@@ -16,6 +16,8 @@ import com.kevin.confcenter.common.utils.ZkUtil;
 import com.kevin.confcenter.common.utils.threadPool.CommonThreadPool;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,8 @@ import java.util.Map;
  * @Date: Created In 2018/3/6 9:33
  */
 public class DefaultConfCenterClient implements ConfCenterClient {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultConfCenterApi.class);
 
     /**
      * 客户端配置

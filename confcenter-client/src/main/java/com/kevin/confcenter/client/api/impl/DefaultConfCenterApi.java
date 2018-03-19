@@ -10,6 +10,8 @@ import com.kevin.confcenter.common.exception.IllegalParameterException;
 import com.kevin.confcenter.common.utils.CommonConfigUtil;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.Map;
  * @Date: Created In 2018/3/10 14:51
  */
 public class DefaultConfCenterApi implements ConfCenterApi {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultConfCenterApi.class);
 
     /**
      * 默认配置文件地址
@@ -56,6 +60,7 @@ public class DefaultConfCenterApi implements ConfCenterApi {
     }
 
     public static DefaultConfCenterApi getInstance(ConfCenterClientConf clientConf) {
+        LOGGER.debug("client conf:{}", clientConf.toString());
         if (instance == null) {
             synchronized (DefaultConfCenterApi.class) {
                 if (instance == null) {
