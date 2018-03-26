@@ -20,6 +20,7 @@ public class DemoController {
     @ResponseBody
     public String demo() {
         ConfCenterApi confCenterApi = DefaultConfCenterApi.getInstance();
+        confCenterApi.addListener(new DemoListener());
         return JSONObject.toJSONString(confCenterApi.getDataSource("testKey"));
     }
 
