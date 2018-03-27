@@ -31,7 +31,7 @@ public class ZkTest {
     @Test
     public void createNodeTest() throws Exception {
         ZkUtil.createParentPath(zkClient, parentPath);
-        ZkUtil.writeData(zkClient, parentPath + "/testKey", "hello");
+        ZkUtil.writeData(zkClient, parentPath + "/testKey2", "hello2");
         System.out.println(ZkUtil.readData(zkClient, parentPath + "/testKey"));
     }
 
@@ -39,5 +39,10 @@ public class ZkTest {
     public void updateDataTest() throws Exception {
         ZkUtil.writeData(zkClient, parentPath + "/testKey", "hello");
         System.out.println(ZkUtil.readData(zkClient, parentPath + "/testKey"));
+    }
+
+    @Test
+    public void deleteNodeTest() throws Exception {
+        ZkUtil.deletePath(zkClient,parentPath + "/testKey2");
     }
 }
