@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.kevin.confcenter.client.api.ConfCenterApi;
 import com.kevin.confcenter.client.api.impl.DefaultConfCenterApi;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DemoController {
 
-    @RequestMapping(value = "/demo", method = RequestMethod.GET)
+    @RequestMapping(value = "/demo/{sourceKey:\\w+}", method = RequestMethod.GET)
     @ResponseBody
-    public String demo() {
+    public String demo(@PathVariable(value = "sourceKey") String sourceKey) {
         ConfCenterApi confCenterApi = DefaultConfCenterApi.getInstance();
         confCenterApi.addListener(new DemoListener());
-        return JSONObject.toJSONString(confCenterApi.getDataSource("testKey"));
+        return JSONObject.toJSONString(confCenterApi.getDataSource(sourceKey));
     }
 
 }
