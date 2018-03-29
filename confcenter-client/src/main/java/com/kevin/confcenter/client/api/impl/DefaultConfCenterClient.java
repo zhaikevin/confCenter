@@ -6,7 +6,6 @@ import com.kevin.confcenter.client.schedule.HeartBeatManager;
 import com.kevin.confcenter.client.schedule.ScheduleManager;
 import com.kevin.confcenter.client.storage.ClientZookeeper;
 import com.kevin.confcenter.client.storage.DataStorageManager;
-import com.kevin.confcenter.client.storage.DefaultDataStorageManager;
 import com.kevin.confcenter.common.bean.vo.ClientDataSource;
 import com.kevin.confcenter.common.bean.vo.ConfCenterClientConf;
 import com.kevin.confcenter.common.bean.vo.ZKConfig;
@@ -82,7 +81,7 @@ public class DefaultConfCenterClient implements ConfCenterClient {
         this.listeners = listeners;
         this.initZk();
         threadPool = new CommonThreadPool(clientConf.getPoolSize());
-        dataStorageManager = new DefaultDataStorageManager(this.listeners, threadPool);
+        dataStorageManager = new DataStorageManager(this.listeners, threadPool, confCenterZookeeper);
         clientZookeeper = new ClientZookeeper(zkClient, confCenterZookeeper, dataStorageManager);
         clientZookeeper.loadDataFromZk();
         HeartBeatManager heartBeatManager = new HeartBeatManager(this.clientConf);

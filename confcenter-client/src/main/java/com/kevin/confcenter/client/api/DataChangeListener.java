@@ -1,6 +1,7 @@
 package com.kevin.confcenter.client.api;
 
 import com.kevin.confcenter.common.bean.vo.ClientDataSource;
+import com.kevin.confcenter.common.consts.DataChangeTypeEnum;
 
 /**
  * @Author: kevin
@@ -15,5 +16,5 @@ public interface DataChangeListener {
      * @param dataSource 数据源
      * @param changeType 改变类型，{@link com.kevin.confcenter.common.consts.DataChangeTypeEnum}
      */
-    void execute(ClientDataSource dataSource, Integer changeType);
+    void execute(ClientDataSource dataSource, DataChangeTypeEnum changeType);
 }

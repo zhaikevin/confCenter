@@ -1,5 +1,7 @@
 package com.kevin.confcenter.common.bean.vo;
 
+import com.kevin.confcenter.common.consts.SourceTypeEnum;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +17,7 @@ public class ClientDataSource implements Serializable {
     /**
      * 数据源类型 {@link com.kevin.confcenter.common.consts.SourceTypeEnum}
      */
-    private Integer sourceType;
+    private SourceTypeEnum sourceType;
 
     /**
      * 数据源名称
@@ -27,11 +29,11 @@ public class ClientDataSource implements Serializable {
      */
     private String sourceValue;
 
-    public Integer getSourceType() {
+    public SourceTypeEnum getSourceType() {
         return sourceType;
     }
 
-    public void setSourceType(Integer sourceType) {
+    public void setSourceType(SourceTypeEnum sourceType) {
         this.sourceType = sourceType;
     }
 

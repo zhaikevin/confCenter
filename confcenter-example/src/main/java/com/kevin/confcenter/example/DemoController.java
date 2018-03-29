@@ -17,12 +17,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class DemoController {
 
+    Boolean isFirst = true;
+
     @RequestMapping(value = "/demo/{sourceKey:\\w+}", method = RequestMethod.GET)
     @ResponseBody
     public String demo(@PathVariable(value = "sourceKey") String sourceKey) {
         ConfCenterApi confCenterApi = DefaultConfCenterApi.getInstance();
-        confCenterApi.addListener(new DemoListener());
+        if (isFirst) {
+            confCenterApi.addListener(new DemoListener());
+            isFirst = false;
+        }
+        System.out.println(JSONObject.toJSONString(confCenterApi.getAllDataSource()));
         return JSONObject.toJSONString(confCenterApi.getDataSource(sourceKey));
     }
-
 }

@@ -4,7 +4,9 @@ import com.kevin.confcenter.common.bean.vo.ClientDataSource;
 import com.kevin.confcenter.common.consts.SourceTypeEnum;
 import com.kevin.confcenter.common.utils.ConfCenterZookeeper;
 import org.I0Itec.zkclient.IZkChildListener;
+import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
 
@@ -41,37 +43,73 @@ public class ClientZookeeper {
      * 从zk拉取数据
      */
     public void loadDataFromZk() {
-        DataChangeZkListener normalDataListener = new DataChangeZkListener(SourceTypeEnum.NORMAL.getVal());
-        DataChangeZkListener publicDataListener = new DataChangeZkListener(SourceTypeEnum.PUBLIC.getVal());
-        this.zkClient.subscribeChildChanges(this.confCenterZookeeper.getNormalDataSourcePath(), normalDataListener);
-        this.zkClient.subscribeChildChanges(this.confCenterZookeeper.getPublicDataSourcePath(), publicDataListener);
-        normalDataListener.syncedUpdateData();
-        publicDataListener.syncedUpdateData();
+        subscribeChanges(SourceTypeEnum.NORMAL);
+        subscribeChanges(SourceTypeEnum.PUBLIC);
+        getAllData(SourceTypeEnum.NORMAL);
+        getAllData(SourceTypeEnum.PUBLIC);
     }
 
-    final class DataChangeZkListener implements IZkChildListener {
+    /**
+     * 监听变化
+     *
+     * @param sourceType
+     */
+    private void subscribeChanges(SourceTypeEnum sourceType) {
+        DataChangeZkListener listener = new DataChangeZkListener(sourceType);
+        String sourcePath = this.confCenterZookeeper.getPublicDataSourcePath();
+        if (sourceType.equals(SourceTypeEnum.NORMAL)) {
+            sourcePath = this.confCenterZookeeper.getNormalDataSourcePath();
+        }
+        this.zkClient.subscribeChildChanges(sourcePath, listener);
+        List<String> sourceKeys = this.confCenterZookeeper.getAllKeys(sourceType);
+        if (CollectionUtils.isNotEmpty(sourceKeys)) {
+            for (String sourceKey : sourceKeys) {
+                String dataPath = sourcePath + "/" + sourceKey;
+                this.zkClient.subscribeDataChanges(dataPath, listener);
+            }
+        }
+    }
 
-        /**
-         * 数据源类型
-         */
-        private Integer sourceType;
+    /**
+     * 获取全部数据
+     *
+     * @param sourceType
+     */
+    private void getAllData(SourceTypeEnum sourceType) {
+        List<ClientDataSource> dataSourceList = ClientZookeeper.this.confCenterZookeeper.getAllDataSource(sourceType);
+        this.dataStorageManager.syncAll(dataSourceList, sourceType);
+    }
 
-        public DataChangeZkListener(Integer sourceType) {
+    final class DataChangeZkListener implements IZkChildListener, IZkDataListener {
+
+        private SourceTypeEnum sourceType;
+
+        public DataChangeZkListener(SourceTypeEnum sourceType) {
             this.sourceType = sourceType;
         }
 
         @Override
         public void handleChildChange(String parentPath, List<String> currentChilds) throws Exception {
-            this.syncedUpdateData();
+            ClientZookeeper.this.dataStorageManager.addOrDeleteSource(sourceType, currentChilds);
         }
 
-        /**
-         * 异步更新数据
-         */
-        void syncedUpdateData() {
-            List<ClientDataSource> dataSourceList = ClientZookeeper.this.confCenterZookeeper.getAllDataSource(this.sourceType);
-            ClientZookeeper.this.dataStorageManager.refresh(dataSourceList, this.sourceType);
+        @Override
+        public void handleDataChange(String dataPath, Object data) throws Exception {
+            //处理结点数据变化
+            int index = dataPath.lastIndexOf("/");
+            String sourceKey = dataPath.substring(index + 1);
+            ClientDataSource dataSource = new ClientDataSource();
+            dataSource.setSourceKey(sourceKey);
+            dataSource.setSourceValue(data.toString());
+            dataSource.setSourceType(sourceType);
+            ClientZookeeper.this.dataStorageManager.updateSourceByKey(dataSource);
         }
+
+        @Override
+        public void handleDataDeleted(String dataPath) throws Exception {
+
+        }
+
     }
 
 }

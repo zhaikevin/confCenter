@@ -13,14 +13,14 @@ import com.kevin.confcenter.common.consts.DataChangeTypeEnum;
 public class DemoListener implements DataChangeListener {
 
     @Override
-    public void execute(ClientDataSource dataSource, Integer changeType) {
-        if (changeType.equals(DataChangeTypeEnum.UPDATE.getVal())) {
+    public void execute(ClientDataSource dataSource, DataChangeTypeEnum changeType) {
+        if (changeType.equals(DataChangeTypeEnum.UPDATE)) {
             System.out.println("update data:" + JSONObject.toJSONString(dataSource));
         }
-        if (changeType.equals(DataChangeTypeEnum.ADD.getVal())) {
+        if (changeType.equals(DataChangeTypeEnum.ADD)) {
             System.out.println("add data:" + JSONObject.toJSONString(dataSource));
         }
-        if (changeType.equals(DataChangeTypeEnum.REDUCE.getVal())) {
+        if (changeType.equals(DataChangeTypeEnum.REDUCE)) {
             System.out.println("reduce data:" + JSONObject.toJSONString(dataSource));
         }
     }

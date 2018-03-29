@@ -87,12 +87,13 @@ public class ConfCenterZookeeper {
 
     /**
      * 获取所有的数据源
+     *
      * @param sourceType 数据源类型
      * @return
      */
-    public List<ClientDataSource> getAllDataSource(Integer sourceType) {
+    public List<ClientDataSource> getAllDataSource(SourceTypeEnum sourceType) {
         String path = this.normalDataSourcePath;
-        if (sourceType.equals(SourceTypeEnum.PUBLIC.getVal())) {
+        if (sourceType.equals(SourceTypeEnum.PUBLIC)) {
             path = this.publicDataSourcePath;
         }
         List<ClientDataSource> dataSourceList = new ArrayList<>();
@@ -110,5 +111,51 @@ public class ConfCenterZookeeper {
             dataSourceList.add(dataSource);
         }
         return dataSourceList;
+    }
+
+    /**
+     * 获取所有key
+     *
+     * @param sourceType 数据源类型
+     * @return
+     */
+    public List<String> getAllKeys(SourceTypeEnum sourceType) {
+        String path = this.normalDataSourcePath;
+        if (sourceType.equals(SourceTypeEnum.PUBLIC)) {
+            path = this.publicDataSourcePath;
+        }
+        List<String> sourceKeys = ZkUtil.getChildrenMaybeNull(this.zkClient, path);
+        return sourceKeys;
+    }
+
+    /**
+     * 根据key获取数据源
+     *
+     * @param sourceKey
+     * @param sourceType
+     * @return
+     */
+    public ClientDataSource getDataSource(String sourceKey, SourceTypeEnum sourceType) {
+        String path = this.normalDataSourcePath;
+        if (sourceType.equals(SourceTypeEnum.PUBLIC)) {
+            path = this.publicDataSourcePath;
+        }
+        String sourcePath = path + "/" + sourceKey;
+        String sourceValue = ZkUtil.readData(this.zkClient, sourcePath);
+        ClientDataSource dataSource = new ClientDataSource();
+        dataSource.setSourceKey(sourceKey);
+        dataSource.setSourceType(sourceType);
+        dataSource.setSourceValue(sourceValue);
+        return dataSource;
+    }
+
+    /**
+     * 判断是否是普通数据源路径
+     *
+     * @param path
+     * @return
+     */
+    public Boolean isNormalPath(String path) {
+        return normalDataSourcePath.equals(path);
     }
 }
