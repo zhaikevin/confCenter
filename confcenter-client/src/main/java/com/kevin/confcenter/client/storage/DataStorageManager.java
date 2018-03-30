@@ -85,7 +85,14 @@ public class DataStorageManager {
         if (normalDataSourceMap.containsKey(sourceKey)) {
             return normalDataSourceMap.get(sourceKey);
         }
-        return publicDataSourceMap.get(sourceKey);
+        if (publicDataSourceMap.containsKey(sourceKey)) {
+            return publicDataSourceMap.get(sourceKey);
+        }
+        ClientDataSource dataSource = confCenterZookeeper.getDataSource(sourceKey, SourceTypeEnum.NORMAL);
+        if (dataSource != null) {
+            return dataSource;
+        }
+        return confCenterZookeeper.getDataSource(sourceKey, SourceTypeEnum.PUBLIC);
     }
 
     /**
