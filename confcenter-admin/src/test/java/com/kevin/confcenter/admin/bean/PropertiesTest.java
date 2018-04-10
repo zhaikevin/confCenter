@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * @Author: jizhong.zhai
+ * @Author: kevin
  * @Description: 属性测试
  * @Date: Created In 2018/4/10 16:25
  */
