@@ -20,4 +20,14 @@ public class Consts {
     public static final String PING_PARAM_PROJECT = "projectName";
     public static final String PING_SERVER_URL = "/confcenter-admin/ping";
 
+    /**
+     * 通用的有效状态
+     */
+    public static final Integer STATUS_ENABLED = 1;
+
+    /**
+     * 通用的无效状态
+     */
+    private static final Integer STATUS_DISABLED = 0;
+
 }

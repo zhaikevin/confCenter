@@ -1,4 +1,4 @@
-package com.kevin.confcenter.admin.project;
+package com.kevin.confcenter.admin.controller.project;
 
 import org.springframework.stereotype.Controller;
 
