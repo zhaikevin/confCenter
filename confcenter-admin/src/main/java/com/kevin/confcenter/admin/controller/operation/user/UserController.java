@@ -1,6 +1,8 @@
 package com.kevin.confcenter.admin.controller.operation.user;
 
+import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,9 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ResultInfo list() {
-        return null;
+        return ResultInfo.success(userService.getUserList());
     }
 }
