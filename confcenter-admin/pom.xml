@@ -51,6 +51,14 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.java.version}</version>
         </dependency>
-    </dependencies>
 
+        <!-- 热部署模块 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>${spring-boot.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+    
 </project>

@@ -25,7 +25,7 @@
         <include refid="base_query"/>
     </select>
 
-    <select id="getUserList" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="getUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         <include refid="base_query"/>
         WHERE user_name = #{userName,jdbcType=VARCHAR}
     </select>
