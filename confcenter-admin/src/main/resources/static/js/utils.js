@@ -176,7 +176,7 @@ conf.utils = {
         if (options.lu_ajax_id) {
             // 检查之前的req是否已经完成
             if (conf.utils.ajax_queue.contains(options.lu_ajax_id)) {
-                $.fn.alert('不要频繁重复操作,请稍后再试.');
+                alert('不要频繁重复操作,请稍后再试.');
                 return;
             }
             // complete回调，用于移除之前的ajax queue中的请求标记
@@ -215,7 +215,7 @@ conf.utils = {
                         options.fail.call(this, res, textStatus, jqXHR);
                         return;
                     }
-                    $.fn.alert(res.statusInfo);
+                    alert(res.statusInfo);
                     return;
                 }
 
@@ -226,7 +226,7 @@ conf.utils = {
         }
         if (!options.error) { // 没有加入自定义的error回调函数，则指定默认回调
             options.error = function (res, textStatus, jqXHR) {
-                $.fn.alert("ERROR:" + jqXHR);
+                alert("ERROR:" + jqXHR);
             }
         }
 

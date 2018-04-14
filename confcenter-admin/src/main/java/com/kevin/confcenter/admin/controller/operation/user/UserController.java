@@ -37,7 +37,7 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo login(@RequestParam User user) {
+    public ResultInfo login(User user) {
         try {
             userService.login(user.getUserName(), user.getPassword());
         } catch (BusinessException e) {
