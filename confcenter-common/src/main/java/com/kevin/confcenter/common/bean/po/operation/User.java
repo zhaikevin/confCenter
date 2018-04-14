@@ -1,4 +1,4 @@
-package com.kevin.confcenter.admin.bean.operation;
+package com.kevin.confcenter.common.bean.po.operation;
 
 import java.io.Serializable;
 import java.util.Date;

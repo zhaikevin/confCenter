@@ -1,6 +1,6 @@
 package com.kevin.confcenter.admin.dao.operation;
 
-import com.kevin.confcenter.admin.bean.operation.User;
+import com.kevin.confcenter.common.bean.po.operation.User;
 
 import java.util.List;
 
@@ -12,4 +12,12 @@ import java.util.List;
 public interface UserDao {
 
     List<User> getUserList();
+
+    /**
+     * 根据名字获取信息
+     *
+     * @param name
+     * @return
+     */
+    User getUserByName(String name);
 }

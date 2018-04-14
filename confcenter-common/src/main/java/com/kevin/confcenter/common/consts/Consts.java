@@ -28,6 +28,6 @@ public class Consts {
     /**
      * 通用的无效状态
      */
-    private static final Integer STATUS_DISABLED = 0;
+    public static final Integer STATUS_DISABLED = 0;
 
 }
