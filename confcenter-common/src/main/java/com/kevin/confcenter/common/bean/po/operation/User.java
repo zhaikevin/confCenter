@@ -28,7 +28,7 @@ public class User implements Serializable {
     private String password;
 
     /**
-     * 账户类型，{@link com.kevin.confcenter.admin.consts.operation.UserTypeEnum}
+     * 账户类型，{@link com.kevin.confcenter.common.consts.web.operation.UserTypeEnum}
      */
     private Integer type;
 

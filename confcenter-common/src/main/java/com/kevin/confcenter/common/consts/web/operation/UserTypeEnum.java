@@ -1,4 +1,4 @@
-package com.kevin.confcenter.admin.consts.operation;
+package com.kevin.confcenter.common.consts.web.operation;
 
 /**
  * @Author: kevin

@@ -1,5 +1,6 @@
 package com.kevin.confcenter.admin.controller.operation.user;
 
+import com.kevin.confcenter.admin.controller.BaseController;
 import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
@@ -8,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: kevin
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -37,14 +39,28 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo login(User user) {
+    public ResultInfo login(HttpServletRequest request, String userName, String password) {
         try {
-            userService.login(user.getUserName(), user.getPassword());
+            User user = userService.login(userName, password);
+            setUserSession(request, user);
         } catch (BusinessException e) {
             return ResultInfo.errorMessage(e.getMessage());
         } catch (Exception e) {
             return ResultInfo.errorMessage("登录失败");
         }
+        return ResultInfo.success();
+    }
+
+    /**
+     * 退出登录
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultInfo logout(HttpServletRequest request) {
+        deleteSession(request);
         return ResultInfo.success();
     }
 }

@@ -1,4 +1,4 @@
-package com.kevin.confcenter.admin.utils;
+package com.kevin.confcenter.admin.controller;
 
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.exception.ConfCenterException;
