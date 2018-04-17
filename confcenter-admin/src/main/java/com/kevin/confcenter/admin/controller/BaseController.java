@@ -26,7 +26,7 @@ public abstract class BaseController {
         userSession.setId(user.getId());
         userSession.setType(user.getType());
         userSession.setUserName(user.getUserName());
-        request.getSession().setAttribute(USER_SESSION_KEY, user);
+        request.getSession().setAttribute(USER_SESSION_KEY, userSession);
     }
 
     /**

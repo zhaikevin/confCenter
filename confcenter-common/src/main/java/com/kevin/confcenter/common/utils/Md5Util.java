@@ -50,6 +50,6 @@ public class Md5Util {
     }
 
     public static void main(String[] args) {
-        System.out.println(getMd5Code("test"));
+        System.out.println(getMd5Code("Zc123456"));
     }
 }

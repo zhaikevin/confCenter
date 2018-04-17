@@ -38,8 +38,9 @@ conf.app.member.login.prototype = {
             async: false,
             data: data,
             ok: function (res, textStatus, jqXHR) {
-                if (res.data) {
-                    alert('登录成功');
+                if (res.status == 0) {
+                    //alert('登录成功');
+                    window.location.href = "/index";
                 } else {
                     alert(res.statusInfo);
                 }

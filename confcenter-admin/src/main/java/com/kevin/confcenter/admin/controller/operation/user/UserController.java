@@ -32,9 +32,19 @@ public class UserController extends BaseController {
     }
 
     /**
+     * 跳转到登录页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "/html/user/login.html";
+    }
+
+    /**
      * 登录
      *
-     * @param user
+     * @param
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
