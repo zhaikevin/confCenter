@@ -3,6 +3,7 @@ package com.kevin.confcenter.admin.dao.operation;
 import com.kevin.confcenter.common.bean.po.operation.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: kevin
@@ -11,7 +12,20 @@ import java.util.List;
  */
 public interface UserDao {
 
-    List<User> getUserList();
+    /**
+     * 获取分页列表
+     *
+     * @return
+     */
+    List<User> getUserList(Map<String, Object> params);
+
+    /**
+     * 获取总数，用于分页
+     *
+     * @param params
+     * @return
+     */
+    Long getUserCount(Map<String, Object> params);
 
     /**
      * 根据名字获取信息

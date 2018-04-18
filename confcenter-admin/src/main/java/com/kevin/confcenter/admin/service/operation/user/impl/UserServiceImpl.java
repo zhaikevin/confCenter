@@ -3,6 +3,8 @@ package com.kevin.confcenter.admin.service.operation.user.impl;
 import com.kevin.confcenter.admin.dao.operation.UserDao;
 import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
+import com.kevin.confcenter.common.bean.vo.PaginationResult;
+import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.consts.Consts;
 import com.kevin.confcenter.common.exception.BusinessException;
 import com.kevin.confcenter.common.utils.Md5Util;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: kevin
@@ -23,9 +26,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+
     @Override
-    public List<User> getUserList() {
-        return userDao.getUserList();
+    public PaginationResult<User> getPaginationList(QueryParams queryParams) {
+        Map<String, Object> params = queryParams.getParams();
+        List<User> list = userDao.getUserList(params);
+        Long count = userDao.getUserCount(params);
+        return new PaginationResult<>(count, list);
     }
 
     @Override

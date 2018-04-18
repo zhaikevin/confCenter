@@ -8,6 +8,7 @@
         <result column="type" property="type" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="mail" property="mail" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="base_query">
@@ -17,16 +18,63 @@
     password,
     `type`,
     create_time,
-    status
+    status,
+    mail
     FROM  conf_center_user
-  </sql>
+    </sql>
 
-    <select id="getUserList" resultMap="BaseResultMap">
-        <include refid="base_query"/>
+    <sql id="no_password_query">
+        SELECT
+        id,
+        user_name,
+        NULL,
+        `type`,
+        create_time,
+        status,
+        mail
+        FROM  conf_center_user
+    </sql>
+
+    <select id="getUserList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        <include refid="no_password_query"/>
+        <where>
+            <if test="userName != null">
+                AND user_name like "%"#{userName}"%"
+            </if>
+            <if test="type != null">
+                AND `type` = #{type}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="mail != null">
+                AND mail = #{mail}
+            </if>
+        </where>
+        limit #start#,#size#
+    </select>
+
+    <select id="getUserCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT COUNT(1)
+        FROM conf_center_user
+        <where>
+            <if test="userName != null">
+                AND user_name like "%"#{userName}"%"
+            </if>
+            <if test="type != null">
+                AND `type` = #{type}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="mail != null">
+                AND mail = #{mail}
+            </if>
+        </where>
     </select>
 
     <select id="getUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         <include refid="base_query"/>
-        WHERE user_name = #{userName,jdbcType=VARCHAR}
+        WHERE user_name = #{userName}
     </select>
 </mapper>

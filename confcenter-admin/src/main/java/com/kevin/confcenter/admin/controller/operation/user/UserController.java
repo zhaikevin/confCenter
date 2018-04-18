@@ -3,6 +3,7 @@ package com.kevin.confcenter.admin.controller.operation.user;
 import com.kevin.confcenter.admin.controller.BaseController;
 import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
+import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.bean.vo.UserSession;
 import com.kevin.confcenter.common.exception.BusinessException;
@@ -25,12 +26,6 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
-
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public ResultInfo list() {
-        return ResultInfo.success(userService.getUserList());
-    }
 
     /**
      * 跳转到登录页面
@@ -85,5 +80,27 @@ public class UserController extends BaseController {
     public ResultInfo session(HttpServletRequest request) {
         UserSession userSession = getUserSession(request);
         return ResultInfo.success(userSession);
+    }
+
+    /**
+     * 跳转到列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list() {
+        return "/html/user/list.html";
+    }
+
+    /**
+     * 获取列表
+     *
+     * @param queryParams
+     * @return
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultInfo list(QueryParams queryParams) {
+        return ResultInfo.success(userService.getPaginationList(queryParams));
     }
 }

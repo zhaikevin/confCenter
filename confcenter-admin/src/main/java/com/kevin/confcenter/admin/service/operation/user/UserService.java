@@ -1,8 +1,8 @@
 package com.kevin.confcenter.admin.service.operation.user;
 
 import com.kevin.confcenter.common.bean.po.operation.User;
-
-import java.util.List;
+import com.kevin.confcenter.common.bean.vo.PaginationResult;
+import com.kevin.confcenter.common.bean.vo.QueryParams;
 
 /**
  * @Author: kevin
@@ -11,7 +11,13 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> getUserList();
+    /**
+     * 获取分页列表
+     *
+     * @param queryParams
+     * @return
+     */
+    PaginationResult<User> getPaginationList(QueryParams queryParams);
 
     /**
      * 登录
