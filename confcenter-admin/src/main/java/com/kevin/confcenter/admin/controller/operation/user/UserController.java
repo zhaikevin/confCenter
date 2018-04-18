@@ -67,10 +67,9 @@ public class UserController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    @ResponseBody
-    public ResultInfo logout(HttpServletRequest request) {
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request) {
         deleteSession(request);
-        return ResultInfo.success();
+        return "/user/login";
     }
 }
