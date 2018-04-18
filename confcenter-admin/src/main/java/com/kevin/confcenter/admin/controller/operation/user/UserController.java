@@ -4,6 +4,7 @@ import com.kevin.confcenter.admin.controller.BaseController;
 import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
+import com.kevin.confcenter.common.bean.vo.UserSession;
 import com.kevin.confcenter.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,5 +72,18 @@ public class UserController extends BaseController {
     public String logout(HttpServletRequest request) {
         deleteSession(request);
         return "/user/login";
+    }
+
+    /**
+     * 获取当前用户信息，从session拿就行了
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/session", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultInfo session(HttpServletRequest request) {
+        UserSession userSession = getUserSession(request);
+        return ResultInfo.success(userSession);
     }
 }
