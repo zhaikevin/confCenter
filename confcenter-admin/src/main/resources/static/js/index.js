@@ -1,13 +1,14 @@
 var conf = conf || {};
 
-conf.createNS("conf.app.index");
-conf.app.index = function (options) {
+conf.createNS("conf.index");
+conf.index = function (options) {
 };
 
-conf.app.index.prototype = {
+conf.index.prototype = {
 
     init: function () {
         this.initName();
+        this.bindEvent();
     },
 
     initName: function () {
@@ -20,9 +21,15 @@ conf.app.index.prototype = {
                 }
             }
         });
+    },
+
+    bindEvent: function () {
+        $('.nav').click(function () {
+            $('#main-content').load($(this).attr("url"));
+        });
     }
 };
 
 $(document).ready(function () {
-    new conf.app.index().init();
+    new conf.index().init();
 });

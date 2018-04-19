@@ -1,16 +1,16 @@
-package com.kevin.confcenter.common.consts.web.operation;
+package com.kevin.confcenter.common.consts.web;
 
 /**
  * @Author: kevin
- * @Description: 用户类型枚举
+ * @Description: 通用状态枚举
  * @Date: Created In 2018/4/12 18:10
  */
-public enum UserTypeEnum {
+public enum CommonStatusEnum {
 
     /**
      * 枚举列表
      */
-    ADMIN(1, "管理员账户"), NORMAL(2, "普通账户");
+    ENABLED(1, "有效"), DISABLED(0, "无效");
 
     /**
      * 对应数值
@@ -27,7 +27,7 @@ public enum UserTypeEnum {
      * @param val   枚举数值
      * @param label 显示值
      */
-    UserTypeEnum(int val, String label) {
+    CommonStatusEnum(int val, String label) {
         this.val = val;
         this.label = label;
     }
@@ -38,9 +38,9 @@ public enum UserTypeEnum {
      * @param val 枚举数值
      * @return 对应的枚举, 可能为null.
      */
-    public static UserTypeEnum valueOf(int val) {
-        UserTypeEnum[] ems = UserTypeEnum.values();
-        for (UserTypeEnum em : ems) {
+    public static CommonStatusEnum valueOf(int val) {
+        CommonStatusEnum[] ems = CommonStatusEnum.values();
+        for (CommonStatusEnum em : ems) {
             if (em.val == val) {
                 return em;
             }
@@ -63,7 +63,7 @@ public enum UserTypeEnum {
     }
 
     public static String getLabel(int val) {
-        UserTypeEnum typeEnum = valueOf(val);
+        CommonStatusEnum typeEnum = valueOf(val);
         if (typeEnum == null) {
             return null;
         }

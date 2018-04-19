@@ -1,0 +1,18 @@
+.dataTables_length .form-control {
+    width: 50px;
+}
+
+.list-btn-group {
+    text-align: center;
+}
+
+.table-header-btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.search-button {
+    text-align: center;
+}
+

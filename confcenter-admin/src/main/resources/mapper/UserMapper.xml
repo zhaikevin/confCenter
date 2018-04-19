@@ -51,7 +51,7 @@
                 AND mail = #{mail}
             </if>
         </where>
-        limit #start#,#size#
+        limit #{start},#{size}
     </select>
 
     <select id="getUserCount" resultType="java.lang.Long" parameterType="java.util.Map">

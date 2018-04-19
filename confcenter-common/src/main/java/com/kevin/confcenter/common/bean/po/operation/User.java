@@ -42,6 +42,11 @@ public class User implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * 邮箱
+     */
+    private String mail;
+
     public Long getId() {
         return id;
     }
@@ -90,6 +95,14 @@ public class User implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -99,6 +112,7 @@ public class User implements Serializable {
                 ", type=" + type +
                 ", status=" + status +
                 ", createTime=" + createTime +
+                ", mail='" + mail + '\'' +
                 '}';
     }
 }

@@ -1,10 +1,10 @@
 var conf = conf || {};
 
-conf.createNS("conf.app.member.login");
-conf.app.member.login = function (options) {
+conf.createNS("conf.member.login");
+conf.member.login = function (options) {
 };
 
-conf.app.member.login.prototype = {
+conf.member.login.prototype = {
 
     init: function () {
         this.bindButtonEvent();
@@ -50,5 +50,5 @@ conf.app.member.login.prototype = {
 };
 
 $(document).ready(function () {
-    new conf.app.member.login().init();
+    new conf.member.login().init();
 });

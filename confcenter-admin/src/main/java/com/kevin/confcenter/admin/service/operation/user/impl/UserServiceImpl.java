@@ -5,7 +5,7 @@ import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.PaginationResult;
 import com.kevin.confcenter.common.bean.vo.QueryParams;
-import com.kevin.confcenter.common.consts.Consts;
+import com.kevin.confcenter.common.consts.web.CommonStatusEnum;
 import com.kevin.confcenter.common.exception.BusinessException;
 import com.kevin.confcenter.common.utils.Md5Util;
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(password)) {
             throw new BusinessException("用户名或密码错误");
         }
-        if (Consts.STATUS_DISABLED.equals(user.getStatus())) {
+        if (new Integer(CommonStatusEnum.DISABLED.getVal()).equals(user.getStatus())) {
             throw new BusinessException("用户名无效");
         }
         return user;
