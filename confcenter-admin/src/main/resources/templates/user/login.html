@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
@@ -7,13 +7,9 @@
 
     <meta name="description" content="User login page"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-    <link rel="stylesheet" href="/ace/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/ace/font-awesome/4.5.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="/ace/css/fonts.googleapis.com.css"/>
-    <link rel="stylesheet" href="/ace/css/ace.min.css"/>
-    <link rel="stylesheet" href="/ace/css/ace-part2.min.css"/>
-    <link rel="stylesheet" href="/ace/css/ace-rtl.min.css"/>
-    <link rel="stylesheet" href="/ace/css/ace-ie.min.css"/>
+
+    <div th:include="/common/css :: loadCss"></div>
+    <div th:include="/common/js :: loadJs"></div>
 </head>
 
 <body class="login-layout">
@@ -224,8 +220,6 @@
     </div>
 </div>
 
-<script src="/js/jquery-2.1.4.min.js"></script>
-<script src="/js/utils.js"></script>
 <script src="/js/user/login.js"></script>
 </body>
 </html>

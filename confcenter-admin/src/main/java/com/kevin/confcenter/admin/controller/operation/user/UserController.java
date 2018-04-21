@@ -34,7 +34,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
-        return "/html/user/login.html";
+        return "user/login";
     }
 
     /**
@@ -89,7 +89,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list() {
-        return "/html/user/list.html";
+        return "user/list";
     }
 
     /**

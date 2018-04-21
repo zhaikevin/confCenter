@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
@@ -8,15 +8,8 @@
     <meta name="description" content="Static &amp; Dynamic Tables"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
-    <link rel="stylesheet" href="/css/list.css"/>
-    <link rel="stylesheet" href="/css/conf.css"/>
-    <link rel="stylesheet" href="/ace/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/ace/css/fonts.googleapis.com.css"/>
-    <link rel="stylesheet" href="/ace/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style"/>
-
-
-    <link rel="stylesheet" href="/ace/css/ace-skins.min.css"/>
-    <link rel="stylesheet" href="/ace/css/ace-rtl.min.css"/>
+    <div th:include="/common/css :: loadCss"></div>
+    <div th:include="/common/js :: loadJs"></div>
 
 </head>
 
@@ -65,35 +58,27 @@
         <div class="search-button">
             <button type="button" id="search" class="btn btn-success btn-sm">查询</button>
         </div>
-        </div>
-        <div class="table-header">
-            用户信息
-        </div>
-        <div>
-            <table id="member-table" class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th width="50" style="text-align: center">选择</th>
-                    <th>用户名称</th>
-                    <th>账户类型</th>
-                    <th>状态</th>
-                    <th>邮箱</th>
-                    <th>新建时间</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+    </div>
+    <div class="table-header">
+        用户信息
+    </div>
+    <div>
+        <table id="member-table" class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th width="50" style="text-align: center">选择</th>
+                <th>用户名称</th>
+                <th>账户类型</th>
+                <th>状态</th>
+                <th>邮箱</th>
+                <th>新建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 </div>
-<script src="/js/jquery-2.1.4.min.js"></script>
-<script src="/ace/js/jquery.dataTables.min.js"></script>
-<script src="/ace/js/dataTables.select.min.js"></script>
-<script src="/ace/js/bootstrap.min.js"></script>
-<script src="/js/utils.js"></script>
-<script src="/js/conf.js"></script>
-<script src="/js/pagination.js"></script>
 <script src="/js/user/list.js"></script>
 </body>
 </html>

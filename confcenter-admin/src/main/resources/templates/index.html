@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
@@ -7,25 +7,9 @@
 
     <meta name="description" content="overview &amp; stats"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-    <link rel="stylesheet" href="/ace/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/ace/font-awesome/4.5.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="/ace/css/fonts.googleapis.com.css"/>
-    <link rel="stylesheet" href="/ace/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style"/>
 
-    <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/ace/css/ace-part2.min.css" class="ace-main-stylesheet"/>
-    <![endif]-->
-    <link rel="stylesheet" href="/ace/css/ace-skins.min.css"/>
-    <link rel="stylesheet" href="/ace/css/ace-rtl.min.css"/>
-
-    <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/ace/css/ace-ie.min.css"/>
-    <![endif]-->
-
-    <!-- inline styles related to this page -->
-
-    <!-- ace settings handler -->
-    <script src="/ace/js/ace-extra.min.js"></script>
+    <div th:include="/common/css :: loadCss"></div>
+    <div th:include="/common/js :: loadJs"></div>
 
 </head>
 
@@ -301,12 +285,6 @@
         </div>
     </div><!-- /.main-content -->
 </div><!-- /.main-container -->
-
-<script src="/js/jquery-2.1.4.min.js"></script>
-<script src="/ace/js/bootstrap.min.js"></script>
-<script src="/ace/js/ace-elements.min.js"></script>
-<script src="/ace/js/ace.min.js"></script>
-<script src="/js/utils.js"></script>
 <script src="/js/index.js"></script>
 </body>
 </html>
