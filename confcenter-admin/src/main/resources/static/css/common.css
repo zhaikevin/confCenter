@@ -1,0 +1,91 @@
+body {
+    background-color: #fff;
+    overflow: auto !important;
+}
+
+.modal {
+    overflow: auto !important;
+}
+
+textarea {
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+    width: 90%;
+}
+
+.div-text {
+    word-wrap: break-word !important;
+    word-break: break-all !important;
+    white-space: normal !important;
+}
+
+.form-control {
+    border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+}
+
+input[type=text], textarea {
+    border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+}
+
+.btn {
+    border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    -webkit-border-radius: 3px !important;
+}
+
+.dataTable th, td {
+    min-width: 100px !important;
+    text-align: center;
+}
+
+.cof-sform td {
+    text-align: left;
+}
+
+.btn-success, .btn-success.focus, .btn-success:focus {
+    background-color: #5cb85c !important;
+    border-color: #5cb85c;
+}
+
+.btn-success.active, .btn-success:active, .btn-success:hover, .open > .dropdown-toggle.btn-success {
+    background-color: #449d44 !important;
+    border-color: #449d44 !important;
+}
+
+.btn-primary, .btn-primary.focus, .btn-primary:focus {
+    background-color: #337ab7 !important;
+    border-color: #337ab7;
+}
+
+.btn-primary.active, .btn-primary:active, .btn-primary:hover, .open > .dropdown-toggle.btn-primary {
+    background-color: #286090 !important;
+    border-color: #286090 !important;
+}
+
+.btn-primary.disabled.focus, .btn-primary.disabled:focus, .btn-primary.disabled:hover, .btn-primary[disabled].focus, .btn-primary[disabled]:focus, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:hover {
+    background-color: #337ab7 !important;
+    border-color: #337ab7 !important;
+}
+
+.btn-word-wrap {
+    margin-top: 8px !important;
+}
+
+a, input {
+    outline: none;
+}
+
+.head-img {
+    border: 1px solid black;
+    width: 100px;
+    height: 130px;
+}
+
+.left{
+    text-align: left!important
+}
