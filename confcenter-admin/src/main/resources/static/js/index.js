@@ -26,12 +26,21 @@ conf.index.prototype = {
     bindEvent: function () {
         $('.menu').click(function () {
             $('.active').removeClass('active');
-            $('#content').load($(this).attr('url'));
-            // var url = $(this).attr("url");
-            // $.get(url, function (data) {
-            //     $("#content").html(data);//初始化加载界面
-            // });
-            $(this).parent().addClass('active');
+            var that = $(this);
+            conf.utils.ajax({
+                url: '/user/session',
+                type: 'GET',
+                success: function (res, textStatus, jqXHR) {
+                    if (res.status == 0) {
+                        $('#content').load(that.attr('url'));
+                        that.parent().addClass('active');
+                    } else if (res.status == 1) {
+                        window.location.href = "/user/login";
+                    } else {
+                        alert(res.statusInfo);
+                    }
+                }
+            });
         });
     }
 };

@@ -16,6 +16,11 @@ public class Consts {
      */
     public static final int RESULT_CODE_COMMONERR = 9999;
 
+    /**
+     * session过期
+     */
+    public static final int RESULT_SESSION_TIMEOUT = 1;
+
     public static final String PING_PARAM_IP = "ip";
     public static final String PING_PARAM_PROJECT = "projectName";
     public static final String PING_SERVER_URL = "/confcenter-admin/ping";

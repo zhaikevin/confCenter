@@ -6,7 +6,9 @@ import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.bean.vo.UserSession;
+import com.kevin.confcenter.common.consts.Consts;
 import com.kevin.confcenter.common.exception.BusinessException;
+import com.kevin.confcenter.common.exception.SessionTimeOutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,8 +80,12 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/session", method = RequestMethod.GET)
     @ResponseBody
     public ResultInfo session(HttpServletRequest request) {
-        UserSession userSession = getUserSession(request);
-        return ResultInfo.success(userSession);
+        try {
+            UserSession userSession = getUserSession(request);
+            return ResultInfo.success(userSession);
+        } catch (SessionTimeOutException e) {
+            return new ResultInfo(Consts.RESULT_SESSION_TIMEOUT, "登录超时");
+        }
     }
 
     /**
