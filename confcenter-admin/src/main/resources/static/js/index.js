@@ -24,8 +24,14 @@ conf.index.prototype = {
     },
 
     bindEvent: function () {
-        $('.nav').click(function () {
-            $('#main-content').load($(this).attr("url"));
+        $('.menu').click(function () {
+            $('.active').removeClass('active');
+            $('#content').load($(this).attr('url'));
+            // var url = $(this).attr("url");
+            // $.get(url, function (data) {
+            //     $("#content").html(data);//初始化加载界面
+            // });
+            $(this).parent().addClass('active');
         });
     }
 };
