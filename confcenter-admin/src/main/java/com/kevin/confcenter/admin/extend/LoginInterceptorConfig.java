@@ -21,8 +21,10 @@ public class LoginInterceptorConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/user/login").excludePathPatterns("/user/session");
+        registry.addInterceptor(new HtmlLoginInterceptor()).addPathPatterns("/**/*.html").addPathPatterns("/index");
+        registry.addInterceptor(new ActionLoginInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/user/login").excludePathPatterns("/**/*.html")
+                .excludePathPatterns("/**/*.js").excludePathPatterns("/**/*.css").excludePathPatterns("/index");
         super.addInterceptors(registry);
     }
 }

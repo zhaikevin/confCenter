@@ -6,7 +6,6 @@ import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.bean.vo.UserSession;
-import com.kevin.confcenter.common.consts.Consts;
 import com.kevin.confcenter.common.exception.BusinessException;
 import com.kevin.confcenter.common.exception.SessionTimeOutException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +83,7 @@ public class UserController extends BaseController {
             UserSession userSession = getUserSession(request);
             return ResultInfo.success(userSession);
         } catch (SessionTimeOutException e) {
-            return new ResultInfo(Consts.RESULT_SESSION_TIMEOUT, "登录超时");
+            return ResultInfo.sessionTimeout();
         }
     }
 

@@ -211,12 +211,16 @@ conf.utils = {
         if (!options.success) { //没有加入自定义的success回调函数，则调用默认回调函数
             options.success = function (res, textStatus, jqXHR) {
                 if (res.status != 0) { //如果返回结果消息状态码非零则表示失败,弹出错误信息
-                    if (options.fail) {
-                        options.fail.call(this, res, textStatus, jqXHR);
+                    if (res.status == 1) {
+                        window.location.href = "/user/login";
+                    } else {
+                        if (options.fail) {
+                            options.fail.call(this, res, textStatus, jqXHR);
+                            return;
+                        }
+                        alert(res.statusInfo);
                         return;
                     }
-                    alert(res.statusInfo);
-                    return;
                 }
 
                 if (options.ok) { // 如果有自定义ok回调，则在结果码为成功时回调

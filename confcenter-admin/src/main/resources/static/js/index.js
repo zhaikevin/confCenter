@@ -30,15 +30,9 @@ conf.index.prototype = {
             conf.utils.ajax({
                 url: '/user/session',
                 type: 'GET',
-                success: function (res, textStatus, jqXHR) {
-                    if (res.status == 0) {
-                        $('#content').load(that.attr('url'));
-                        that.parent().addClass('active');
-                    } else if (res.status == 1) {
-                        window.location.href = "/user/login";
-                    } else {
-                        alert(res.statusInfo);
-                    }
+                ok: function (res, textStatus, jqXHR) {
+                    $('#content').load(that.attr('url'));
+                    that.parent().addClass('active');
                 }
             });
         });

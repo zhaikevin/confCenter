@@ -52,6 +52,8 @@ conf.pagination = function (url, form, successCallback, errorCallback) {
                     if (successCallback) {
                         successCallback.call();
                     }
+                } else if (result.status == 1) {
+                    window.location.href = "/user/login";
                 } else {
                     if (errorCallback) {
                         errorCallback.call();
