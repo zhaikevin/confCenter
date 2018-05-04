@@ -21,11 +21,11 @@ conf.member.login.prototype = {
         var userName = $('#userName').val().trim();
         var password = $('#password').val().trim();
         if(userName.isEmpty()) {
-            alert('用户名不能为空');
+            $.fn.alert('用户名不能为空');
             return false;
         }
         if(password.isEmpty()) {
-            alert('密码不能为空');
+            $.fn.alert('密码不能为空');
             return false;
         }
         var data = {
@@ -39,10 +39,9 @@ conf.member.login.prototype = {
             data: data,
             ok: function (res, textStatus, jqXHR) {
                 if (res.status == 0) {
-                    //alert('登录成功');
                     window.location.href = "/index";
                 } else {
-                    alert(res.statusInfo);
+                    $.fn.alert(res.statusInfo);
                 }
             }
         });

@@ -19,11 +19,12 @@ conf.member.list.prototype = {
     },
 
     reload: function () {
+        conf.loaded = true;
         conf.member.table.ajax.reload();
     },
 
     initTable: function () {
-        conf.loaded = false;
+        conf.loaded = true;
         conf.member.table = $('#member-table').DataTable({
             bAutoWidth: false,
             responsive: true,

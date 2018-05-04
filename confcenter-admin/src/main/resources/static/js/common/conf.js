@@ -202,17 +202,17 @@
     e.fn.alert = function (e) {
         var t = {};
         if (t.id = "alert_" + Date.now(), !e) return void i("请传递Alert弹窗提示内容");
-        if ("string" == typeof e) t.title = "LuckinCoffee", t.content = e, t.close = "关闭"; else {
-            if (e.title ? t.title = e.title : t.title = "LuckinCoffee", !e.content) return void i("请传递提示内容content属性");
+        if ("string" == typeof e) t.title = "ConfigCenter", t.content = e, t.close = "关闭"; else {
+            if (e.title ? t.title = e.title : t.title = "ConfigCenter", !e.content) return void i("请传递提示内容content属性");
             t.content = e.content, e.close ? t.close = e.close : t.close = "关闭", e.closeCallback && (t.closeCallback = e.closeCallback)
         }
         a(t)
     }, e.fn.confirm = function (e) {
         var t = {};
-        return t.id = "confirm_" + Date.now(), e ? "string" == typeof e ? void i("Confirm弹窗参数格式为对象") : e.saveCallback && "function" == typeof e.saveCallback ? (e.title ? t.title = e.title : t.title = "LuckinCoffee", e.content ? (t.content = e.content, e.close ? t.close = e.close : t.close = "关闭", e.save ? t.save = e.save : t.save = "保存", e.closeCallback && (t.closeCallback = e.closeCallback), e.saveCallback && (t.saveCallback = e.saveCallback), void a(t)) : void i("请传递Pop弹窗显示的html内容")) : void i("请传递确定按钮点击之后的回调函数saveCallback函数") : void i("请传递Confirm弹窗参数")
+        return t.id = "confirm_" + Date.now(), e ? "string" == typeof e ? void i("Confirm弹窗参数格式为对象") : e.saveCallback && "function" == typeof e.saveCallback ? (e.title ? t.title = e.title : t.title = "ConfigCenter", e.content ? (t.content = e.content, e.close ? t.close = e.close : t.close = "关闭", e.save ? t.save = e.save : t.save = "保存", e.closeCallback && (t.closeCallback = e.closeCallback), e.saveCallback && (t.saveCallback = e.saveCallback), void a(t)) : void i("请传递Pop弹窗显示的html内容")) : void i("请传递确定按钮点击之后的回调函数saveCallback函数") : void i("请传递Confirm弹窗参数")
     }, e.fn.pop = function (e) {
         var t = {};
-        return t.id = "pop_" + Date.now(), e ? "string" == typeof e ? void console.error("Pop弹窗参数格式为对象") : e.saveCallback && "function" == typeof e.saveCallback ? (e.title ? t.title = e.title : t.title = "LuckinCoffee", e.content ? (t.content = e.content, e.close ? t.close = e.close : t.close = "关闭", e.save ? t.save = e.save : t.save = "保存", e.closeCallback && (t.closeCallback = e.closeCallback), e.saveCallback && (t.saveCallback = e.saveCallback), e.width ? t.width = e.width : t.width = 800, e.height ? t.height = e.height : t.height = 600, void a(t)) : void console.error("请传递确认内容")) : void console.error("请传递确定按钮点击之后的回调函数saveCallback函数") : void console.error("请传递pop弹窗参数")
+        return t.id = "pop_" + Date.now(), e ? "string" == typeof e ? void console.error("Pop弹窗参数格式为对象") : e.saveCallback && "function" == typeof e.saveCallback ? (e.title ? t.title = e.title : t.title = "ConfigCenter", e.content ? (t.content = e.content, e.close ? t.close = e.close : t.close = "关闭", e.save ? t.save = e.save : t.save = "保存", e.closeCallback && (t.closeCallback = e.closeCallback), e.saveCallback && (t.saveCallback = e.saveCallback), e.width ? t.width = e.width : t.width = 800, e.height ? t.height = e.height : t.height = 600, void a(t)) : void console.error("请传递确认内容")) : void console.error("请传递确定按钮点击之后的回调函数saveCallback函数") : void console.error("请传递pop弹窗参数")
     }, e.fn.popHide = function (t) {
         e("#" + t).modal("hide")
     }
@@ -346,14 +346,14 @@
         }
     })
 }($);
-var lucky = lucky || {};
-lucky.app = lucky.app || {}, lucky.app.loaded = !0, lucky.app.string = {
+var conf = conf || {};
+conf.loaded = !0, conf.string = {
     trim: function (e) {
         return e.replace(/(^\s*)|(\s*$)/g, "")
     }, replaceAll: function (e, t, a) {
         return e.replace(new RegExp(t, "gm"), a)
     }
-}, lucky.app.list = {
+}, conf.list = {
     autoResize: function () {
         $(".dataTable").each(function () {
             var e = this;
@@ -369,10 +369,10 @@ lucky.app = lucky.app || {}, lucky.app.loaded = !0, lucky.app.string = {
             })
         })
     }
-}, lucky.app.pagination = function (e, t, a, n) {
+}, conf.pagination = function (e, t, a, n) {
     return function (i, s, r) {
-        if (lucky.app.list.autoResize(), lucky.app.loaded) {
-            lucky.app.list.defaultSort || (lucky.app.list.defaultSort = r.aLastSort[0]);
+        if (conf.list.autoResize(), conf.loaded) {
+            conf.list.defaultSort || (conf.list.defaultSort = r.aLastSort[0]);
             var o = {};
             if (o.page = i.start / i.length + 1, o.rows = i.length, i.order && i.order.length > 0) {
                 var l = i.columns[i.order[0].column];
@@ -385,20 +385,23 @@ lucky.app = lucky.app || {}, lucky.app.loaded = !0, lucky.app.string = {
                 i.columns[d].name ? o.sort = i.columns[d].name : o.sort = i.columns[d].data, o.order = r.aaSorting[1]
             } else o.sort = i.columns[0].data, o.order = "asc";
             if (0 == o.order || "false" == o.order) {
-                var c = lucky.app.list.defaultSort, l = i.columns[c.col];
+                var c = conf.list.defaultSort, l = i.columns[c.col];
                 o.sort = l.name ? l.name : l.data, o.order = c.dir
             }
             o.params = {}, t && $("input,select", $(t)).each(function () {
                 if ($(this).attr("name") && $(this).val() && "" != $(this).val()) {
-                    var e = lucky.app.string.trim($(this).val());
-                    e = lucky.app.string.replaceAll(e, "'", ""), e = lucky.app.string.replaceAll(e, '"', ""), e = lucky.app.string.replaceAll(e, "<", ""), e = lucky.app.string.replaceAll(e, ">", ""), o.params[$(this).attr("name")] = e
+                    var e = conf.string.trim($(this).val());
+                    e = conf.string.replaceAll(e, "'", ""), e = conf.string.replaceAll(e, '"', ""), e = conf.string.replaceAll(e, "<", ""), e = conf.string.replaceAll(e, ">", ""), o.params[$(this).attr("name")] = e
                 }
             }), $.ajax({
                 type: "POST", url: e, data: o, dataType: "json", success: function (e) {
                     if (0 == e.status) {
                         var t = {};
-                        t.draw = i.draw, t.recordsTotal = e.data.total, t.recordsFiltered = e.data.total, t.data = e.data.rows, $(".btn-single-detail").attr("disabled", "disabled"), s(t), lucky.app.list.autoResize(), a && a.call()
-                    } else lucky.app.list.autoResize(), n && n.call(), $.fn.alert(e.statusInfo)
+                        t.draw = i.draw, t.recordsTotal = e.data.total, t.recordsFiltered = e.data.total, t.data = e.data.rows, $(".btn-single-detail").attr("disabled", "disabled"), s(t), conf.list.autoResize(), a && a.call()
+                    }else if (1 == e.status) {
+                        window.location.href = "/user/login";
+                    }
+                    else conf.list.autoResize(), n && n.call(), $.fn.alert(e.statusInfo)
                 }
             })
         }

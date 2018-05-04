@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author: kevin
- * @Description: 统一登录拦截器，拦截html页面请求
+ * @Description: 统一登录拦截器，拦截静态资源
  * @Date: Created In 2018/4/17 15:34
  */
-public class HtmlLoginInterceptor extends BaseController implements HandlerInterceptor {
+public class StaticLoginInterceptor extends BaseController implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         try {
