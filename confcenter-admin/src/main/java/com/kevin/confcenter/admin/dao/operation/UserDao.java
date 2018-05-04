@@ -34,4 +34,11 @@ public interface UserDao {
      * @return
      */
     User getUserByName(String name);
+
+    /**
+     * 插入用户
+     *
+     * @param user
+     */
+    void insert(User user);
 }

@@ -21,6 +21,11 @@ public class Consts {
      */
     public static final int RESULT_SESSION_TIMEOUT = 1;
 
+    /**
+     * 默认密码
+     */
+    public static final String DEFAULT_PASSWORD = "password@#09";
+
     public static final String PING_PARAM_IP = "ip";
     public static final String PING_PARAM_PROJECT = "projectName";
     public static final String PING_SERVER_URL = "/confcenter-admin/ping";

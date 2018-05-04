@@ -108,4 +108,21 @@ public class UserController extends BaseController {
     public ResultInfo list(QueryParams queryParams) {
         return ResultInfo.success(userService.getPaginationList(queryParams));
     }
+
+    /**
+     * 创建新用户
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultInfo create(User user) {
+        try {
+            userService.create(user);
+            return ResultInfo.success();
+        } catch (BusinessException e) {
+            return ResultInfo.errorMessage(e.getMessage());
+        }
+    }
 }

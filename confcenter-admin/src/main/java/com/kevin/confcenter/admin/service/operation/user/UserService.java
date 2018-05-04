@@ -27,4 +27,11 @@ public interface UserService {
      * @return
      */
     User login(String userName, String password);
+
+    /**
+     * 创建用户
+     *
+     * @param user
+     */
+    void create(User user);
 }
