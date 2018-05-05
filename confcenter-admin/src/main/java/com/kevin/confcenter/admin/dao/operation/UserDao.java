@@ -41,4 +41,11 @@ public interface UserDao {
      * @param user
      */
     void insert(User user);
+
+    /**
+     * 更新用户
+     *
+     * @param user
+     */
+    void update(User user);
 }

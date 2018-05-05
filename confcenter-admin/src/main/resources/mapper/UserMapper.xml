@@ -77,4 +77,68 @@
         <include refid="base_query"/>
         WHERE user_name = #{userName}
     </select>
+
+    <insert id="insert" parameterType="com.kevin.confcenter.common.bean.po.operation.User" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO conf_center_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="mail != null">
+                mail,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=SMALLINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=SMALLINT},
+            </if>
+            <if test="mail != null">
+                #{mail,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.kevin.confcenter.common.bean.po.operation.User">
+        UPDATE conf_center_user
+        <set>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=SMALLINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=SMALLINT},
+            </if>
+            <if test="mail != null">
+                #{mail,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

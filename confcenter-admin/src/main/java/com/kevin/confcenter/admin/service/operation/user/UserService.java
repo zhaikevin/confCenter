@@ -34,4 +34,11 @@ public interface UserService {
      * @param user
      */
     void create(User user);
+
+    /**
+     * 修改用户
+     *
+     * @param user
+     */
+    void modify(User user);
 }

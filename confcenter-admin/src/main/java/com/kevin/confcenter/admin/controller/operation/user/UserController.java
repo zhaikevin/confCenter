@@ -125,4 +125,21 @@ public class UserController extends BaseController {
             return ResultInfo.errorMessage(e.getMessage());
         }
     }
+
+    /**
+     * 修改用户
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultInfo modify(User user) {
+        try {
+            userService.modify(user);
+            return ResultInfo.success();
+        } catch (BusinessException e) {
+            return ResultInfo.errorMessage(e.getMessage());
+        }
+    }
 }

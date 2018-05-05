@@ -65,4 +65,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         userDao.insert(user);
     }
+
+    @Override
+    public void modify(User user) {
+        User oldUser = userDao.getUserByName(user.getUserName());
+        if (oldUser != null) {
+            throw new BusinessException("用户名不能重复");
+        }
+        userDao.update(user);
+    }
 }
