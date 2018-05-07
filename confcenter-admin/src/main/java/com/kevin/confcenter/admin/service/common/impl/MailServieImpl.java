@@ -4,6 +4,8 @@ import com.kevin.confcenter.admin.service.common.MailServie;
 import com.kevin.confcenter.common.bean.vo.Mail;
 import com.kevin.confcenter.common.exception.BusinessException;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -21,6 +23,11 @@ import java.io.File;
  */
 @Service(value = "mailService")
 public class MailServieImpl implements MailServie {
+
+    /**
+     * 日志对象
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailServieImpl.class);
 
     @Autowired
     private JavaMailSender mailSender;
@@ -44,7 +51,7 @@ public class MailServieImpl implements MailServie {
             }
             mailSender.send(message);
         } catch (Exception e) {
-
+            LOGGER.error("send mail failed,exception message:{}",e.getMessage(),e);
         }
     }
 }

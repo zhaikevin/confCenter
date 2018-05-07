@@ -25,6 +25,8 @@ public class MailServieTest {
         mail.setTo("conf_center@163.com");
         mail.setSubject("测试");
         mail.setText("这是一封自动发送的邮件哦");
+        mail.setAttachmentPath("E:/picture/Penguins.jpg");
+        mail.setAttachmentName("企鹅.jpg");
         mailServie.sendMail(mail);
     }
 }
