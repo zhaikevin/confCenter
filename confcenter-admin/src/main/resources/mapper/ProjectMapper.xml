@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kevin.confcenter.admin.dao.project.ProjectDao">
+    <resultMap id="BaseResultMap" type="com.kevin.confcenter.common.bean.po.project.Project">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="project_desc" property="projectDesc" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="creator_id" property="creatorId" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="user_name" property="creatorName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="base_query">
+    SELECT
+    p.id,
+    p.project_name,
+    p.project_desc,
+    p.status,
+    p.creator_id,
+    p.create_time,
+    u.user_name
+    FROM  conf_center_project p
+    LEFT JOIN conf_center_user u ON p.creator_id = u.id
+    </sql>
+
+    <select id="getProjectList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        <include refid="base_query"/>
+        <where>
+            <if test="projectName != null">
+                AND p.project_name like "%"#{projectName}"%"
+            </if>
+        </where>
+        limit #{start},#{size}
+    </select>
+
+    <select id="getProjectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT COUNT(1)
+        FROM conf_center_project
+        <where>
+            <if test="projectName != null">
+                AND project_name like "%"#{projectName}"%"
+            </if>
+        </where>
+    </select>
+</mapper>

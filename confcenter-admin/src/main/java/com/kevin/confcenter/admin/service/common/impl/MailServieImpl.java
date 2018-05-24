@@ -2,7 +2,6 @@ package com.kevin.confcenter.admin.service.common.impl;
 
 import com.kevin.confcenter.admin.service.common.MailServie;
 import com.kevin.confcenter.common.bean.vo.Mail;
-import com.kevin.confcenter.common.exception.BusinessException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,11 +46,11 @@ public class MailServieImpl implements MailServie {
             if (StringUtils.isNotEmpty(mail.getAttachmentPath())
                     && StringUtils.isNotEmpty(mail.getAttachmentName())) {
                 FileSystemResource file = new FileSystemResource(new File(mail.getAttachmentPath()));
-                helper.addAttachment(mail.getAttachmentName(),file);
+                helper.addAttachment(mail.getAttachmentName(), file);
             }
             mailSender.send(message);
         } catch (Exception e) {
-            LOGGER.error("send mail failed,exception message:{}",e.getMessage(),e);
+            LOGGER.error("send mail failed,exception message:{}", e.getMessage(), e);
         }
     }
 }
