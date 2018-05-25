@@ -19,4 +19,18 @@ public interface ProjectService {
      */
     PaginationResult<Project> getPaginationList(QueryParams queryParams);
 
+    /**
+     * 创建项目
+     *
+     * @param project
+     */
+    void create(Project project);
+
+    /**
+     * 修改项目
+     *
+     * @param project
+     */
+    void modify(Project project);
+
 }

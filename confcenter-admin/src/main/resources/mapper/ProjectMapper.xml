@@ -43,4 +43,26 @@
             </if>
         </where>
     </select>
+
+    <insert id="insert" parameterType="com.kevin.confcenter.common.bean.po.project.Project">
+        insert into conf_center_project (project_name, project_desc,
+        status, creator_id, create_time
+        )
+        values (#{projectName,jdbcType=VARCHAR}, #{projectDesc,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT}, #{creatorId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.kevin.confcenter.common.bean.po.project.Project">
+        update conf_center_project
+        <set>
+            <if test="projectDesc != null">
+                project_desc = #{projectDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

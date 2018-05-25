@@ -29,4 +29,14 @@ public class ProjectServiceImpl implements ProjectService {
         Long count = projectDao.getProjectCount(params);
         return new PaginationResult<>(count, list);
     }
+
+    @Override
+    public void create(Project project) {
+        projectDao.insert(project);
+    }
+
+    @Override
+    public void modify(Project project) {
+        projectDao.update(project);
+    }
 }

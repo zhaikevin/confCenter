@@ -27,4 +27,18 @@ public interface ProjectDao {
      * @return
      */
     Long getProjectCount(Map<String, Object> params);
+
+    /**
+     * 插入
+     *
+     * @param project
+     */
+    void insert(Project project);
+
+    /**
+     * 修改
+     *
+     * @param project
+     */
+    void update(Project project);
 }
