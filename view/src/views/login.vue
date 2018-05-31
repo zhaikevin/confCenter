@@ -72,6 +72,10 @@
                             }
                         }).then(function (res) {
                             if (res.data.status === 0) {
+                                var data = res.data.data;
+                                Cookies.set('user', data.id);
+                                Cookies.set('token', data.token);
+                                Cookies.set('type', data.type);
                                 that.$router.push({
                                     name: 'home_index'
                                 });
