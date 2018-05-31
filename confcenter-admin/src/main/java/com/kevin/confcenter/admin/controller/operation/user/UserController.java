@@ -5,7 +5,7 @@ import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
-import com.kevin.confcenter.common.bean.vo.UserSession;
+import com.kevin.confcenter.common.bean.vo.UserToken;
 import com.kevin.confcenter.common.exception.BusinessException;
 import com.kevin.confcenter.common.exception.SessionTimeOutException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,8 +80,8 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResultInfo session(HttpServletRequest request) {
         try {
-            UserSession userSession = getUserSession(request);
-            return ResultInfo.success(userSession);
+            UserToken userToken = getUserSession(request);
+            return ResultInfo.success(userToken);
         } catch (SessionTimeOutException e) {
             return ResultInfo.sessionTimeout();
         }

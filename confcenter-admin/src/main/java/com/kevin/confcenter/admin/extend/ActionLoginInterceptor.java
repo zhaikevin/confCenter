@@ -3,7 +3,7 @@ package com.kevin.confcenter.admin.extend;
 import com.alibaba.fastjson.JSON;
 import com.kevin.confcenter.admin.controller.BaseController;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
-import com.kevin.confcenter.common.bean.vo.UserSession;
+import com.kevin.confcenter.common.bean.vo.UserToken;
 import com.kevin.confcenter.common.exception.SessionTimeOutException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +21,7 @@ public class ActionLoginInterceptor extends BaseController implements HandlerInt
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         try {
-            UserSession userSession = getUserSession(httpServletRequest);
+            UserToken userToken = getUserSession(httpServletRequest);
             return true;
         } catch (SessionTimeOutException e) {
             ResultInfo result = ResultInfo.sessionTimeout();

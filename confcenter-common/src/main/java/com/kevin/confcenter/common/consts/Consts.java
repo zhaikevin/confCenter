@@ -7,6 +7,7 @@ package com.kevin.confcenter.common.consts;
  */
 public class Consts {
 
+    public static final String UTF8 = "utf-8";
     /**
      * 应答结果状态码——成功
      */

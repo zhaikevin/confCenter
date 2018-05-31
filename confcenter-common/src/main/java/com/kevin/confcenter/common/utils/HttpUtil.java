@@ -29,12 +29,6 @@ import java.util.Map;
 
 /**
  * 处理系统对外HTTP调用的工具类.
- *
- * @author hanzhiwei
- * @version 1.0
- * @title HttpUtils
- * @description 处理系统对外HTTP调用的工具类
- * @date 2016年8月29日
  */
 public class HttpUtil {
     /**
