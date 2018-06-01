@@ -1,11 +1,13 @@
 package com.kevin.confcenter.admin.controller.operation.user;
 
 import com.kevin.confcenter.admin.controller.BaseController;
+import com.kevin.confcenter.admin.extend.AuthHelper;
 import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
-import com.kevin.confcenter.common.bean.vo.UserSession;
+import com.kevin.confcenter.common.bean.vo.UserCookie;
+import com.kevin.confcenter.common.bean.vo.UserToken;
 import com.kevin.confcenter.common.exception.BusinessException;
 import com.kevin.confcenter.common.exception.SessionTimeOutException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author: kevin
@@ -46,16 +49,17 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo login(HttpServletRequest request, String userName, String password) {
+    public ResultInfo login(HttpServletResponse response, String userName, String password) {
         try {
             User user = userService.login(userName, password);
-            setUserSession(request, user);
+            String token = AuthHelper.createToken(new UserToken(user));
+            UserCookie cookie = new UserCookie(user, token);
+            return ResultInfo.success(cookie);
         } catch (BusinessException e) {
             return ResultInfo.errorMessage(e.getMessage());
         } catch (Exception e) {
             return ResultInfo.errorMessage("登录失败");
         }
-        return ResultInfo.success();
     }
 
     /**
@@ -80,8 +84,8 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResultInfo session(HttpServletRequest request) {
         try {
-            UserSession userSession = getUserSession(request);
-            return ResultInfo.success(userSession);
+            UserToken userToken = getUserSession(request);
+            return ResultInfo.success(userToken);
         } catch (SessionTimeOutException e) {
             return ResultInfo.sessionTimeout();
         }

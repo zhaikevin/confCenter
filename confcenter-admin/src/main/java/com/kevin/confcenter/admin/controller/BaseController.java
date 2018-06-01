@@ -1,7 +1,7 @@
 package com.kevin.confcenter.admin.controller;
 
 import com.kevin.confcenter.common.bean.po.operation.User;
-import com.kevin.confcenter.common.bean.vo.UserSession;
+import com.kevin.confcenter.common.bean.vo.UserToken;
 import com.kevin.confcenter.common.exception.SessionTimeOutException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +22,11 @@ public abstract class BaseController {
      * @param user
      */
     public void setUserSession(HttpServletRequest request, User user) {
-        UserSession userSession = new UserSession();
-        userSession.setId(user.getId());
-        userSession.setType(user.getType());
-        userSession.setUserName(user.getUserName());
-        request.getSession().setAttribute(USER_SESSION_KEY, userSession);
+        UserToken userToken = new UserToken();
+        userToken.setId(user.getId());
+        userToken.setType(user.getType());
+        userToken.setUserName(user.getUserName());
+        request.getSession().setAttribute(USER_SESSION_KEY, userToken);
     }
 
     /**
@@ -35,10 +35,10 @@ public abstract class BaseController {
      * @param request
      * @return
      */
-    public UserSession getUserSession(HttpServletRequest request) {
+    public UserToken getUserSession(HttpServletRequest request) {
         Object object = request.getSession().getAttribute(USER_SESSION_KEY);
-        if (object != null && object instanceof UserSession) {
-            return (UserSession) object;
+        if (object != null && object instanceof UserToken) {
+            return (UserToken) object;
         }
         throw new SessionTimeOutException();
     }

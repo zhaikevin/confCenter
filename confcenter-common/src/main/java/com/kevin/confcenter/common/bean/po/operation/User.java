@@ -1,5 +1,8 @@
 package com.kevin.confcenter.common.bean.po.operation;
 
+import com.kevin.confcenter.common.consts.Consts;
+import com.kevin.confcenter.common.consts.web.operation.UserTypeEnum;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -46,6 +49,24 @@ public class User implements Serializable {
      * 邮箱
      */
     private String mail;
+
+    public String getTypeName() {
+        if (type == null) {
+            return null;
+        }
+        return UserTypeEnum.getLabel(type);
+    }
+
+    public String getStatusName() {
+        if (status == null) {
+            return null;
+        }
+        if (status.equals(Consts.ENABLE_STATUS)) {
+            return "有效";
+        } else {
+            return "禁用";
+        }
+    }
 
     public Long getId() {
         return id;

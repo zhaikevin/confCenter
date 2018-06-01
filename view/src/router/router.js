@@ -205,7 +205,8 @@ export const appRouter = [
             { path: 'editableTable', title: '可编辑表格', name: 'editable-table', icon: 'edit', component: () => import('@/views/tables/editable-table.vue') },
             { path: 'searchableTable', title: '可搜索表格', name: 'searchable-table', icon: 'search', component: () => import('@/views/tables/searchable-table.vue') },
             { path: 'exportableTable', title: '表格导出数据', name: 'exportable-table', icon: 'code-download', component: () => import('@/views/tables/exportable-table.vue') },
-            { path: 'table2image', title: '表格转图片', name: 'table-to-image', icon: 'images', component: () => import('@/views/tables/table-to-image.vue') }
+            { path: 'table2image', title: '表格转图片', name: 'table-to-image', icon: 'images', component: () => import('@/views/tables/table-to-image.vue') },
+            { path: 'multiPageTable', title: '分页表格', name: 'multi-page-table', icon: 'images', component: () => import('@/views/tables/components/multiPageTable.vue') }
         ]
     },
     {
@@ -227,6 +228,16 @@ export const appRouter = [
         component: Main,
         children: [
             { path: 'index', title: '错误页面', name: 'errorpage_index', component: () => import('@/views/error-page/error-page.vue') }
+        ]
+    },
+    {
+        path: '/user',
+        icon: 'ios-grid-view',
+        name: 'operation',
+        title: '运维管理',
+        component: Main,
+        children: [
+            { path: 'index', title: '用户管理', name: 'user-table', icon: 'arrow-move', component: () => import('@/views/user/list.vue') }
         ]
     }
 ];

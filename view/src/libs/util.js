@@ -2,24 +2,28 @@ import axios from 'axios';
 import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
+import Qs from 'qs';
 
-let util = {
-
-};
+let util = {};
 util.title = function (title) {
     title = title || 'iView admin';
     window.document.title = title;
 };
 
 const ajaxUrl = env === 'development'
-    ? 'http://127.0.0.1:8888'
+    ? 'http://localhost:8080'
     : env === 'production'
         ? 'https://www.url.com'
         : 'https://debug.url.com';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
-    timeout: 30000
+    timeout: 30000,
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    transformRequest: [function (data) {
+        data = Qs.stringify(data);
+        return data;
+    }]
 });
 
 util.inOf = function (arr, targetArr) {
@@ -264,6 +268,34 @@ util.checkUpdate = function (vm) {
             });
         }
     });
+};
+
+util.formatDate = function (time, format) {
+    if (!format) {
+        format = 'yyyy-MM-dd hh:mm:ss';
+    }
+    return new Date(time).format(format);
+};
+
+Date.prototype.format = function (format) {
+    var o = {
+        'M+': this.getMonth() + 1,
+        'd+': this.getDate(),
+        'h+': this.getHours(),
+        'm+': this.getMinutes(),
+        's+': this.getSeconds(),
+        'q+': Math.floor((this.getMonth() + 3) / 3),
+        'S': this.getMilliseconds()
+    };
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+        if (new RegExp('(' + k + ')').test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length));
+        }
+    }
+    return format;
 };
 
 export default util;

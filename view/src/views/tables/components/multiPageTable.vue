@@ -9,7 +9,7 @@
     </div>
 </template>
 <script>
-    import EditableTable from './editableTable.vue';
+    import EditableTable from '../editable-table.vue';
     export default {
         name: 'multiPageTable',
         components: {
