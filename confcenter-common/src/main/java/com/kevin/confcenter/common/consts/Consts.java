@@ -8,6 +8,10 @@ package com.kevin.confcenter.common.consts;
 public class Consts {
 
     public static final String UTF8 = "utf-8";
+
+    public static final Integer ENABLE_STATUS = 1;
+
+    public static final Integer DISABLE_STATUS = 0;
     /**
      * 应答结果状态码——成功
      */

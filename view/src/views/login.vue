@@ -30,7 +30,6 @@
                             <Button @click="handleSubmit" type="primary" long>登录</Button>
                         </FormItem>
                     </Form>
-                    <p class="login-tip">输入任意用户名和密码即可</p>
                 </div>
             </Card>
         </div>
@@ -73,26 +72,20 @@
                         }).then(function (res) {
                             if (res.data.status === 0) {
                                 var data = res.data.data;
-                                Cookies.set('user', data.id);
+                                Cookies.set('id', data.id);
+                                Cookies.set('user', data.userName);
                                 Cookies.set('token', data.token);
                                 Cookies.set('type', data.type);
                                 that.$router.push({
                                     name: 'home_index'
                                 });
+                                that.$store.commit('setAvator', '/src/images/profile_pic.jpg');
                             } else {
                                 alert(res.data.statusInfo);
                             }
                         }).catch(function (err) {
                             alert(err);
                         });
-                        // Cookies.set('user', this.form.userName);
-                        // Cookies.set('password', this.form.password);
-                        // this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
-                        // if (this.form.userName === 'iview_admin') {
-                        //     Cookies.set('access', 0);
-                        // } else {
-                        //     Cookies.set('access', 1);
-                        // }
                     }
                 });
             }
