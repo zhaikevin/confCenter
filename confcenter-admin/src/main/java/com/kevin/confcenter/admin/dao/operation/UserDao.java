@@ -48,4 +48,12 @@ public interface UserDao {
      * @param user
      */
     void update(User user);
+
+    /**
+     * 根据id获取信息
+     *
+     * @param id
+     * @return
+     */
+    User getUserById(Long id);
 }

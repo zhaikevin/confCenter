@@ -22,6 +22,7 @@ util.ajax = axios.create({
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     transformRequest: [function (data) {
         data = Qs.stringify(data);
+        console.log(data);
         return data;
     }]
 });

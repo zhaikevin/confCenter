@@ -4,6 +4,7 @@ import com.kevin.confcenter.admin.controller.BaseController;
 import com.kevin.confcenter.admin.extend.AuthHelper;
 import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
+import com.kevin.confcenter.common.bean.vo.PaginationResult;
 import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.bean.vo.UserCookie;
@@ -49,11 +50,12 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo login(HttpServletResponse response, String userName, String password) {
+    public ResultInfo login(HttpServletRequest request,HttpServletResponse response, String userName, String password) {
         try {
             User user = userService.login(userName, password);
             String token = AuthHelper.createToken(new UserToken(user));
             UserCookie cookie = new UserCookie(user, token);
+            setUserSession(request,user);
             return ResultInfo.success(cookie);
         } catch (BusinessException e) {
             return ResultInfo.errorMessage(e.getMessage());
@@ -110,7 +112,8 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     public ResultInfo list(QueryParams queryParams) {
-        return ResultInfo.success(userService.getPaginationList(queryParams));
+        PaginationResult<User> result = userService.getPaginationList(queryParams);
+        return ResultInfo.success(result);
     }
 
     /**
@@ -145,5 +148,11 @@ public class UserController extends BaseController {
         } catch (BusinessException e) {
             return ResultInfo.errorMessage(e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultInfo detail(Long id) {
+        return ResultInfo.success(userService.detail(id));
     }
 }

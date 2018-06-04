@@ -78,6 +78,11 @@
         WHERE user_name = #{userName}
     </select>
 
+    <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        <include refid="no_password_query"/>
+        WHERE id = #{id}
+    </select>
+
     <insert id="insert" parameterType="com.kevin.confcenter.common.bean.po.operation.User" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO conf_center_user

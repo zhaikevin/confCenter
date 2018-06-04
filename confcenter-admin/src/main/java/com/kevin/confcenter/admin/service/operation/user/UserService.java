@@ -41,4 +41,12 @@ public interface UserService {
      * @param user
      */
     void modify(User user);
+
+    /**
+     * 用户详情
+     *
+     * @param id
+     * @return
+     */
+    User detail(Long id);
 }
