@@ -50,12 +50,12 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo login(HttpServletRequest request,HttpServletResponse response, String userName, String password) {
+    public ResultInfo login(HttpServletRequest request, HttpServletResponse response, String userName, String password) {
         try {
             User user = userService.login(userName, password);
             String token = AuthHelper.createToken(new UserToken(user));
             UserCookie cookie = new UserCookie(user, token);
-            setUserSession(request,user);
+            setUserSession(request, user);
             return ResultInfo.success(cookie);
         } catch (BusinessException e) {
             return ResultInfo.errorMessage(e.getMessage());
@@ -150,9 +150,32 @@ public class UserController extends BaseController {
         }
     }
 
+    /**
+     * 用户详情
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     @ResponseBody
     public ResultInfo detail(Long id) {
         return ResultInfo.success(userService.detail(id));
+    }
+
+    /**
+     * 禁用
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/forbidden", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultInfo forbidden(Long id) {
+        try {
+            userService.forbidden(id);
+            return ResultInfo.success();
+        } catch (BusinessException e) {
+            return ResultInfo.errorMessage(e.getMessage());
+        }
     }
 }

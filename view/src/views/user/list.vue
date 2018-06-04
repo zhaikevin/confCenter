@@ -14,7 +14,8 @@
                     </Row>
                 </Card>
                 <div class="edittable-table-height-con">
-                    <Table border highlight-row :columns="columns" :data="data"></Table>
+                    <can-edit-table border highlight-row refs="userTable" v-model="tableData"
+                                    :columns-list="columnsList" @on-forbidden="forbidden"></can-edit-table>
                     <div style="margin: 10px;overflow: hidden">
                         <div style="float: right;">
                             <Page :total="total" :current="current" :page-size="pageSize" show-elevator show-total
@@ -29,42 +30,59 @@
 
 <script>
     import Util from '@/libs/util';
+    import canEditTable from '../common/canEditTable.vue';
 
     export default {
+        components: {
+            canEditTable
+        },
         data () {
             return {
                 searchConName1: '',
-                columns: [
+                columnsList: [
                     {
-                        width: 60,
+                        title: '序号',
+                        width: 80,
                         align: 'center',
                         type: 'index'
                     },
                     {
                         title: '用户名称',
-                        key: 'userName'
+                        key: 'userName',
+                        align: 'center'
                     },
                     {
                         title: '账户类型',
-                        key: 'typeName'
+                        key: 'typeName',
+                        align: 'center'
                     },
                     {
                         title: '状态',
-                        key: 'statusName'
+                        key: 'statusName',
+                        align: 'center'
                     },
                     {
                         title: '邮箱',
-                        key: 'mail'
+                        key: 'mail',
+                        align: 'center'
                     },
                     {
                         title: '新建时间',
                         key: 'createTime',
+                        align: 'center',
                         render: (h, params) => {
                             return h('div', Util.formatDate(params.row.createTime));
                         }
+                    },
+                    {
+                        title: '操作',
+                        align: 'center',
+                        key: 'handle',
+                        handle: [{type: 'delete', name: '禁用', content: '您确定要禁用该用户吗?', functions: ['on-forbidden']},
+                            {type: 'delete', name: '启用', content: '您确定要启用该用户吗?', buttonType: 'info'}]
                     }
                 ],
-                data: [],
+                tableData: [],
                 total: 0,
                 current: 1,
                 pageSize: 10
@@ -98,7 +116,7 @@
                     }
                 }).then(function (res) {
                     if (res.data.status === 0) {
-                        that.data = res.data.data.rows;
+                        that.tableData = res.data.data.rows;
                         that.total = res.data.data.total;
                     } else {
                         alert(res.data.statusInfo);
@@ -112,9 +130,27 @@
             },
             changeSize: function (size) {
                 this.getData(this.current, size);
+            },
+            forbidden: function (val, index) {
+                var id = this.tableData[index].id;
+                Util.ajax({
+                    method: 'post',
+                    url: 'user/forbidden',
+                    data: {
+                        'id': id
+                    }
+                }).then(function (res) {
+                    if (res.data.status === 0) {
+                        this.$Message.success('禁用成功');
+                    } else {
+                        alert(res.data.statusInfo);
+                    }
+                }).catch(function (err) {
+                    alert(err);
+                });
             }
         },
-        mounted () {
+        created () {
             this.getData(this.current, this.pageSize);
         }
     };

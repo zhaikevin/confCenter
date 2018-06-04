@@ -79,4 +79,16 @@ public class UserServiceImpl implements UserService {
     public User detail(Long id) {
         return userDao.getUserById(id);
     }
+
+    @Override
+    public void forbidden(Long id) {
+        User user = userDao.getUserById(id);
+        if(Consts.DISABLE_STATUS.equals(user.getStatus())) {
+            throw new BusinessException("该用户已经被禁用，不能再次被禁用");
+        }
+        User updateUser = new User();
+        updateUser.setId(id);
+        updateUser.setStatus(Consts.DISABLE_STATUS);
+        userDao.update(user);
+    }
 }

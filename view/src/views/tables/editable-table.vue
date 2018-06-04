@@ -64,12 +64,12 @@
                         </Col>
                         <Col span="22">
                             <div class="edittable-table-height-con">
-                                <can-edit-table 
-                                    refs="table4" 
-                                    v-model="editInlineAndCellData" 
-                                    @on-cell-change="handleCellChange" 
-                                    @on-change="handleChange"  
-                                    :editIncell="true" 
+                                <can-edit-table
+                                    refs="table4"
+                                    v-model="editInlineAndCellData"
+                                    @on-cell-change="handleCellChange"
+                                    @on-change="handleChange"
+                                    :editIncell="true"
                                     :columns-list="editInlineAndCellColumn"
                                 ></can-edit-table>
                             </div>
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import canEditTable from './components/canEditTable.vue';
+import canEditTable from '../common/canEditTable.vue';
 import tableData from './components/table_data.js';
 export default {
     name: 'editable-table',

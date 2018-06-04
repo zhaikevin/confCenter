@@ -49,4 +49,11 @@ public interface UserService {
      * @return
      */
     User detail(Long id);
+
+    /**
+     * 禁用用户
+     *
+     * @param id
+     */
+    void forbidden(Long id);
 }
