@@ -15,7 +15,8 @@
                 </Card>
                 <div class="edittable-table-height-con">
                     <can-edit-table border highlight-row refs="userTable" v-model="tableData"
-                                    :columns-list="columnsList" @on-forbidden="forbidden"></can-edit-table>
+                                    :columns-list="columnsList" @on-disable="disable"
+                                    @on-enable="enable" @on-edit="showEditUser"></can-edit-table>
                     <div style="margin: 10px;overflow: hidden">
                         <div style="float: right;">
                             <Page :total="total" :current="current" :page-size="pageSize" show-elevator show-total
@@ -25,6 +26,28 @@
                 </div>
             </Col>
         </Row>
+        <Modal v-model="editUserModal" :closable='false' :mask-closable=false :width="500">
+            <h3 slot="header" style="color:#2D8CF0">修改用户</h3>
+            <Form ref="editUserForm" :model="editUserForm" :label-width="100" label-position="right">
+                <Input v-model="editUserForm.id" v-show="false"/>
+                <FormItem label="用户姓名" prop="userName">
+                    <Input v-model="editUserForm.userName"></Input>
+                </FormItem>
+                <FormItem label="邮箱" prop="mail">
+                    <Input v-model="editUserForm.mail"></Input>
+                </FormItem>
+                <FormItem label="状态" prop="status">
+                    <Input v-model="editUserForm.status"></Input>
+                </FormItem>
+                <FormItem label="账户类型" prop="type">
+                    <Input v-model="editUserForm.type"></Input>
+                </FormItem>
+            </Form>
+            <div slot="footer">
+                <Button type="text" @click="cancelEditUser">取消</Button>
+                <Button type="primary" :loading="saveUserLoading" @click="saveEditUser">保存</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -53,12 +76,12 @@
                     },
                     {
                         title: '账户类型',
-                        key: 'typeName',
+                        key: 'type',
                         align: 'center'
                     },
                     {
                         title: '状态',
-                        key: 'statusName',
+                        key: 'status',
                         align: 'center'
                     },
                     {
@@ -78,14 +101,40 @@
                         title: '操作',
                         align: 'center',
                         key: 'handle',
-                        handle: [{type: 'delete', name: '禁用', content: '您确定要禁用该用户吗?', functions: ['on-forbidden']},
-                            {type: 'delete', name: '启用', content: '您确定要启用该用户吗?', buttonType: 'info'}]
+                        width: 300,
+                        handle: [
+                            {
+                                type: 'edit',
+                                functions: ['on-edit']
+                            },
+                            {
+                                type: 'delete',
+                                name: '禁用',
+                                content: '您确定要禁用该用户吗?',
+                                functions: ['on-disable']
+                            },
+                            {
+                                type: 'delete',
+                                name: '启用',
+                                content: '您确定要启用该用户吗?',
+                                buttonType: 'info',
+                                functions: ['on-enable']
+                            }]
                     }
                 ],
                 tableData: [],
                 total: 0,
                 current: 1,
-                pageSize: 10
+                pageSize: 10,
+                editUserModal: false,
+                saveUserLoading: false,
+                editUserForm: {
+                    id: '',
+                    userName: '',
+                    mail: '',
+                    status: '',
+                    type: ''
+                }
             };
         },
         methods: {
@@ -131,17 +180,86 @@
             changeSize: function (size) {
                 this.getData(this.current, size);
             },
-            forbidden: function (val, index) {
+            disable: function (val, index) {
+                var that = this;
                 var id = this.tableData[index].id;
                 Util.ajax({
                     method: 'post',
-                    url: 'user/forbidden',
+                    url: 'user/disable',
                     data: {
                         'id': id
                     }
                 }).then(function (res) {
                     if (res.data.status === 0) {
-                        this.$Message.success('禁用成功');
+                        that.$Message.success('禁用成功');
+                        that.getData(that.current, that.pageSize);
+                    } else {
+                        that.$Message.error(res.data.statusInfo);
+                    }
+                }).catch(function (err) {
+                    alert(err);
+                });
+            },
+            enable: function (val, index) {
+                var that = this;
+                var id = this.tableData[index].id;
+                Util.ajax({
+                    method: 'post',
+                    url: 'user/enable',
+                    data: {
+                        'id': id
+                    }
+                }).then(function (res) {
+                    if (res.data.status === 0) {
+                        that.$Message.success('启用成功');
+                        that.getData(that.current, that.pageSize);
+                    } else {
+                        that.$Message.error(res.data.statusInfo);
+                    }
+                }).catch(function (err) {
+                    alert(err);
+                });
+            },
+            showEditUser (val, index) {
+                this.editUserModal = true;
+                var that = this;
+                var id = this.tableData[index].id;
+                Util.ajax({
+                    method: 'get',
+                    url: 'user/detail',
+                    params: {
+                        'id': id
+                    }
+                }).then(function (res) {
+                    if (res.data.status === 0) {
+                        that.editUserForm.id = res.data.data.id;
+                        that.editUserForm.userName = res.data.data.userName;
+                        that.editUserForm.mail = res.data.data.mail;
+                        that.editUserForm.status = res.data.data.status;
+                        that.editUserForm.type = res.data.data.type;
+                    } else {
+                        alert(res.data.statusInfo);
+                    }
+                }).catch(function (err) {
+                    alert(err);
+                });
+            },
+            cancelEditUser () {
+                this.editUserModal = false;
+            },
+            saveEditUser () {
+                this.saveUserLoading = true;
+                var data = JSON.parse(JSON.stringify(this.editUserForm));
+                var that = this;
+                Util.ajax({
+                    method: 'post',
+                    url: 'user/modify',
+                    data: data
+                }).then(function (res) {
+                    if (res.data.status === 0) {
+                        that.saveUserLoading = false;
+                        that.editUserModal = false;
+                        that.getData(that.current, that.pageSize);
                     } else {
                         alert(res.data.statusInfo);
                     }

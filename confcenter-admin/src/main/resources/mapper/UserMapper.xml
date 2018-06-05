@@ -132,16 +132,16 @@
         UPDATE conf_center_user
         <set>
             <if test="userName != null">
-                #{userName,jdbcType=VARCHAR},
+                user_name = #{userName,jdbcType=VARCHAR},
             </if>
             <if test="type != null">
-                #{type,jdbcType=SMALLINT},
+                `type` = #{type,jdbcType=SMALLINT},
             </if>
             <if test="status != null">
-                #{status,jdbcType=SMALLINT},
+                `status` = #{status,jdbcType=SMALLINT},
             </if>
             <if test="mail != null">
-                #{mail,jdbcType=VARCHAR},
+                mail = #{mail,jdbcType=VARCHAR},
             </if>
         </set>
         where ID = #{id,jdbcType=INTEGER}

@@ -27,7 +27,7 @@ export const table1Columns = [
         align: 'center',
         width: 120,
         key: 'handle',
-        handle: ['delete']
+        handle: [{type: 'delete'}]
     }
 ];
 
@@ -80,7 +80,7 @@ export const editInlineColumns = [
         align: 'center',
         width: 190,
         key: 'handle',
-        handle: ['edit', 'delete']
+        handle: [{type: 'edit'}, {type: 'delete'}]
     }
 ];
 
@@ -133,7 +133,7 @@ export const editIncellColumns = [
         align: 'center',
         width: 120,
         key: 'handle',
-        handle: ['delete']
+        handle: [{type: 'delete'}]
     }
 ];
 
@@ -186,7 +186,7 @@ export const editInlineAndCellColumn = [
         align: 'center',
         width: 200,
         key: 'handle',
-        handle: ['edit', 'delete']
+        handle: [{type: 'edit'}, {type: 'delete'}]
     }
 ];
 

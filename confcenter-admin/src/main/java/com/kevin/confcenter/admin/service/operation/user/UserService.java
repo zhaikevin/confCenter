@@ -55,5 +55,12 @@ public interface UserService {
      *
      * @param id
      */
-    void forbidden(Long id);
+    void disable(Long id);
+
+    /**
+     * 启用用户
+     *
+     * @param id
+     */
+    void enable(Long id);
 }

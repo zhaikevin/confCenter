@@ -9,39 +9,24 @@
 </template>
 
 <script>
-    const editButton = (vm, h, currentRow, index) => {
+    const editButton = (vm, h, currentRow, index, item) => {
         return h('Button', {
             props: {
-                type: currentRow.editting ? 'success' : 'primary',
-                loading: currentRow.saving
+                type: 'primary'
             },
             style: {
                 margin: '0 5px'
             },
             on: {
                 'click': () => {
-                    if (!currentRow.editting) {
-                        if (currentRow.edittingCell) {
-                            for (let name in currentRow.edittingCell) {
-                                currentRow.edittingCell[name] = false;
-                                vm.edittingStore[index].edittingCell[name] = false;
-                            }
-                        }
-                        vm.edittingStore[index].editting = true;
-                        vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-                    } else {
-                        vm.edittingStore[index].saving = true;
-                        vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-                        let edittingRow = vm.edittingStore[index];
-                        edittingRow.editting = false;
-                        edittingRow.saving = false;
-                        vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-                        vm.$emit('input', vm.handleBackdata(vm.thisTableData));
-                        vm.$emit('on-change', vm.handleBackdata(vm.thisTableData), index);
+                    if (item.functions) {
+                        item.functions.forEach(item => {
+                            vm.$emit(item, vm.handleBackdata(vm.thisTableData), index);
+                        });
                     }
                 }
             }
-        }, currentRow.editting ? '保存' : '编辑');
+        }, '编辑');
     };
     const deleteButton = (vm, h, currentRow, index, item) => {
         return h('Poptip', {
@@ -254,7 +239,7 @@
                             let children = [];
                             item.handle.forEach(item => {
                                 if (item.type === 'edit') {
-                                    children.push(editButton(this, h, currentRowData, param.index));
+                                    children.push(editButton(this, h, currentRowData, param.index, item));
                                 } else if (item.type === 'delete') {
                                     children.push(deleteButton(this, h, currentRowData, param.index, item));
                                 }

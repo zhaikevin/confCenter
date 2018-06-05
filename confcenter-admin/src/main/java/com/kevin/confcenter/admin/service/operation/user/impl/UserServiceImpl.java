@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modify(User user) {
         User oldUser = userDao.getUserByName(user.getUserName());
-        if (oldUser != null) {
+        if (oldUser != null && !oldUser.getId().equals(user.getId())) {
             throw new BusinessException("用户名不能重复");
         }
         userDao.update(user);
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void forbidden(Long id) {
+    public void disable(Long id) {
         User user = userDao.getUserById(id);
         if(Consts.DISABLE_STATUS.equals(user.getStatus())) {
             throw new BusinessException("该用户已经被禁用，不能再次被禁用");
@@ -89,6 +89,18 @@ public class UserServiceImpl implements UserService {
         User updateUser = new User();
         updateUser.setId(id);
         updateUser.setStatus(Consts.DISABLE_STATUS);
-        userDao.update(user);
+        userDao.update(updateUser);
+    }
+
+    @Override
+    public void enable(Long id) {
+        User user = userDao.getUserById(id);
+        if(Consts.ENABLE_STATUS.equals(user.getStatus())) {
+            throw new BusinessException("该用户已经被启用，不能再次被启用");
+        }
+        User updateUser = new User();
+        updateUser.setId(id);
+        updateUser.setStatus(Consts.ENABLE_STATUS);
+        userDao.update(updateUser);
     }
 }

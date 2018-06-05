@@ -168,11 +168,28 @@ public class UserController extends BaseController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/forbidden", method = RequestMethod.POST)
+    @RequestMapping(value = "/disable", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo forbidden(Long id) {
+    public ResultInfo disable(Long id) {
         try {
-            userService.forbidden(id);
+            userService.disable(id);
+            return ResultInfo.success();
+        } catch (BusinessException e) {
+            return ResultInfo.errorMessage(e.getMessage());
+        }
+    }
+
+    /**
+     * 启用
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/enable", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultInfo enable(Long id) {
+        try {
+            userService.enable(id);
             return ResultInfo.success();
         } catch (BusinessException e) {
             return ResultInfo.errorMessage(e.getMessage());
