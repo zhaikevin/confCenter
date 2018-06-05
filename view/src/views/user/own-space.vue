@@ -119,6 +119,24 @@
                     }
                 });
             },
+            formatStatus (status) {
+                if (status === 0) {
+                    return '禁用';
+                } else if (status === 1) {
+                    return '有效';
+                } else {
+                    return '';
+                }
+            },
+            formatType (type) {
+                if (type === 1) {
+                    return '管理员账户';
+                } else if (type === 2) {
+                    return '普通账户';
+                } else {
+                    return '';
+                }
+            },
             init () {
                 this.userForm.id = Cookies.get('id');
                 var that = this;
@@ -132,8 +150,8 @@
                     if (res.data.status === 0) {
                         that.userForm.name = res.data.data.userName;
                         that.userForm.mail = res.data.data.mail;
-                        that.userForm.status = res.data.data.status;
-                        that.userForm.type = res.data.data.type;
+                        that.userForm.status = that.formatStatus(res.data.data.status);
+                        that.userForm.type = that.formatType(res.data.data.type);
                     } else {
                         alert(res.data.statusInfo);
                     }

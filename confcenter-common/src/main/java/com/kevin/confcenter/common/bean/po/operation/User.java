@@ -50,24 +50,6 @@ public class User implements Serializable {
      */
     private String mail;
 
-    public String getTypeName() {
-        if (type == null) {
-            return null;
-        }
-        return UserTypeEnum.getLabel(type);
-    }
-
-    public String getStatusName() {
-        if (status == null) {
-            return null;
-        }
-        if (status.equals(Consts.ENABLE_STATUS)) {
-            return "有效";
-        } else {
-            return "禁用";
-        }
-    }
-
     public Long getId() {
         return id;
     }

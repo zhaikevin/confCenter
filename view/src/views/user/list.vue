@@ -77,12 +77,18 @@
                     {
                         title: '账户类型',
                         key: 'type',
-                        align: 'center'
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', this.formatType(params.row.type));
+                        }
                     },
                     {
                         title: '状态',
                         key: 'status',
-                        align: 'center'
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', this.formatStatus(params.row.status));
+                        }
                     },
                     {
                         title: '邮箱',
@@ -150,6 +156,24 @@
                     }
                 }
                 return res;
+            },
+            formatStatus (status) {
+                if (status === 0) {
+                    return '禁用';
+                } else if (status === 1) {
+                    return '有效';
+                } else {
+                    return '';
+                }
+            },
+            formatType (type) {
+                if (type === 1) {
+                    return '管理员账户';
+                } else if (type === 2) {
+                    return '普通账户';
+                } else {
+                    return '';
+                }
             },
             getData (page, size) {
                 var that = this;
