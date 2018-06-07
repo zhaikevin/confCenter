@@ -9,8 +9,7 @@
             <Col>
                 <Card>
                     <Row>
-                        <Input v-model="searchConName1" icon="search" @on-change="search"
-                               placeholder="请输入姓名搜索..." style="width: 200px"/>
+                        <Input v-model="searchName" icon="search" @on-change="handleSearch" placeholder="请输入姓名搜索..." style="width: 200px"/>
                     </Row>
                 </Card>
                 <div class="edittable-table-height-con">
@@ -26,21 +25,27 @@
                 </div>
             </Col>
         </Row>
-        <Modal v-model="editUserModal" :closable='false' :mask-closable=false :width="500">
+        <Modal v-model="editUserModal" :closable='false' :mask-closable=false :width="400">
             <h3 slot="header" style="color:#2D8CF0">修改用户</h3>
             <Form ref="editUserForm" :model="editUserForm" :label-width="100" label-position="right">
                 <Input v-model="editUserForm.id" v-show="false"/>
                 <FormItem label="用户姓名" prop="userName">
-                    <Input v-model="editUserForm.userName"></Input>
+                    <Input v-model="editUserForm.userName" style="width:200px"></Input>
                 </FormItem>
                 <FormItem label="邮箱" prop="mail">
-                    <Input v-model="editUserForm.mail"></Input>
+                    <Input v-model="editUserForm.mail" style="width:200px"></Input>
                 </FormItem>
                 <FormItem label="状态" prop="status">
-                    <Input v-model="editUserForm.status"></Input>
+                    <Select v-model="editUserForm.status" style="width:200px">
+                        <Option v-for="item in statusList" :value="item.value" :key="item.value">{{ item.label }}
+                        </Option>
+                    </Select>
                 </FormItem>
                 <FormItem label="账户类型" prop="type">
-                    <Input v-model="editUserForm.type"></Input>
+                    <Select v-model="editUserForm.type" style="width:200px">
+                        <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}
+                        </Option>
+                    </Select>
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -61,7 +66,7 @@
         },
         data () {
             return {
-                searchConName1: '',
+                searchName: '',
                 columnsList: [
                     {
                         title: '序号',
@@ -70,7 +75,7 @@
                         type: 'index'
                     },
                     {
-                        title: '用户名称',
+                        title: '用户姓名',
                         key: 'userName',
                         align: 'center'
                     },
@@ -140,7 +145,27 @@
                     mail: '',
                     status: '',
                     type: ''
-                }
+                },
+                statusList: [
+                    {
+                        value: 0,
+                        label: '禁用'
+                    },
+                    {
+                        value: 1,
+                        label: '有效'
+                    }
+                ],
+                typeList: [
+                    {
+                        value: 1,
+                        label: '管理员账户'
+                    },
+                    {
+                        value: 2,
+                        label: '普通账户'
+                    }
+                ]
             };
         },
         methods: {
@@ -175,18 +200,16 @@
                     return '';
                 }
             },
-            getData (page, size) {
+            getData (page, size, params) {
                 var that = this;
-                var params = {};
-                params.page = page;
-                params.rows = size;
+                var data = {};
+                data.page = page;
+                data.rows = size;
+                data.params = params;
                 Util.ajax({
                     method: 'post',
                     url: 'user/list',
-                    data: {
-                        'page': page,
-                        'rows': size
-                    }
+                    data: data
                 }).then(function (res) {
                     if (res.data.status === 0) {
                         that.tableData = res.data.data.rows;
@@ -290,6 +313,13 @@
                 }).catch(function (err) {
                     alert(err);
                 });
+            },
+            handleSearch () {
+                var name = this.searchName;
+                var params = {
+                    userName: name
+                };
+                this.getData(this.current, this.pageSize, params);
             }
         },
         created () {
