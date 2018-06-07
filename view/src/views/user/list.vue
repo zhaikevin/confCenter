@@ -9,7 +9,8 @@
             <Col>
                 <Card>
                     <Row>
-                        <Input v-model="searchName" icon="search" @on-change="handleSearch" placeholder="请输入姓名搜索..." style="width: 200px"/>
+                        <Input v-model="searchName" icon="search" @on-change="handleSearch" placeholder="请输入姓名搜索..."
+                               style="width: 200px"/>
                     </Row>
                 </Card>
                 <div class="edittable-table-height-con">
@@ -200,8 +201,13 @@
                     return '';
                 }
             },
-            getData (page, size, params) {
+            getData (page, size) {
                 var that = this;
+                var name = this.searchName;
+                var params = {};
+                if (name) {
+                    params.userName = name;
+                };
                 var data = {};
                 data.page = page;
                 data.rows = size;
@@ -315,11 +321,7 @@
                 });
             },
             handleSearch () {
-                var name = this.searchName;
-                var params = {
-                    userName: name
-                };
-                this.getData(this.current, this.pageSize, params);
+                this.getData(this.current, this.pageSize);
             }
         },
         created () {
