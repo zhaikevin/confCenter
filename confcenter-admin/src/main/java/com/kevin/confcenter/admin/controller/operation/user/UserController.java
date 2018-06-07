@@ -11,6 +11,8 @@ import com.kevin.confcenter.common.bean.vo.UserCookie;
 import com.kevin.confcenter.common.bean.vo.UserToken;
 import com.kevin.confcenter.common.exception.BusinessException;
 import com.kevin.confcenter.common.exception.SessionTimeOutException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -60,6 +64,7 @@ public class UserController extends BaseController {
         } catch (BusinessException e) {
             return ResultInfo.errorMessage(e.getMessage());
         } catch (Exception e) {
+            LOGGER.error("login failed:{}",e.getMessage(),e);
             return ResultInfo.errorMessage("登录失败");
         }
     }

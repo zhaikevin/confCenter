@@ -17,7 +17,7 @@
         <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
         <mysql.java.version>5.1.29</mysql.java.version>
         <mybatis-spring-boot.version>1.3.0</mybatis-spring-boot.version>
-        <mysql.java.version>5.1.29</mysql.java.version>
+        <mysql.java.version>5.1.15</mysql.java.version>
     </properties>
 
     <dependencies>
