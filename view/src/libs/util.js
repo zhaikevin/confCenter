@@ -21,11 +21,82 @@ util.ajax = axios.create({
     timeout: 30000,
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     transformRequest: [function (data) {
-        data = Qs.stringify(data);
-        console.log(data);
+        if (data) {
+            data = Qs.stringify(data);
+        }
         return data;
     }]
 });
+
+util.get = function (options) {
+    if (options.url.indexOf('?') > -1) {
+        options.url += '&' + new Date().getTime();
+    } else {
+        options.url += '?' + new Date().getTime();
+    }
+    if (options.params) {
+        console.log('get request param:', options.params);
+    }
+    util.ajax({
+        method: 'get',
+        url: options.url,
+        params: options.params
+    }).then(function (res) {
+        console.log('get request response:', res.data);
+        if (res.data.status === 0) {
+            if (options.success) {
+                options.success.call(this, res.data.data);
+            }
+        } else {
+            if (options.fail) {
+                options.fail.call(this, res.data.statusInfo);
+                return;
+            }
+            options.vm.$Message.error(res.data.statusInfo);
+        }
+    }).catch(function (err) {
+        if (options.error) {
+            options.fail.call(this, err);
+            return;
+        }
+        options.vm.$Message.error(err);
+    });
+};
+
+util.post = function (options) {
+    if (options.url.indexOf('?') > -1) {
+        options.url += '&' + new Date().getTime();
+    } else {
+        options.url += '?' + new Date().getTime();
+    }
+    if (options.data) {
+        console.log('post request param:', options.data);
+    }
+    util.ajax({
+        method: 'post',
+        url: options.url,
+        data: options.data
+    }).then(function (res) {
+        console.log('post request response:', res.data);
+        if (res.data.status === 0) {
+            if (options.success) {
+                options.success.call(this, res.data.data);
+            }
+        } else {
+            if (options.fail) {
+                options.fail.call(this, res.data.statusInfo);
+                return;
+            }
+            options.vm.$Message.error(res.data.statusInfo);
+        }
+    }).catch(function (err) {
+        if (options.error) {
+            options.fail.call(this, err);
+            return;
+        }
+        options.vm.$Message.error(err);
+    });
+};
 
 util.inOf = function (arr, targetArr) {
     let res = true;

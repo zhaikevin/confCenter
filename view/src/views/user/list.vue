@@ -95,24 +95,18 @@
                 if (name) {
                     params.userName = name;
                 }
-                ;
                 var data = {};
                 data.page = page;
                 data.rows = size;
                 data.params = params;
-                Util.ajax({
-                    method: 'post',
+                Util.post({
                     url: 'user/list',
-                    data: data
-                }).then(function (res) {
-                    if (res.data.status === 0) {
-                        that.tableData = res.data.data.rows;
-                        that.total = res.data.data.total;
-                    } else {
-                        alert(res.data.statusInfo);
-                    }
-                }).catch(function (err) {
-                    alert(err);
+                    data: data,
+                    success: function (data) {
+                        that.tableData = data.rows;
+                        that.total = data.total;
+                    },
+                    vm: that
                 });
             },
             changePage: function (page) {
@@ -124,65 +118,46 @@
             disable: function (val, index) {
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.ajax({
-                    method: 'post',
+                Util.post({
                     url: 'user/disable',
                     data: {
                         'id': id
-                    }
-                }).then(function (res) {
-                    if (res.data.status === 0) {
+                    },
+                    success: function (data) {
                         that.$Message.success('禁用成功');
                         that.reload();
-                    } else {
-                        that.$Message.error(res.data.statusInfo);
-                    }
-                }).catch(function (err) {
-                    alert(err);
+                    },
+                    vm: that
                 });
             },
             enable: function (val, index) {
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.ajax({
-                    method: 'post',
+                Util.post({
                     url: 'user/enable',
                     data: {
                         'id': id
-                    }
-                }).then(function (res) {
-                    if (res.data.status === 0) {
+                    },
+                    success: function (data) {
                         that.$Message.success('启用成功');
                         that.reload();
-                    } else {
-                        that.$Message.error(res.data.statusInfo);
-                    }
-                }).catch(function (err) {
-                    alert(err);
+                    },
+                    vm: that
                 });
             },
             showEditUser (val, index) {
                 this.editUserModal = true;
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.ajax({
-                    method: 'get',
+                Util.get({
                     url: 'user/detail',
                     params: {
                         'id': id
-                    }
-                }).then(function (res) {
-                    if (res.data.status === 0) {
-                        that.editUserForm.id = res.data.data.id;
-                        that.editUserForm.userName = res.data.data.userName;
-                        that.editUserForm.mail = res.data.data.mail;
-                        that.editUserForm.status = res.data.data.status;
-                        that.editUserForm.type = res.data.data.type;
-                    } else {
-                        alert(res.data.statusInfo);
-                    }
-                }).catch(function (err) {
-                    alert(err);
+                    },
+                    success: function (data) {
+                        that.editUserForm = data;
+                    },
+                    vm: that
                 });
             },
             cancelEditUser () {
@@ -192,20 +167,18 @@
                 this.saveUserLoading = true;
                 var data = JSON.parse(JSON.stringify(this.editUserForm));
                 var that = this;
-                Util.ajax({
-                    method: 'post',
+                Util.post({
                     url: 'user/modify',
-                    data: data
-                }).then(function (res) {
-                    if (res.data.status === 0) {
+                    data: data,
+                    success: function (data) {
                         that.saveUserLoading = false;
                         that.editUserModal = false;
                         that.reload();
-                    } else {
-                        alert(res.data.statusInfo);
-                    }
-                }).catch(function (err) {
-                    alert(err);
+                    },
+                    fail: function (data) {
+                        that.saveUserLoading = false;
+                    },
+                    vm: that
                 });
             },
             handleSearch () {
@@ -213,13 +186,16 @@
             },
             reload () {
                 this.getData(this.current, this.pageSize);
+            },
+            init () {
+                this.getData(this.current, this.pageSize);
+                this.columnsList = userCommon.tableColumns;
+                this.statusList = userCommon.statusList;
+                this.typeList = userCommon.typeList;
             }
         },
         created () {
-            this.getData(this.current, this.pageSize);
-            this.columnsList = userCommon.tableColumns;
-            this.statusList = userCommon.statusList;
-            this.typeList = userCommon.typeList;
+            this.init();
         }
     };
 </script>
