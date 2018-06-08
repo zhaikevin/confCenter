@@ -60,6 +60,7 @@
 <script>
     import Util from '@/libs/util';
     import canEditTable from '../common/canEditTable.vue';
+    import userCommon from './user_common.js';
 
     export default {
         components: {
@@ -68,72 +69,7 @@
         data () {
             return {
                 searchName: '',
-                columnsList: [
-                    {
-                        title: '序号',
-                        width: 80,
-                        align: 'center',
-                        type: 'index'
-                    },
-                    {
-                        title: '用户姓名',
-                        key: 'userName',
-                        align: 'center'
-                    },
-                    {
-                        title: '账户类型',
-                        key: 'type',
-                        align: 'center',
-                        render: (h, params) => {
-                            return h('div', this.formatType(params.row.type));
-                        }
-                    },
-                    {
-                        title: '状态',
-                        key: 'status',
-                        align: 'center',
-                        render: (h, params) => {
-                            return h('div', this.formatStatus(params.row.status));
-                        }
-                    },
-                    {
-                        title: '邮箱',
-                        key: 'mail',
-                        align: 'center'
-                    },
-                    {
-                        title: '新建时间',
-                        key: 'createTime',
-                        align: 'center',
-                        render: (h, params) => {
-                            return h('div', Util.formatDate(params.row.createTime));
-                        }
-                    },
-                    {
-                        title: '操作',
-                        align: 'center',
-                        key: 'handle',
-                        width: 300,
-                        handle: [
-                            {
-                                type: 'edit',
-                                functions: ['on-edit']
-                            },
-                            {
-                                type: 'delete',
-                                name: '禁用',
-                                content: '您确定要禁用该用户吗?',
-                                functions: ['on-disable']
-                            },
-                            {
-                                type: 'delete',
-                                name: '启用',
-                                content: '您确定要启用该用户吗?',
-                                buttonType: 'info',
-                                functions: ['on-enable']
-                            }]
-                    }
-                ],
+                columnsList: [],
                 tableData: [],
                 total: 0,
                 current: 1,
@@ -147,67 +83,19 @@
                     status: '',
                     type: ''
                 },
-                statusList: [
-                    {
-                        value: 0,
-                        label: '禁用'
-                    },
-                    {
-                        value: 1,
-                        label: '有效'
-                    }
-                ],
-                typeList: [
-                    {
-                        value: 1,
-                        label: '管理员账户'
-                    },
-                    {
-                        value: 2,
-                        label: '普通账户'
-                    }
-                ]
+                statusList: [],
+                typeList: []
             };
         },
         methods: {
-            search (data, argumentObj) {
-                let res = data;
-                let dataClone = data;
-                for (let argu in argumentObj) {
-                    if (argumentObj[argu].length > 0) {
-                        res = dataClone.filter(d => {
-                            return d[argu].indexOf(argumentObj[argu]) > -1;
-                        });
-                        dataClone = res;
-                    }
-                }
-                return res;
-            },
-            formatStatus (status) {
-                if (status === 0) {
-                    return '禁用';
-                } else if (status === 1) {
-                    return '有效';
-                } else {
-                    return '';
-                }
-            },
-            formatType (type) {
-                if (type === 1) {
-                    return '管理员账户';
-                } else if (type === 2) {
-                    return '普通账户';
-                } else {
-                    return '';
-                }
-            },
             getData (page, size) {
                 var that = this;
                 var name = this.searchName;
                 var params = {};
                 if (name) {
                     params.userName = name;
-                };
+                }
+                ;
                 var data = {};
                 data.page = page;
                 data.rows = size;
@@ -245,7 +133,7 @@
                 }).then(function (res) {
                     if (res.data.status === 0) {
                         that.$Message.success('禁用成功');
-                        that.getData(that.current, that.pageSize);
+                        that.reload();
                     } else {
                         that.$Message.error(res.data.statusInfo);
                     }
@@ -265,7 +153,7 @@
                 }).then(function (res) {
                     if (res.data.status === 0) {
                         that.$Message.success('启用成功');
-                        that.getData(that.current, that.pageSize);
+                        that.reload();
                     } else {
                         that.$Message.error(res.data.statusInfo);
                     }
@@ -312,7 +200,7 @@
                     if (res.data.status === 0) {
                         that.saveUserLoading = false;
                         that.editUserModal = false;
-                        that.getData(that.current, that.pageSize);
+                        that.reload();
                     } else {
                         alert(res.data.statusInfo);
                     }
@@ -321,11 +209,17 @@
                 });
             },
             handleSearch () {
+                this.reload();
+            },
+            reload () {
                 this.getData(this.current, this.pageSize);
             }
         },
         created () {
             this.getData(this.current, this.pageSize);
+            this.columnsList = userCommon.tableColumns;
+            this.statusList = userCommon.statusList;
+            this.typeList = userCommon.typeList;
         }
     };
 </script>

@@ -1,6 +1,7 @@
 import Util from '@/libs/util';
 
-export const tableColumns = [
+let userCommon = {};
+userCommon.tableColumns = [
     {
         title: '序号',
         width: 80,
@@ -17,7 +18,7 @@ export const tableColumns = [
         key: 'type',
         align: 'center',
         render: (h, params) => {
-            return h('div', this.formatType(params.row.type));
+            return h('div', userCommon.formatType(params.row.type));
         }
     },
     {
@@ -25,7 +26,7 @@ export const tableColumns = [
         key: 'status',
         align: 'center',
         render: (h, params) => {
-            return h('div', this.formatStatus(params.row.status));
+            return h('div', userCommon.formatStatus(params.row.status));
         }
     },
     {
@@ -66,3 +67,47 @@ export const tableColumns = [
             }]
     }
 ];
+
+userCommon.statusList = [
+    {
+        value: 0,
+        label: '禁用'
+    },
+    {
+        value: 1,
+        label: '有效'
+    }
+];
+
+userCommon.typeList = [
+    {
+        value: 1,
+        label: '管理员账户'
+    },
+    {
+        value: 2,
+        label: '普通账户'
+    }
+];
+
+userCommon.formatStatus = function (status) {
+    var statusList = userCommon.statusList;
+    for (var obj in statusList) {
+        if (statusList[obj].value === status) {
+            return statusList[obj].label;
+        }
+    }
+    return '';
+};
+
+userCommon.formatType = function (type) {
+    var typeList = userCommon.typeList;
+    for (var obj in typeList) {
+        if (typeList[obj].value === type) {
+            return typeList[obj].label;
+        }
+    }
+    return '';
+};
+
+export default userCommon;
