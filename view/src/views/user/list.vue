@@ -28,7 +28,7 @@
         </Row>
         <Modal v-model="editUserModal" :closable='false' :mask-closable=false :width="400">
             <h3 slot="header" style="color:#2D8CF0">修改用户</h3>
-            <Form ref="editUserForm" :model="editUserForm" :label-width="100" label-position="right">
+            <Form ref="editUserForm" :model="editUserForm" :rules="rules" :label-width="100" label-position="right">
                 <Input v-model="editUserForm.id" v-show="false"/>
                 <FormItem label="用户姓名" prop="userName">
                     <Input v-model="editUserForm.userName" style="width:200px"></Input>
@@ -84,7 +84,8 @@
                     type: ''
                 },
                 statusList: [],
-                typeList: []
+                typeList: [],
+                rules: {}
             };
         },
         methods: {
@@ -165,23 +166,28 @@
             },
             cancelEditUser () {
                 this.editUserModal = false;
+                this.$refs.editUserForm.resetFields();
             },
             saveEditUser () {
-                this.saveUserLoading = true;
-                var data = JSON.parse(JSON.stringify(this.editUserForm));
-                var that = this;
-                util.ajax({
-                    method: 'post',
-                    url: 'user/modify',
-                    data: data,
-                    success: function (data) {
-                        that.editUserModal = false;
-                        that.reload();
-                    },
-                    enable: function () {
-                        that.saveUserLoading = false;
-                    },
-                    vm: that
+                this.$refs.editUserForm.validate((valid) => {
+                    if (valid) {
+                        this.saveUserLoading = true;
+                        var data = JSON.parse(JSON.stringify(this.editUserForm));
+                        var that = this;
+                        util.ajax({
+                            method: 'post',
+                            url: 'user/modify',
+                            data: data,
+                            success: function (data) {
+                                that.editUserModal = false;
+                                that.reload();
+                            },
+                            enable: function () {
+                                that.saveUserLoading = false;
+                            },
+                            vm: that
+                        });
+                    }
                 });
             },
             handleSearch () {
@@ -195,6 +201,7 @@
                 this.columnsList = userCommon.tableColumns;
                 this.statusList = userCommon.statusList;
                 this.typeList = userCommon.typeList;
+                this.rules = userCommon.rules;
             }
         },
         created () {

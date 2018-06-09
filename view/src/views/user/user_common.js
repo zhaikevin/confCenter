@@ -90,6 +90,17 @@ userCommon.typeList = [
     }
 ];
 
+userCommon.rules = {
+    userName: [
+        {required: true, message: '用户姓名不能为空', trigger: 'blur'},
+        {type: 'string', max: 20, message: '用户姓名不能超过20个字符', trigger: 'blur'}
+    ],
+    mail: [
+        {required: true, message: '邮箱不能为空', trigger: 'blur'},
+        {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
+    ]
+}
+
 userCommon.formatStatus = function (status) {
     var statusList = userCommon.statusList;
     for (var obj in statusList) {

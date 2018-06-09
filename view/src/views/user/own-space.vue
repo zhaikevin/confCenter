@@ -10,17 +10,14 @@
                 个人信息
             </p>
             <div>
-                <Form
-                        ref="userForm"
-                        :model="userForm"
-                        :label-width="100"
-                        label-position="right"
-                >
-                    <FormItem label="用户姓名：" prop="name">
-                        <span>{{ userForm.name }}</span>
+                <Form ref="userForm" :model="userForm" :rules="infoValidate" :label-width="100" label-position="right">
+                    <FormItem label="用户姓名：">
+                        <span>{{ userForm.userName }}</span>
                     </FormItem>
-                    <FormItem label="邮箱：">
-                        <span>{{ userForm.mail }}</span>
+                    <FormItem label="用户姓名：" prop="mail">
+                        <div style="display:inline-block;width:150px;">
+                            <Input v-model="userForm.mail"></Input>
+                        </div>
                     </FormItem>
                     <FormItem label="状态：">
                         <span>{{ userForm.status }}</span>
@@ -31,6 +28,9 @@
                     <FormItem label="登录密码：">
                         <Button type="text" size="small" @click="showEditPassword">修改密码</Button>
                     </FormItem>
+                    <div>
+                        <Button type="primary" style="margin-left:75px" :loading="saveUserLoading" @click="saveEditUser">保存</Button>
+                    </div>
                 </Form>
             </div>
         </Card>
@@ -74,12 +74,13 @@
             return {
                 userForm: {
                     id: '',
-                    name: '',
+                    userName: '',
                     mail: '',
                     status: '',
                     type: ''
                 },
-                save_loading: false,
+                infoValidate: {},
+                saveUserLoading: false,
                 identifyError: '', // 验证码错误
                 editPasswordModal: false, // 修改密码模态框显示
                 savePassLoading: false,
@@ -120,7 +121,31 @@
                     }
                 });
             },
-            init () {
+            saveEditUser () {
+                this.$refs.userForm.validate((valid) => {
+                    if (valid) {
+                        this.saveUserLoading = true;
+                        var that = this;
+                        util.ajax({
+                            method: 'post',
+                            url: 'user/modify',
+                            data: {
+                                'id': that.userForm.id,
+                                'mail': that.userForm.mail
+                            },
+                            success: function (data) {
+                                that.$Message.success('修改成功');
+                                that.getInfo();
+                            },
+                            enable: function () {
+                                that.saveUserLoading = false;
+                            },
+                            vm: that
+                        });
+                    }
+                });
+            },
+            getInfo () {
                 this.userForm.id = Cookies.get('id');
                 var that = this;
                 util.ajax({
@@ -130,16 +155,20 @@
                         'id': that.userForm.id
                     },
                     success: function (data) {
-                        that.userForm.name = data.userName;
+                        that.userForm.userName = data.userName;
                         that.userForm.mail = data.mail;
                         that.userForm.status = userCommon.formatStatus(data.status);
                         that.userForm.type = userCommon.formatType(data.type);
                     },
                     vm: that
                 });
+            },
+            init () {
+                this.getInfo();
+                this.infoValidate = userCommon.rules;
             }
         },
-        mounted () {
+        created () {
             this.init();
         }
     };
