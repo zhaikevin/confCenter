@@ -1,16 +1,16 @@
-package com.kevin.confcenter.common.consts.web;
+package com.kevin.confcenter.admin.log;
 
 /**
  * @Author: kevin
- * @Description: 通用状态枚举
+ * @Description: 操作类型枚举
  * @Date: Created In 2018/4/12 18:10
  */
-public enum CommonStatusEnum {
+public enum OperationTypeEnum {
 
     /**
      * 枚举列表
      */
-    ENABLED(1, "有效"), DISABLED(0, "无效");
+    ADD(1, "新增"), MODIFY(2, "修改"), DELETE(3,"删除");
 
     /**
      * 对应数值
@@ -27,7 +27,7 @@ public enum CommonStatusEnum {
      * @param val   枚举数值
      * @param label 显示值
      */
-    CommonStatusEnum(Integer val, String label) {
+    OperationTypeEnum(Integer val, String label) {
         this.val = val;
         this.label = label;
     }
@@ -38,9 +38,9 @@ public enum CommonStatusEnum {
      * @param val 枚举数值
      * @return 对应的枚举, 可能为null.
      */
-    public static CommonStatusEnum valueOf(Integer val) {
-        CommonStatusEnum[] ems = CommonStatusEnum.values();
-        for (CommonStatusEnum em : ems) {
+    public static OperationTypeEnum valueOf(Integer val) {
+        OperationTypeEnum[] ems = OperationTypeEnum.values();
+        for (OperationTypeEnum em : ems) {
             if (em.val.equals(val)) {
                 return em;
             }
@@ -63,7 +63,7 @@ public enum CommonStatusEnum {
     }
 
     public static String getLabel(Integer val) {
-        CommonStatusEnum typeEnum = valueOf(val);
+        OperationTypeEnum typeEnum = valueOf(val);
         if (typeEnum == null) {
             return null;
         }
