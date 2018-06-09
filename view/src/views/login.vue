@@ -68,10 +68,8 @@
                             data: {
                                 'userName': this.form.userName,
                                 'password': this.form.password
-                            }
-                        }).then(function (res) {
-                            if (res.data.status === 0) {
-                                var data = res.data.data;
+                            },
+                            success: function (data) {
                                 Cookies.set('id', data.id);
                                 Cookies.set('user', data.userName);
                                 Cookies.set('token', data.token);
@@ -80,11 +78,8 @@
                                     name: 'home_index'
                                 });
                                 that.$store.commit('setAvator', '/src/images/profile_pic.jpg');
-                            } else {
-                                alert(res.data.statusInfo);
-                            }
-                        }).catch(function (err) {
-                            alert(err);
+                            },
+                            vm: that
                         });
                     }
                 });

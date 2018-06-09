@@ -16,7 +16,7 @@ const ajaxUrl = env === 'development'
         ? 'https://www.url.com'
         : 'https://debug.url.com';
 
-util.ajax = axios.create({
+const ajax = axios.create({
     baseURL: ajaxUrl,
     timeout: 30000,
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -28,57 +28,29 @@ util.ajax = axios.create({
     }]
 });
 
-util.get = function (options) {
+util.ajax = function (options) {
     if (options.url.indexOf('?') > -1) {
         options.url += '&' + new Date().getTime();
     } else {
         options.url += '?' + new Date().getTime();
     }
     if (options.params) {
-        console.log('get request param:', options.params);
-    }
-    util.ajax({
-        method: 'get',
-        url: options.url,
-        params: options.params
-    }).then(function (res) {
-        console.log('get request response:', res.data);
-        if (res.data.status === 0) {
-            if (options.success) {
-                options.success.call(this, res.data.data);
-            }
-        } else {
-            if (options.fail) {
-                options.fail.call(this, res.data.statusInfo);
-                return;
-            }
-            options.vm.$Message.error(res.data.statusInfo);
-        }
-    }).catch(function (err) {
-        if (options.error) {
-            options.fail.call(this, err);
-            return;
-        }
-        options.vm.$Message.error(err);
-    });
-};
-
-util.post = function (options) {
-    if (options.url.indexOf('?') > -1) {
-        options.url += '&' + new Date().getTime();
-    } else {
-        options.url += '?' + new Date().getTime();
+        console.log('request param:', options.params);
     }
     if (options.data) {
-        console.log('post request param:', options.data);
+        console.log('request param:', options.data);
     }
-    util.ajax({
-        method: 'post',
+    ajax({
+        method: options.method,
         url: options.url,
+        params: options.params,
         data: options.data
     }).then(function (res) {
-        console.log('post request response:', res.data);
+        console.log('request response:', res.data);
         if (res.data.status === 0) {
+            if (options.enable) {
+                options.enable.call(this);
+            }
             if (options.success) {
                 options.success.call(this, res.data.data);
             }
@@ -87,12 +59,18 @@ util.post = function (options) {
                 options.fail.call(this, res.data.statusInfo);
                 return;
             }
+            if (options.enable) {
+                options.enable.call(this);
+            }
             options.vm.$Message.error(res.data.statusInfo);
         }
     }).catch(function (err) {
         if (options.error) {
             options.fail.call(this, err);
             return;
+        }
+        if (options.enable) {
+            options.enable.call(this);
         }
         options.vm.$Message.error(err);
     });
@@ -347,6 +325,14 @@ util.formatDate = function (time, format) {
         format = 'yyyy-MM-dd hh:mm:ss';
     }
     return new Date(time).format(format);
+};
+
+util.copyData = function (target, source) {
+    for (var key in target) {
+        if (source[key]) {
+            target[key] = source[key];
+        }
+    }
 };
 
 Date.prototype.format = function (format) {

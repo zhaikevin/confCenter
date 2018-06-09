@@ -1,8 +1,5 @@
 package com.kevin.confcenter.common.bean.po.operation;
 
-import com.kevin.confcenter.common.consts.Consts;
-import com.kevin.confcenter.common.consts.web.operation.UserTypeEnum;
-
 import java.io.Serializable;
 import java.util.Date;
 

@@ -90,18 +90,18 @@
         methods: {
             getData (page, size) {
                 var that = this;
-                var name = this.searchName;
                 var params = {};
-                if (name) {
-                    params.userName = name;
+                if (this.searchName) {
+                    params.userName = this.searchName;
                 }
-                var data = {};
-                data.page = page;
-                data.rows = size;
-                data.params = params;
-                Util.post({
+                Util.ajax({
+                    method: 'post',
                     url: 'user/list',
-                    data: data,
+                    data: {
+                        'page': page,
+                        'rows': size,
+                        'params': params
+                    },
                     success: function (data) {
                         that.tableData = data.rows;
                         that.total = data.total;
@@ -118,7 +118,8 @@
             disable: function (val, index) {
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.post({
+                Util.ajax({
+                    method: 'post',
                     url: 'user/disable',
                     data: {
                         'id': id
@@ -133,7 +134,8 @@
             enable: function (val, index) {
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.post({
+                Util.ajax({
+                    method: 'post',
                     url: 'user/enable',
                     data: {
                         'id': id
@@ -149,13 +151,14 @@
                 this.editUserModal = true;
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.get({
+                Util.ajax({
+                    method: 'get',
                     url: 'user/detail',
                     params: {
                         'id': id
                     },
                     success: function (data) {
-                        that.editUserForm = data;
+                        Util.copyData(that.editUserForm, data);
                     },
                     vm: that
                 });
@@ -167,15 +170,15 @@
                 this.saveUserLoading = true;
                 var data = JSON.parse(JSON.stringify(this.editUserForm));
                 var that = this;
-                Util.post({
+                Util.ajax({
+                    method: 'post',
                     url: 'user/modify',
                     data: data,
                     success: function (data) {
-                        that.saveUserLoading = false;
                         that.editUserModal = false;
                         that.reload();
                     },
-                    fail: function (data) {
+                    enable: function () {
                         that.saveUserLoading = false;
                     },
                     vm: that
@@ -188,7 +191,7 @@
                 this.getData(this.current, this.pageSize);
             },
             init () {
-                this.getData(this.current, this.pageSize);
+                this.reload();
                 this.columnsList = userCommon.tableColumns;
                 this.statusList = userCommon.statusList;
                 this.typeList = userCommon.typeList;

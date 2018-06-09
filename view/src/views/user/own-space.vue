@@ -128,18 +128,14 @@
                     url: 'user/detail',
                     params: {
                         'id': that.userForm.id
-                    }
-                }).then(function (res) {
-                    if (res.data.status === 0) {
-                        that.userForm.name = res.data.data.userName;
-                        that.userForm.mail = res.data.data.mail;
-                        that.userForm.status = userCommon.formatStatus(res.data.data.status);
-                        that.userForm.type = userCommon.formatType(res.data.data.type);
-                    } else {
-                        alert(res.data.statusInfo);
-                    }
-                }).catch(function (err) {
-                    alert(err);
+                    },
+                    success: function (data) {
+                        that.userForm.name = data.userName;
+                        that.userForm.mail = data.mail;
+                        that.userForm.status = userCommon.formatStatus(data.status);
+                        that.userForm.type = userCommon.formatType(data.type);
+                    },
+                    vm: that
                 });
             }
         },
