@@ -56,6 +56,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void validate(String userName, String password) {
+        if (StringUtils.isEmpty(password)) {
+            throw new BusinessException("密码为空");
+        }
+        User user = userDao.getUserByName(userName);
+        if (user == null) {
+            throw new BusinessException("用户不存在，请联系管理员");
+        }
+        if (new Integer(CommonStatusEnum.DISABLED.getVal()).equals(user.getStatus())) {
+            throw new BusinessException("用户被禁用，请联系管理员");
+        }
+        password = Md5Util.getMd5Code(password);
+        if (!user.getPassword().equals(password)) {
+            throw new BusinessException("密码错误");
+        }
+    }
+
+    @Override
     public void create(User user) {
         User oldUser = userDao.getUserByName(user.getUserName());
         if (oldUser != null) {
@@ -83,7 +101,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void disable(Long id) {
         User user = userDao.getUserById(id);
-        if(Consts.DISABLE_STATUS.equals(user.getStatus())) {
+        if (Consts.DISABLE_STATUS.equals(user.getStatus())) {
             throw new BusinessException("该用户已经被禁用，不能再次被禁用");
         }
         User updateUser = new User();
@@ -95,7 +113,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void enable(Long id) {
         User user = userDao.getUserById(id);
-        if(Consts.ENABLE_STATUS.equals(user.getStatus())) {
+        if (Consts.ENABLE_STATUS.equals(user.getStatus())) {
             throw new BusinessException("该用户已经被启用，不能再次被启用");
         }
         User updateUser = new User();

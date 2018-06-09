@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @Author: kevin
  * @Description: 用户管理controller
@@ -40,7 +37,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResultInfo login(HttpServletRequest request, HttpServletResponse response, String userName, String password) {
+    public ResultInfo login(String userName, String password) {
         try {
             User user = userService.login(userName, password);
             String token = AuthHelper.createToken(new UserToken(user));
@@ -52,6 +49,12 @@ public class UserController {
             LOGGER.error("login failed:{}", e.getMessage(), e);
             return ResultInfo.errorMessage("登录失败");
         }
+    }
+
+    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    public ResultInfo validate(String userName, String password) {
+        userService.validate(userName, password);
+        return ResultInfo.success();
     }
 
     /**

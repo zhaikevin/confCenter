@@ -58,7 +58,7 @@
 </template>
 
 <script>
-    import Util from '@/libs/util';
+    import util from '@/libs/util';
     import canEditTable from '../common/canEditTable.vue';
     import userCommon from './user_common.js';
 
@@ -94,7 +94,7 @@
                 if (this.searchName) {
                     params.userName = this.searchName;
                 }
-                Util.ajax({
+                util.ajax({
                     method: 'post',
                     url: 'user/list',
                     data: {
@@ -118,7 +118,7 @@
             disable: function (val, index) {
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.ajax({
+                util.ajax({
                     method: 'post',
                     url: 'user/disable',
                     data: {
@@ -134,7 +134,7 @@
             enable: function (val, index) {
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.ajax({
+                util.ajax({
                     method: 'post',
                     url: 'user/enable',
                     data: {
@@ -151,14 +151,14 @@
                 this.editUserModal = true;
                 var that = this;
                 var id = this.tableData[index].id;
-                Util.ajax({
+                util.ajax({
                     method: 'get',
                     url: 'user/detail',
                     params: {
                         'id': id
                     },
                     success: function (data) {
-                        Util.copyData(that.editUserForm, data);
+                        util.copyData(that.editUserForm, data);
                     },
                     vm: that
                 });
@@ -170,7 +170,7 @@
                 this.saveUserLoading = true;
                 var data = JSON.parse(JSON.stringify(this.editUserForm));
                 var that = this;
-                Util.ajax({
+                util.ajax({
                     method: 'post',
                     url: 'user/modify',
                     data: data,

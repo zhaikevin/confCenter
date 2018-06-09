@@ -29,6 +29,14 @@ public interface UserService {
     User login(String userName, String password);
 
     /**
+     * 校验
+     *
+     * @param userName 用户名
+     * @param password 密码
+     */
+    void validate(String userName, String password);
+
+    /**
      * 创建用户
      *
      * @param user

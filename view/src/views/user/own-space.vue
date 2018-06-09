@@ -58,7 +58,7 @@
 
 <script>
     import Cookies from 'js-cookie';
-    import Util from '@/libs/util';
+    import util from '@/libs/util';
     import userCommon from './user_common.js';
 
     export default {
@@ -123,7 +123,7 @@
             init () {
                 this.userForm.id = Cookies.get('id');
                 var that = this;
-                Util.ajax({
+                util.ajax({
                     method: 'get',
                     url: 'user/detail',
                     params: {

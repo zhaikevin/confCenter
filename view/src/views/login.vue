@@ -38,7 +38,7 @@
 
 <script>
     import Cookies from 'js-cookie';
-    import Util from '@/libs/util';
+    import util from '@/libs/util';
 
     export default {
         data () {
@@ -62,7 +62,7 @@
                 this.$refs.loginForm.validate((valid) => {
                     if (valid) {
                         var that = this;
-                        Util.ajax({
+                        util.ajax({
                             method: 'post',
                             url: 'user/login',
                             data: {
