@@ -1,6 +1,8 @@
 package com.kevin.confcenter.admin.log;
 
 import com.kevin.confcenter.admin.log.handler.LogServiceHandler;
+import com.kevin.confcenter.admin.service.operation.OperationLogService;
+import com.kevin.confcenter.common.bean.po.operation.OperationLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class LogServiceImpl implements LogService {
     @Autowired
     private List<LogServiceHandler> handlerList;
 
+    @Autowired
+    private OperationLogService operationLogService;
+
     @Override
     public void before(ServiceContext context) {
         LogServiceHandler handler = getHandler(context);
@@ -29,8 +34,12 @@ public class LogServiceImpl implements LogService {
     @Override
     public void after(ServiceContext context) {
         LogServiceHandler handler = getHandler(context);
-        if (handler != null) {
-            handler.after(context);
+        if (handler == null) {
+            return;
+        }
+        OperationLog log = handler.after(context);
+        if (log != null) {
+            operationLogService.insert(log);
         }
     }
 

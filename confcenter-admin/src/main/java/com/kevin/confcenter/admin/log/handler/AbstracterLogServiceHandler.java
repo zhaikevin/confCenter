@@ -1,8 +1,15 @@
 package com.kevin.confcenter.admin.log.handler;
 
 import com.kevin.confcenter.admin.log.ServiceContext;
+import com.kevin.confcenter.common.bean.po.operation.OperationLog;
+import com.kevin.confcenter.common.consts.web.operation.OperationResultEnum;
+import org.apache.commons.lang.StringUtils;
 
-public abstract class AbstracterLogServiceHandler implements LogServiceHandler{
+import java.util.Date;
+
+public abstract class AbstracterLogServiceHandler implements LogServiceHandler {
+
+    private static final Integer MAX_MSG_LENGTH = 1000;
 
 
     @Override
@@ -11,7 +18,23 @@ public abstract class AbstracterLogServiceHandler implements LogServiceHandler{
     }
 
     @Override
-    public void after(ServiceContext context) {
+    public OperationLog after(ServiceContext context) {
+        return null;
+    }
 
+    protected OperationLog createLog(ServiceContext context) {
+        OperationLog log = new OperationLog();
+        log.setCreateTime(new Date());
+        String message = context.getMessage();
+        if (StringUtils.isNotEmpty(message) && message.length() > MAX_MSG_LENGTH) {
+            message = message.substring(0, MAX_MSG_LENGTH - 1);
+        }
+        log.setErrorMsg(message);
+        if(context.getResult()) {
+            log.setResult(OperationResultEnum.SUCCESS.getVal());
+        } else {
+            log.setResult(OperationResultEnum.FAIL.getVal());
+        }
+        return log;
     }
 }

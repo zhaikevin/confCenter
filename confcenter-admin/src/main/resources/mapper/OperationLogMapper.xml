@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kevin.confcenter.admin.dao.operation.OperationLogDao">
+    <resultMap id="BaseResultMap" type="com.kevin.confcenter.common.bean.po.operation.OperationLog">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="target_type" jdbcType="TINYINT" property="targetType"/>
+        <result column="target_id" jdbcType="BIGINT" property="targetId"/>
+        <result column="target_name" jdbcType="VARCHAR" property="targetName"/>
+        <result column="result" jdbcType="TINYINT" property="result"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="error_msg" jdbcType="VARCHAR" property="errorMsg"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, user_id, type, target_type, target_id, target_name, result, remark, error_msg, 
+    create_time
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from conf_center_operation_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="com.kevin.confcenter.common.bean.po.operation.OperationLog">
+    insert into conf_center_operation_log (id, user_id, `type`,
+      target_type, target_id, target_name, 
+      result, remark, error_msg, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
+      #{targetType,jdbcType=TINYINT}, #{targetId,jdbcType=BIGINT}, #{targetName,jdbcType=VARCHAR}, 
+      #{result,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{errorMsg,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+</mapper>

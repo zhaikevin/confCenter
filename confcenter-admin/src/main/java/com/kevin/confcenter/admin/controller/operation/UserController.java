@@ -1,7 +1,7 @@
-package com.kevin.confcenter.admin.controller.operation.user;
+package com.kevin.confcenter.admin.controller.operation;
 
 import com.kevin.confcenter.admin.extend.AuthHelper;
-import com.kevin.confcenter.admin.service.operation.user.UserService;
+import com.kevin.confcenter.admin.service.operation.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.PaginationResult;
 import com.kevin.confcenter.common.bean.vo.QueryParams;

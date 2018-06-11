@@ -2,15 +2,15 @@ package com.kevin.confcenter.common.consts.web.operation;
 
 /**
  * @Author: kevin
- * @Description: 操作类型枚举
+ * @Description: 操作结果枚举
  * @Date: Created In 2018/4/12 18:10
  */
-public enum OperationTypeEnum {
+public enum OperationResultEnum {
 
     /**
      * 枚举列表
      */
-    MODIFY((byte)1, "修改");
+    SUCCESS((byte) 1, "成功"), FAIL((byte) 0, "失败");
 
     /**
      * 对应数值
@@ -27,7 +27,7 @@ public enum OperationTypeEnum {
      * @param val   枚举数值
      * @param label 显示值
      */
-    OperationTypeEnum(Byte val, String label) {
+    OperationResultEnum(Byte val, String label) {
         this.val = val;
         this.label = label;
     }
@@ -38,9 +38,9 @@ public enum OperationTypeEnum {
      * @param val 枚举数值
      * @return 对应的枚举, 可能为null.
      */
-    public static OperationTypeEnum valueOf(Byte val) {
-        OperationTypeEnum[] ems = OperationTypeEnum.values();
-        for (OperationTypeEnum em : ems) {
+    public static OperationResultEnum valueOf(Byte val) {
+        OperationResultEnum[] ems = OperationResultEnum.values();
+        for (OperationResultEnum em : ems) {
             if (em.val.equals(val)) {
                 return em;
             }
@@ -63,7 +63,7 @@ public enum OperationTypeEnum {
     }
 
     public static String getLabel(Byte val) {
-        OperationTypeEnum typeEnum = valueOf(val);
+        OperationResultEnum typeEnum = valueOf(val);
         if (typeEnum == null) {
             return null;
         }

@@ -1,4 +1,4 @@
-package com.kevin.confcenter.admin.service.operation.user;
+package com.kevin.confcenter.admin.service.operation;
 
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.PaginationResult;

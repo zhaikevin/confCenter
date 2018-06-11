@@ -10,12 +10,12 @@ public enum TargetTypeEnum {
     /**
      * 枚举列表
      */
-    USER(1, "用户");
+    USER((byte) 1, "用户");
 
     /**
      * 对应数值
      */
-    private final Integer val;
+    private final Byte val;
     /**
      * 显示值
      */
@@ -27,7 +27,7 @@ public enum TargetTypeEnum {
      * @param val   枚举数值
      * @param label 显示值
      */
-    TargetTypeEnum(Integer val, String label) {
+    TargetTypeEnum(Byte val, String label) {
         this.val = val;
         this.label = label;
     }
@@ -38,7 +38,7 @@ public enum TargetTypeEnum {
      * @param val 枚举数值
      * @return 对应的枚举, 可能为null.
      */
-    public static TargetTypeEnum valueOf(Integer val) {
+    public static TargetTypeEnum valueOf(Byte val) {
         TargetTypeEnum[] ems = TargetTypeEnum.values();
         for (TargetTypeEnum em : ems) {
             if (em.val.equals(val)) {
@@ -51,7 +51,7 @@ public enum TargetTypeEnum {
     /**
      * @return the val
      */
-    public Integer getVal() {
+    public Byte getVal() {
         return val;
     }
 
@@ -62,7 +62,7 @@ public enum TargetTypeEnum {
         return label;
     }
 
-    public static String getLabel(Integer val) {
+    public static String getLabel(Byte val) {
         TargetTypeEnum typeEnum = valueOf(val);
         if (typeEnum == null) {
             return null;

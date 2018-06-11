@@ -1,9 +1,9 @@
-package com.kevin.confcenter.admin.service.operation.user.impl;
+package com.kevin.confcenter.admin.service.operation.impl;
 
 import com.kevin.confcenter.admin.dao.operation.UserDao;
 import com.kevin.confcenter.admin.log.Log;
 import com.kevin.confcenter.admin.log.handler.HandlerName;
-import com.kevin.confcenter.admin.service.operation.user.UserService;
+import com.kevin.confcenter.admin.service.operation.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.PaginationResult;
 import com.kevin.confcenter.common.bean.vo.QueryParams;
