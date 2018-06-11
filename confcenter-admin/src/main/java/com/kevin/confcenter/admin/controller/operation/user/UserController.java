@@ -8,7 +8,6 @@ import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.bean.vo.UserCookie;
 import com.kevin.confcenter.common.bean.vo.UserToken;
-import com.kevin.confcenter.common.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,18 +36,11 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResultInfo login(String userName, String password) {
-        try {
-            User user = userService.login(userName, password);
-            String token = AuthHelper.createToken(new UserToken(user));
-            UserCookie cookie = new UserCookie(user, token);
-            return ResultInfo.success(cookie);
-        } catch (BusinessException e) {
-            return ResultInfo.errorMessage(e.getMessage());
-        } catch (Exception e) {
-            LOGGER.error("login failed:{}", e.getMessage(), e);
-            return ResultInfo.errorMessage("登录失败");
-        }
+    public ResultInfo login(String userName, String password) throws Exception {
+        User user = userService.login(userName, password);
+        String token = AuthHelper.createToken(new UserToken(user));
+        UserCookie cookie = new UserCookie(user, token);
+        return ResultInfo.success(cookie);
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
@@ -77,12 +69,8 @@ public class UserController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResultInfo create(User user) {
-        try {
-            userService.create(user);
-            return ResultInfo.success();
-        } catch (BusinessException e) {
-            return ResultInfo.errorMessage(e.getMessage());
-        }
+        userService.create(user);
+        return ResultInfo.success();
     }
 
     /**
@@ -93,12 +81,8 @@ public class UserController {
      */
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
     public ResultInfo modify(User user) {
-        try {
-            userService.modify(user);
-            return ResultInfo.success();
-        } catch (BusinessException e) {
-            return ResultInfo.errorMessage(e.getMessage());
-        }
+        userService.modify(user);
+        return ResultInfo.success();
     }
 
     /**
@@ -120,12 +104,8 @@ public class UserController {
      */
     @RequestMapping(value = "/disable", method = RequestMethod.POST)
     public ResultInfo disable(Long id) {
-        try {
-            userService.disable(id);
-            return ResultInfo.success();
-        } catch (BusinessException e) {
-            return ResultInfo.errorMessage(e.getMessage());
-        }
+        userService.disable(id);
+        return ResultInfo.success();
     }
 
     /**
@@ -136,11 +116,7 @@ public class UserController {
      */
     @RequestMapping(value = "/enable", method = RequestMethod.POST)
     public ResultInfo enable(Long id) {
-        try {
-            userService.enable(id);
-            return ResultInfo.success();
-        } catch (BusinessException e) {
-            return ResultInfo.errorMessage(e.getMessage());
-        }
+        userService.enable(id);
+        return ResultInfo.success();
     }
 }
