@@ -12,13 +12,13 @@ public @interface Log {
      *
      * @return
      */
-    public OperationTypeEnum type();
+    OperationTypeEnum type();
 
     /**
      * handler
      *
      * @return
      */
-    public String handler();
+    String handler();
 
 }

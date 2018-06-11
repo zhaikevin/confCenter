@@ -1,6 +1,9 @@
 package com.kevin.confcenter.admin.service.operation.user.impl;
 
 import com.kevin.confcenter.admin.dao.operation.UserDao;
+import com.kevin.confcenter.admin.log.Log;
+import com.kevin.confcenter.admin.log.OperationTypeEnum;
+import com.kevin.confcenter.admin.log.handler.HandlerName;
 import com.kevin.confcenter.admin.service.operation.user.UserService;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.PaginationResult;
@@ -85,6 +88,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Log(type = OperationTypeEnum.MODIFY,handler = HandlerName.USER_MODIFY_NAME)
     public void modify(User user) {
         User oldUser = userDao.getUserByName(user.getUserName());
         if (oldUser != null && !oldUser.getId().equals(user.getId())) {

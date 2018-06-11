@@ -12,6 +12,8 @@ public class ServiceContext {
 
     private Boolean result;
 
+    private String message;
+
     public Object[] getParams() {
         return params;
     }
@@ -42,5 +44,13 @@ public class ServiceContext {
 
     public void setResult(Boolean result) {
         this.result = result;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

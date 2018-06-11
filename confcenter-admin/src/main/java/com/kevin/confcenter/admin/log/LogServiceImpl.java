@@ -1,6 +1,8 @@
 package com.kevin.confcenter.admin.log;
 
 import com.kevin.confcenter.admin.log.handler.LogServiceHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Service(value = "logService")
 public class LogServiceImpl implements LogService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogServiceImpl.class);
 
     @Autowired
     private List<LogServiceHandler> handlerList;
@@ -20,6 +24,7 @@ public class LogServiceImpl implements LogService {
             handler.before(context);
         }
     }
+
 
     @Override
     public void after(ServiceContext context) {
@@ -37,7 +42,7 @@ public class LogServiceImpl implements LogService {
             Log log = (Log) annotation;
             String handlerName = log.handler();
             for (LogServiceHandler handler : handlerList) {
-                if (handler.equals(handlerName)) {
+                if (handlerName.equals(handler.getName())) {
                     return handler;
                 }
             }

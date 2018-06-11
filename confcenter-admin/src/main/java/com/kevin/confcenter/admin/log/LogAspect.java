@@ -1,10 +1,14 @@
 package com.kevin.confcenter.admin.log;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +21,12 @@ import java.lang.reflect.Method;
 @Component
 public class LogAspect {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogAspect.class);
+
     @Autowired
     private LogService logService;
+
+    private ThreadLocal<ServiceContext> local = new ThreadLocal<>();
 
     /**
      * 切点
@@ -28,25 +36,44 @@ public class LogAspect {
 
     }
 
-    @Around("logAspect()")
-    public void around(ProceedingJoinPoint pjp) {
-        MethodSignature msig = ((MethodSignature) pjp.getSignature());
-        Method method = null;
+    @Before("logAspect()")
+    public void before(JoinPoint joinPoint) {
         try {
-            method = pjp.getTarget().getClass().getMethod(msig.getName(), msig.getParameterTypes());
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+            Object[] args = joinPoint.getArgs();
+            ServiceContext context = createServiceContext(method, args);
+            logService.before(context);
+            local.set(context);
+        } catch (Exception e) {
+            LOGGER.error("log aspect handle before:{}", e.getMessage(), e);
         }
-        Object[] args = pjp.getArgs();
-        ServiceContext context = createServiceContext(method, args);
-        logService.before(context);
-        try {
-            pjp.proceed();
+    }
+
+    @AfterReturning("logAspect()")
+    public void after(JoinPoint joinPoint) {
+        ServiceContext context = local.get();
+        if (context != null) {
             context.setResult(true);
-        } catch (Throwable e) {
-            context.setResult(false);
+            try {
+                logService.after(context);
+            } catch (Exception e) {
+                LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
+            }
         }
-        logService.after(context);
+    }
+
+    @AfterThrowing(value = "logAspect()", throwing = "throwable")
+    public void exception(Throwable throwable) {
+        ServiceContext context = local.get();
+        if (context != null) {
+            context.setResult(false);
+            context.setMessage(throwable.getMessage());
+            try {
+                logService.after(context);
+            } catch (Exception e) {
+                LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
+            }
+        }
     }
 
     private ServiceContext createServiceContext(Method method, Object[] args) {

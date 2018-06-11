@@ -329,7 +329,7 @@ util.formatDate = function (time, format) {
 
 util.copyData = function (target, source) {
     for (var key in target) {
-        if (source[key]) {
+        if (source.hasOwnProperty(key)) {
             target[key] = source[key];
         }
     }
