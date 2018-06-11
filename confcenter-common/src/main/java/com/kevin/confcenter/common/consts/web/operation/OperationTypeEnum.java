@@ -1,4 +1,4 @@
-package com.kevin.confcenter.admin.log;
+package com.kevin.confcenter.common.consts.web.operation;
 
 /**
  * @Author: kevin
@@ -10,7 +10,7 @@ public enum OperationTypeEnum {
     /**
      * 枚举列表
      */
-    ADD(1, "新增"), MODIFY(2, "修改"), DELETE(3,"删除");
+    MODIFY(1, "修改");
 
     /**
      * 对应数值

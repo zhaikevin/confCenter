@@ -24,3 +24,23 @@ CREATE TABLE `conf_center_user` (
   `mail` varchar(255) DEFAULT NULL COMMENT '邮箱',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARSET=utf8 COMMENT='用户表';
+
+-- ----------------------------
+-- Table structure for `conf_center_operation_log`
+-- ----------------------------
+CREATE TABLE `conf_center_operation_log` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `user_id` bigint(20) NOT NULL COMMENT '会员id',
+  `type` tinyint(4) NOT NULL COMMENT '操作类型',
+  `target_type` tinyint(4) NOT NULL COMMENT '操作对象类型',
+  `target_id` bigint(20) NOT NULL COMMENT '操作对象数据id',
+  `target_name` varchar(255) NOT NULL COMMENT '操作对象数据名称',
+  `result` tinyint(4) NOT NULL COMMENT '操作结果',
+  `remark` varchar(1000) DEFAULT NULL COMMENT '备注',
+  `error_msg` varchar(1000) DEFAULT '' COMMENT '错误信息',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
+  PRIMARY KEY (`id`),
+  KEY `INDEX_USER_ID` (`user_id`) USING BTREE,
+  KEY `INDEX_TARGET_TYPE` (`target_type`) USING BTREE,
+  KEY `INDEX_TARGET_ID` (`target_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志';

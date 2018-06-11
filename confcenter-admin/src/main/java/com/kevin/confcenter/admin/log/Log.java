@@ -8,13 +8,6 @@ import java.lang.annotation.*;
 public @interface Log {
 
     /**
-     * operation type
-     *
-     * @return
-     */
-    OperationTypeEnum type();
-
-    /**
      * handler
      *
      * @return
