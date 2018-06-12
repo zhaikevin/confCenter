@@ -1,5 +1,6 @@
 package com.kevin.confcenter.admin.log.handler;
 
+import com.kevin.confcenter.admin.extend.AuthHelper;
 import com.kevin.confcenter.admin.log.ServiceContext;
 import com.kevin.confcenter.common.bean.po.operation.OperationLog;
 import com.kevin.confcenter.common.consts.web.operation.OperationResultEnum;
@@ -24,8 +25,7 @@ public abstract class AbstracterLogServiceHandler implements LogServiceHandler {
 
     protected OperationLog createLog(ServiceContext context) {
         OperationLog log = new OperationLog();
-        //TODO:暂时写死
-        log.setUserId(2L);
+        log.setUserId(AuthHelper.getUserId());
         log.setCreateTime(new Date());
         String message = context.getMessage();
         if (StringUtils.isNotEmpty(message) && message.length() > MAX_MSG_LENGTH) {

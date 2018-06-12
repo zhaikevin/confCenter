@@ -81,6 +81,8 @@ public class UserModifyHandler extends UserHandler {
                     sb.append("，");
                 }
             }
+        } else {
+            sb.append("未修改任何信息");
         }
         return sb.toString();
     }

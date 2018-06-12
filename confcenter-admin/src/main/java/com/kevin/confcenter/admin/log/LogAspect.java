@@ -52,6 +52,7 @@ public class LogAspect {
     @AfterReturning("logAspect()")
     public void after(JoinPoint joinPoint) {
         ServiceContext context = local.get();
+        local.remove();
         if (context != null) {
             context.setResult(true);
             try {
@@ -65,6 +66,7 @@ public class LogAspect {
     @AfterThrowing(value = "logAspect()", throwing = "throwable")
     public void exception(Throwable throwable) {
         ServiceContext context = local.get();
+        local.remove();
         if (context != null) {
             context.setResult(false);
             context.setMessage(throwable.getMessage());

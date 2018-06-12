@@ -22,11 +22,12 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         Cookie[] cookies = httpServletRequest.getCookies();
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         for (Cookie cookie : cookies) {
-            map.put(cookie.getName(),cookie.getValue());
+            map.put(cookie.getName(), cookie.getValue());
         }
-        UserCookie userCookie = PropertyCopyUtil.copyPropertyFromMap(UserCookie.class,map);
+        UserCookie userCookie = PropertyCopyUtil.copyPropertyFromMap(UserCookie.class, map);
+        AuthHelper.setUserCookie(userCookie);
         return true;
     }
 
@@ -46,7 +47,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
+        AuthHelper.removeUserCookie();
     }
 
     @Override

@@ -41,8 +41,12 @@ public class AuthHelper {
         return null;
     }
 
-    public void setUserCookie(UserCookie userCookie) {
+    public static void setUserCookie(UserCookie userCookie) {
         cookieThreadLocal.set(userCookie);
+    }
+
+    public static void removeUserCookie() {
+        cookieThreadLocal.remove();
     }
 
     /**

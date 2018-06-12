@@ -1,6 +1,7 @@
 package com.kevin.confcenter.common.utils;
 
 import com.kevin.confcenter.common.bean.annotation.Property;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Field;
@@ -36,11 +37,6 @@ public class PropertyCopyUtil {
         if (fields == null || fields.length == 0) {
             return result;
         }
-        Method[] methods = clazz.getMethods();
-        Map<String, Method> methodMap = new HashMap<>();
-        for (Method method : methods) {
-            methodMap.put(method.getName(), method);
-        }
         for (Field field : fields) {
             String name = field.getName();
             Property property = field.getAnnotation(Property.class);
@@ -56,12 +52,7 @@ public class PropertyCopyUtil {
                 continue;
             }
             Object value = map.get(name);
-            String methodName = "set" + CommonUtil.upperFirst(name);
-            Method method = methodMap.get(methodName);
-            if (method == null) {
-                continue;
-            }
-            method.invoke(result, value);
+            BeanUtils.setProperty(result,field.getName(),value);
         }
         return result;
     }
