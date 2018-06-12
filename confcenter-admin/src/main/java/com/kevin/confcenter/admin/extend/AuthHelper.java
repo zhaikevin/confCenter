@@ -1,6 +1,7 @@
 package com.kevin.confcenter.admin.extend;
 
 import com.alibaba.fastjson.JSONObject;
+import com.kevin.confcenter.common.bean.vo.UserCookie;
 import com.kevin.confcenter.common.bean.vo.UserToken;
 import com.kevin.confcenter.common.consts.Consts;
 import com.kevin.confcenter.common.consts.web.operation.UserTypeEnum;
@@ -19,6 +20,29 @@ public class AuthHelper {
 
     private AuthHelper() {
 
+    }
+
+    private static ThreadLocal<UserCookie> cookieThreadLocal = new ThreadLocal<>();
+
+    /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    public static UserCookie getUserCookie() {
+        return cookieThreadLocal.get();
+    }
+
+    public static Long getUserId() {
+        UserCookie userCookie = getUserCookie();
+        if (userCookie != null) {
+            return userCookie.getId();
+        }
+        return null;
+    }
+
+    public void setUserCookie(UserCookie userCookie) {
+        cookieThreadLocal.set(userCookie);
     }
 
     /**
@@ -46,7 +70,7 @@ public class AuthHelper {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        String clearToken = DESUtil.decrypt(URLDecoder.decode(token,Consts.UTF8));
+        String clearToken = DESUtil.decrypt(URLDecoder.decode(token, Consts.UTF8));
         UserToken userToken = JSONObject.parseObject(clearToken, UserToken.class);
         return userToken;
     }

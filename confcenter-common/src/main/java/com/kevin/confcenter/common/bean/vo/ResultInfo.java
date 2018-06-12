@@ -43,16 +43,6 @@ public class ResultInfo {
     }
 
     /**
-     * session过期
-     *
-     * @return
-     */
-    public static ResultInfo sessionTimeout() {
-        ResultInfo res = new ResultInfo(Consts.RESULT_SESSION_TIMEOUT, "登录超时");
-        return res;
-    }
-
-    /**
      * 返回一个带错误信息和数据的错误结果
      *
      * @param errorMessage 错误信息

@@ -22,11 +22,6 @@ public class Consts {
     public static final int RESULT_CODE_COMMONERR = 9999;
 
     /**
-     * session过期
-     */
-    public static final int RESULT_SESSION_TIMEOUT = 1;
-
-    /**
      * 默认密码
      */
     public static final String DEFAULT_PASSWORD = "password@#09";

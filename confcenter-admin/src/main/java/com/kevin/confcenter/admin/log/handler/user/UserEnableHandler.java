@@ -1,7 +1,6 @@
 package com.kevin.confcenter.admin.log.handler.user;
 
 import com.kevin.confcenter.admin.log.ServiceContext;
-import com.kevin.confcenter.admin.log.handler.AbstracterLogServiceHandler;
 import com.kevin.confcenter.admin.log.handler.HandlerName;
 import com.kevin.confcenter.common.bean.po.operation.OperationLog;
 import org.springframework.stereotype.Service;

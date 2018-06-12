@@ -1,5 +1,6 @@
 package com.kevin.confcenter.common.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +21,24 @@ public class CommonUtil {
 
     /**
      * 是否空map
+     *
      * @param map
      * @return
      */
     public static Boolean isEmptyMap(Map map) {
         return (map == null || map.isEmpty());
+    }
+
+    /**
+     * 首字母大写
+     *
+     * @param str
+     * @return
+     */
+    public static String upperFirst(String str) {
+        if (StringUtils.isEmpty(str)) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

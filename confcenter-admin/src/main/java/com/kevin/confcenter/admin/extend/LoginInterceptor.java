@@ -1,30 +1,33 @@
 package com.kevin.confcenter.admin.extend;
 
-import com.alibaba.fastjson.JSON;
-import com.kevin.confcenter.common.bean.vo.ResultInfo;
-import com.kevin.confcenter.common.exception.SessionTimeOutException;
+import com.kevin.confcenter.common.bean.vo.UserCookie;
+import com.kevin.confcenter.common.utils.PropertyCopyUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: kevin
  * @Description: 统一登录拦截器，拦截数据请求
  * @Date: Created In 2018/4/17 15:34
  */
-public class ActionLoginInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        try {
-            return true;
-        } catch (SessionTimeOutException e) {
-            ResultInfo result = ResultInfo.sessionTimeout();
-            this.printToJson(JSON.toJSONString(result), httpServletResponse);
-            return false;
+        Cookie[] cookies = httpServletRequest.getCookies();
+        Map<String,Object> map = new HashMap<>();
+        for (Cookie cookie : cookies) {
+            map.put(cookie.getName(),cookie.getValue());
         }
+        UserCookie userCookie = PropertyCopyUtil.copyPropertyFromMap(UserCookie.class,map);
+        return true;
     }
 
     private void printToJson(String json, HttpServletResponse response) {

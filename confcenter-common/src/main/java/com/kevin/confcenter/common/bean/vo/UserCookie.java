@@ -1,5 +1,6 @@
 package com.kevin.confcenter.common.bean.vo;
 
+import com.kevin.confcenter.common.bean.annotation.Property;
 import com.kevin.confcenter.common.bean.po.operation.User;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
  */
 public class UserCookie implements Serializable {
 
+    @Property(isCopy = false)
     private static final long serialVersionUID = 3556005517481449381L;
 
     /**
@@ -21,6 +23,7 @@ public class UserCookie implements Serializable {
     /**
      * 用户名
      */
+    @Property(name = "user")
     private String userName;
 
     /**
@@ -37,7 +40,7 @@ public class UserCookie implements Serializable {
 
     }
 
-    public UserCookie(User user,String token) {
+    public UserCookie(User user, String token) {
         id = user.getId();
         userName = user.getUserName();
         type = user.getType();
