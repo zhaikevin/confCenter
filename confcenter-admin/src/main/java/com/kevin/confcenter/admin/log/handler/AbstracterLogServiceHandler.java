@@ -24,6 +24,8 @@ public abstract class AbstracterLogServiceHandler implements LogServiceHandler {
 
     protected OperationLog createLog(ServiceContext context) {
         OperationLog log = new OperationLog();
+        //TODO:暂时写死
+        log.setUserId(2L);
         log.setCreateTime(new Date());
         String message = context.getMessage();
         if (StringUtils.isNotEmpty(message) && message.length() > MAX_MSG_LENGTH) {

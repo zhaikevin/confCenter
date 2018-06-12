@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Log(handler = HandlerName.USER_DISABLE_NAME)
     public void disable(Long id) {
         User user = userDao.getUserById(id);
         if (CommonStatusEnum.DISABLED.getVal().equals(user.getStatus())) {
@@ -114,6 +115,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Log(handler = HandlerName.USER_ENABLE_NAME)
     public void enable(Long id) {
         User user = userDao.getUserById(id);
         if (CommonStatusEnum.ENABLED.getVal().equals(user.getStatus())) {

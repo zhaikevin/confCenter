@@ -8,4 +8,8 @@ package com.kevin.confcenter.admin.log.handler;
 public class HandlerName {
 
     public static final String USER_MODIFY_NAME = "userModifyHandler";
+
+    public static final String USER_ENABLE_NAME = "userEnableHandler";
+
+    public static final String USER_DISABLE_NAME = "userDisableHandler";
 }
