@@ -56,6 +56,16 @@ public class ResultInfo {
     }
 
     /**
+     * 认证不通过
+     *
+     * @return
+     */
+    public static ResultInfo authErrorMessage(String errorMessage) {
+        ResultInfo res = new ResultInfo(Consts.RESULT_CODE_AURHERR, errorMessage);
+        return res;
+    }
+
+    /**
      * 返回一个带状态和信息的结果
      *
      * @param status 状态

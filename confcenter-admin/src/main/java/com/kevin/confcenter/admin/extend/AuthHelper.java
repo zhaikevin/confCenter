@@ -1,6 +1,8 @@
 package com.kevin.confcenter.admin.extend;
 
 import com.alibaba.fastjson.JSONObject;
+import com.kevin.confcenter.admin.service.operation.UserService;
+import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.bean.vo.UserCookie;
 import com.kevin.confcenter.common.bean.vo.UserToken;
 import com.kevin.confcenter.common.consts.Consts;
@@ -24,6 +26,8 @@ public class AuthHelper {
 
     private static ThreadLocal<UserCookie> cookieThreadLocal = new ThreadLocal<>();
 
+    private static UserService userService = SpringUtil.getBean(UserService.class);
+
     /**
      * 获取用户信息
      *
@@ -41,12 +45,47 @@ public class AuthHelper {
         return null;
     }
 
+    public static String getToken() {
+        UserCookie userCookie = getUserCookie();
+        if (userCookie != null) {
+            return userCookie.getToken();
+        }
+        return null;
+    }
+
     public static void setUserCookie(UserCookie userCookie) {
         cookieThreadLocal.set(userCookie);
     }
 
     public static void removeUserCookie() {
         cookieThreadLocal.remove();
+    }
+
+    /**
+     * 登录校验
+     *
+     * @return
+     */
+    public static Boolean loginCheck() throws Exception {
+        Long id = getUserId();
+        String token = getToken();
+        if (id == null || StringUtils.isEmpty(token)) {
+            return false;
+        }
+        User user = userService.detail(id);
+        if (user == null) {
+            return false;
+        }
+        UserToken userToken = parseToken(token);
+        if (userToken == null) {
+            return false;
+        }
+        if (!user.getUserName().equals(userToken.getUserName())
+                || !user.getType().equals(userToken.getType())
+                || !user.getStatus().equals(userToken.getStatus())) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -61,7 +100,7 @@ public class AuthHelper {
         }
         String clearToken = JSONObject.toJSONString(userToken);
         String token = DESUtil.encrypt(clearToken);
-        return URLEncoder.encode(token, Consts.UTF8);
+        return token;
     }
 
     /**
@@ -74,7 +113,7 @@ public class AuthHelper {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        String clearToken = DESUtil.decrypt(URLDecoder.decode(token, Consts.UTF8));
+        String clearToken = DESUtil.decrypt(token);
         UserToken userToken = JSONObject.parseObject(clearToken, UserToken.class);
         return userToken;
     }

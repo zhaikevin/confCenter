@@ -1,6 +1,7 @@
 package com.kevin.confcenter.admin.extend;
 
 import com.kevin.confcenter.common.bean.vo.UserCookie;
+import com.kevin.confcenter.common.exception.AuthFailedException;
 import com.kevin.confcenter.common.utils.PropertyCopyUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +29,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         UserCookie userCookie = PropertyCopyUtil.copyPropertyFromMap(UserCookie.class, map);
         AuthHelper.setUserCookie(userCookie);
-        return true;
+        if (AuthHelper.loginCheck()) {
+            return true;
+        }
+        throw new AuthFailedException("校验失败，请重新登录");
     }
 
     private void printToJson(String json, HttpServletResponse response) {

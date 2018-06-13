@@ -11,14 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @Date: Created In 2018/4/17 15:47
  */
 @Configuration
-public class LoginInterceptorConfig extends WebMvcConfigurerAdapter {
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/user/login");
-        super.addInterceptors(registry);
-    }
+public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -28,4 +21,12 @@ public class LoginInterceptorConfig extends WebMvcConfigurerAdapter {
                 .allowedMethods("GET", "POST", "DELETE", "PUT")
                 .maxAge(3600);
     }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/user/login");
+        super.addInterceptors(registry);
+    }
+
 }

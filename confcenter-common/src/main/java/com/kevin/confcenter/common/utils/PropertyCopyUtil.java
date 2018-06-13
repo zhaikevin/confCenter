@@ -6,8 +6,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,6 +21,7 @@ public class PropertyCopyUtil {
 
     /**
      * 将map对象copy属性到类中
+     *
      * @param clazz
      * @param map
      * @param <T>
@@ -52,7 +51,7 @@ public class PropertyCopyUtil {
                 continue;
             }
             Object value = map.get(name);
-            BeanUtils.setProperty(result,field.getName(),value);
+            BeanUtils.setProperty(result, field.getName(), value);
         }
         return result;
     }

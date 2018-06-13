@@ -16,7 +16,7 @@ const ajaxUrl = env === 'development'
         ? 'https://www.url.com'
         : 'https://debug.url.com';
 
-axios.defaults.withCredentials=true;
+axios.defaults.withCredentials = true;
 const ajax = axios.create({
     baseURL: ajaxUrl,
     timeout: 30000,
@@ -55,6 +55,13 @@ util.ajax = function (options) {
             if (options.success) {
                 options.success.call(this, res.data.data);
             }
+        } else if (res.data.status === -1) {
+            options.vm.$Message.error(res.data.statusInfo);
+            options.vm.$store.commit('logout', this);
+            options.vm.$store.commit('clearOpenedSubmenu');
+            options.vm.$router.push({
+                name: 'login'
+            });
         } else {
             if (options.fail) {
                 options.fail.call(this, res.data.statusInfo);
@@ -66,6 +73,7 @@ util.ajax = function (options) {
             options.vm.$Message.error(res.data.statusInfo);
         }
     }).catch(function (err) {
+        console.log('request error:', err);
         if (options.error) {
             options.fail.call(this, err);
             return;

@@ -36,6 +36,11 @@ public class UserToken implements Serializable {
     private Integer type;
 
     /**
+     * 状态，1：有效，0：无效
+     */
+    private Integer status;
+
+    /**
      * 时间戳
      */
     private String date;
@@ -51,6 +56,7 @@ public class UserToken implements Serializable {
         id = user.getId();
         userName = user.getUserName();
         type = user.getType();
+        status = user.getStatus();
     }
 
     public String getUuidStr() {
@@ -93,6 +99,14 @@ public class UserToken implements Serializable {
         this.type = type;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "UserToken{" +
@@ -100,6 +114,7 @@ public class UserToken implements Serializable {
                 ", id=" + id +
                 ", userName='" + userName + '\'' +
                 ", type=" + type +
+                ", status=" + status +
                 ", date='" + date + '\'' +
                 '}';
     }
