@@ -1,7 +1,8 @@
 package com.kevin.confcenter.admin.extend;
 
+import com.alibaba.fastjson.JSONObject;
+import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.bean.vo.UserCookie;
-import com.kevin.confcenter.common.exception.AuthFailedException;
 import com.kevin.confcenter.common.utils.PropertyCopyUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,14 +30,24 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         UserCookie userCookie = PropertyCopyUtil.copyPropertyFromMap(UserCookie.class, map);
         AuthHelper.setUserCookie(userCookie);
+
         if (AuthHelper.loginCheck()) {
             return true;
         }
-        throw new AuthFailedException("校验失败，请重新登录");
+        String result = JSONObject.toJSONString(ResultInfo.authErrorMessage("校验失败，请重新登录"));
+        printToJson(result, httpServletResponse, httpServletRequest);
+        return false;
     }
 
-    private void printToJson(String json, HttpServletResponse response) {
+    private void printToJson(String json, HttpServletResponse response, HttpServletRequest request) {
         try {
+            //这里必须得加上，不然前端跨域报错。
+            //request.getHeader("origin"),这里不能是*，不然也报错。。
+            response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+            response.setHeader("Access-Control-Max-Age", "3600");
+            response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/json");
             response.setDateHeader("Expires", 0);

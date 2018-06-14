@@ -21,9 +21,7 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(value = Exception.class)
     @ResponseBody
     public ResultInfo handler(Exception e) {
-        if (e instanceof AuthFailedException) {
-            return ResultInfo.authErrorMessage(e.getMessage());
-        } else if (e instanceof ConfCenterException) {
+        if (e instanceof ConfCenterException) {
             return ResultInfo.errorMessage(e.getMessage());
         } else {
             LOGGER.error("exception:{}", e.getMessage(), e);
