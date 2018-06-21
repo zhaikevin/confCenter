@@ -5,8 +5,6 @@ import com.kevin.confcenter.admin.log.handler.HandlerName;
 import com.kevin.confcenter.common.bean.po.operation.OperationLog;
 import com.kevin.confcenter.common.bean.po.operation.User;
 import com.kevin.confcenter.common.consts.web.CommonStatusEnum;
-import com.kevin.confcenter.common.consts.web.operation.OperationTypeEnum;
-import com.kevin.confcenter.common.consts.web.operation.TargetTypeEnum;
 import com.kevin.confcenter.common.consts.web.operation.UserTypeEnum;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,7 @@ import java.util.List;
  * @Date: Created In 2018/6/11 11:06
  */
 @Service(value = "userModifyHandler")
-public class UserModifyHandler extends UserHandler {
+public class UserModifyHandler extends AbstracterUserHandler {
 
     @Override
     public String getName() {

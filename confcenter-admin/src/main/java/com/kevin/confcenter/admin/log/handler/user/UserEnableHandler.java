@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * @Date: Created In 2018/6/12 11:14
  */
 @Service(value = "userEnableHandler")
-public class UserEnableHandler extends UserHandler {
+public class UserEnableHandler extends AbstracterUserHandler {
 
     @Override
     public String getName() {

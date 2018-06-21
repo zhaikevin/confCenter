@@ -1,7 +1,6 @@
 package com.kevin.confcenter.admin.extend;
 
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
-import com.kevin.confcenter.common.exception.AuthFailedException;
 import com.kevin.confcenter.common.exception.ConfCenterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

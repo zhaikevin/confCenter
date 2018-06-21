@@ -14,7 +14,7 @@ import com.kevin.confcenter.common.consts.web.operation.TargetTypeEnum;
  * @Description:
  * @Date: Created In 2018/6/12 10:39
  */
-public abstract class UserHandler extends AbstracterLogServiceHandler {
+public abstract class AbstracterUserHandler extends AbstracterLogServiceHandler {
 
     private UserService userService = SpringUtil.getBean("userService", UserService.class);
 

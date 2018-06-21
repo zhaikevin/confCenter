@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Log(handler = HandlerName.USER_CREATE_NAME)
     public void create(User user) {
         User oldUser = userDao.getUserByName(user.getUserName());
         if (oldUser != null) {

@@ -12,4 +12,6 @@ public class HandlerName {
     public static final String USER_ENABLE_NAME = "userEnableHandler";
 
     public static final String USER_DISABLE_NAME = "userDisableHandler";
+
+    public static final String USER_CREATE_NAME = "userCreateHandler";
 }
