@@ -5,6 +5,7 @@ import java.lang.management.ManagementFactory;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -27,33 +28,39 @@ public final class CommonThreadPool {
 
     private static final long EXECUTETIME = 10000L;
 
-    public CommonThreadPool(Integer poolSize) {
-        ThreadPoolParameterVO threadPoolParameterVO = new ThreadPoolParameterVO();
-        threadPoolParameterVO.setCorePoolSize(poolSize);
-        execute = getThreadPool(new ThreadPoolParameterVO());
+    public CommonThreadPool(ThreadPoolParameterVO parameterVO) {
+        execute = getThreadPool(parameterVO);
     }
 
     /**
      * 异步执行公共执行方法
      */
-    public Future<Object> execute(AsynchronousHandler command) {
+    public <T> ThreadPoolAdaptor<T> execute(AsynchronousHandler<T> command) {
 
-        ThreadPoolAdaptor handler = new ThreadPoolAdaptor(command, EXECUTETIME);
-        Future<Object> future = execute.submit(handler);
-
-        return future;
+        ThreadPoolAdaptor<T> handler = new ThreadPoolAdaptor(command);
+        Future<T> future = execute.submit(handler);
+        handler.setFuture(future);
+        return handler;
 
     }
 
     /**
-     * 关闭线程池
+     * 关闭线程池，执行中的任务可以继续执行
      */
-    public boolean shutDown() {
+    public boolean shutdown() {
         if (execute != null) {
             execute.shutdown();
             return true;
         }
         return false;
+    }
+
+    /**
+     * 关闭线程池
+     * @return 未执行完的任务列表
+     */
+    public List<Runnable> stop() {
+        return execute.shutdownNow();
     }
 
     /**
@@ -64,12 +71,13 @@ public final class CommonThreadPool {
         int maximumPoolSize = vo.getMaximumPoolSize();
         int initialCapacity = vo.getInitialCapacity();
         long keepAliveTime = vo.getKeepAliveTime();
+        TimeUnit unit = vo.getUnit();
         String threadName = vo.getThreadName();
 
         //增加构造队列容量参数
         TaskQueue taskqueue = new TaskQueue(initialCapacity, vo.isDiscard());
         ThreadPoolExecutorExtend executeNew = new ThreadPoolExecutorExtend(corePoolSize, maximumPoolSize,
-                keepAliveTime, TimeUnit.SECONDS,
+                keepAliveTime, unit,
                 taskqueue, new TaskThreadFactory(threadName), new ThreadPlloRejectedExecutionHandler(vo.isDiscard()));
 
         taskqueue.setParent(executeNew);

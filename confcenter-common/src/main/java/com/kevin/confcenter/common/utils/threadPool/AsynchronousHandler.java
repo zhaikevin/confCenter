@@ -2,7 +2,7 @@ package com.kevin.confcenter.common.utils.threadPool;
 
 import java.util.concurrent.Callable;
 
-public interface AsynchronousHandler extends Callable<Object> {
+public interface AsynchronousHandler<T> extends Callable<T> {
 
     /**
      * 执行完成后，调用的方法

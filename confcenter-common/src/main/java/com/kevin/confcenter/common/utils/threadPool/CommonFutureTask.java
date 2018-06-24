@@ -8,7 +8,7 @@ import java.util.concurrent.FutureTask;
  */
 public class CommonFutureTask<V> extends FutureTask<V> {
 
-    private AsynchronousHandler handler;
+    private AsynchronousHandler<V> handler;
 
     public CommonFutureTask(Callable<V> callable) {
         super(callable);
@@ -24,7 +24,7 @@ public class CommonFutureTask<V> extends FutureTask<V> {
 
     }
 
-    public AsynchronousHandler getHandler() {
+    public AsynchronousHandler<V> getHandler() {
         return handler;
     }
 

@@ -1,42 +1,41 @@
 package com.kevin.confcenter.common.utils.threadPool;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
  * 实现任务的代理
  */
-public class ThreadPoolAdaptor implements AsynchronousHandler {
+public class ThreadPoolAdaptor<T> implements AsynchronousHandler<T> {
 
-    private AsynchronousHandler handler;
+    private AsynchronousHandler<T> handler;
 
-    private Future<Object> future;
+    private Future<T> future;
 
-    private final long executeTime;
+    private T result;
 
-    public ThreadPoolAdaptor(AsynchronousHandler handler, long time) {
+    public ThreadPoolAdaptor(AsynchronousHandler<T> handler) {
         this.handler = handler;
-        executeTime = System.currentTimeMillis() + time;
     }
 
     public AsynchronousHandler getHandler() {
         return handler;
     }
 
-    Future<Object> getFuture() {
+    public Future<T> getFuture() {
         return future;
     }
 
-    void setFuture(Future<Object> future) {
+    public void setFuture(Future<T> future) {
         this.future = future;
     }
 
-    long getExecuteTime() {
-
-        return executeTime;
+    public T getResult() throws ExecutionException, InterruptedException {
+        return future.get();
     }
 
     @Override
-    public Object call() throws Exception {
+    public T call() throws Exception {
         return handler.call();
     }
 

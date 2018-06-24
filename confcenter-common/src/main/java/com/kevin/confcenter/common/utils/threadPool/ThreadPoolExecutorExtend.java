@@ -1,4 +1,3 @@
-
 package com.kevin.confcenter.common.utils.threadPool;
 
 import java.util.concurrent.BlockingQueue;
@@ -24,7 +23,6 @@ public class ThreadPoolExecutorExtend extends ThreadPoolExecutor {
                              RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
                 threadFactory, handler);
-
     }
 
     /**
@@ -33,7 +31,6 @@ public class ThreadPoolExecutorExtend extends ThreadPoolExecutor {
      * @return
      */
     public AtomicInteger getSubmittedTasksCount() {
-
         return this.submittedTasksCount;
     }
 
@@ -49,38 +46,31 @@ public class ThreadPoolExecutorExtend extends ThreadPoolExecutor {
     protected void afterExecute(Runnable r, Throwable t) {
         //执行完毕减1
         submittedTasksCount.decrementAndGet();
-
         if (r instanceof CommonFutureTask) {
             AsynchronousHandler handler = ((CommonFutureTask) r).getHandler();
             if (handler == null) {
                 throw new NullPointerException("线程池参数对象为null!");
             }
-
             handler.executeAfter(t);
-
         }
     }
 
     @SuppressWarnings("rawtypes")
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
-
         if (r instanceof CommonFutureTask) {
             AsynchronousHandler handler = ((CommonFutureTask) r).getHandler();
             if (handler == null) {
                 throw new NullPointerException("线程池参数对象为null!");
             }
-
             handler.executeBefore(t);
-
         }
     }
 
     @Override
     protected <T> RunnableFuture<T> newTaskFor(
             Callable<T> callable) {
-        // TODO Auto-generated method stub
-        return new CommonFutureTask<T>(callable);
+        return new CommonFutureTask<>(callable);
     }
 
     @Override
