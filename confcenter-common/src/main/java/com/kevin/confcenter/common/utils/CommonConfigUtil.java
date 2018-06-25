@@ -34,6 +34,20 @@ public class CommonConfigUtil {
     }
 
     /**
+     * 检查配置文件是否存在
+     *
+     * @param configFilename
+     * @return
+     */
+    public static Boolean isExist(String configFilename) {
+        URL url = CommonConfigUtil.class.getClassLoader().getResource(configFilename);
+        if (url == null) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 获取指定配置文件对应的configuration对象
      *
      * @param configFilename 配置文件
@@ -61,7 +75,7 @@ public class CommonConfigUtil {
             configMap.put(configFilename, config);
             return config;
         } catch (ConfigurationException e) {
-            LOGGER.warn("get config with " + configFilename + " failed.", e);
+            LOGGER.error("get config with " + configFilename + " failed.", e);
             return null;
         }
     }

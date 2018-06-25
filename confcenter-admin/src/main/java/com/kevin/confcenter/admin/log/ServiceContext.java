@@ -1,6 +1,7 @@
 package com.kevin.confcenter.admin.log;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 
 public class ServiceContext {
 
@@ -13,6 +14,8 @@ public class ServiceContext {
     private Boolean result;
 
     private String message;
+
+    private Long userId;
 
     public Object[] getParams() {
         return params;
@@ -52,5 +55,25 @@ public class ServiceContext {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceContext{" +
+                "params=" + Arrays.toString(params) +
+                ", annotations=" + Arrays.toString(annotations) +
+                ", attribute=" + attribute +
+                ", result=" + result +
+                ", message='" + message + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 }

@@ -1,6 +1,5 @@
 package com.kevin.confcenter.admin.log.handler;
 
-import com.kevin.confcenter.admin.extend.AuthHelper;
 import com.kevin.confcenter.admin.log.ServiceContext;
 import com.kevin.confcenter.common.bean.po.operation.OperationLog;
 import com.kevin.confcenter.common.consts.web.operation.OperationResultEnum;
@@ -25,14 +24,14 @@ public abstract class AbstracterLogServiceHandler implements LogServiceHandler {
 
     protected OperationLog createLog(ServiceContext context) {
         OperationLog log = new OperationLog();
-        log.setUserId(AuthHelper.getUserId());
+        log.setUserId(context.getUserId());
         log.setCreateTime(new Date());
         String message = context.getMessage();
         if (StringUtils.isNotEmpty(message) && message.length() > MAX_MSG_LENGTH) {
             message = message.substring(0, MAX_MSG_LENGTH - 1);
         }
         log.setErrorMsg(message);
-        if(context.getResult()) {
+        if (context.getResult()) {
             log.setResult(OperationResultEnum.SUCCESS.getVal());
         } else {
             log.setResult(OperationResultEnum.FAIL.getVal());

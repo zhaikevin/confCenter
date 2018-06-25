@@ -1,5 +1,9 @@
 package com.kevin.confcenter.admin.log;
 
+import com.kevin.confcenter.admin.extend.AuthHelper;
+import com.kevin.confcenter.common.utils.threadPool.AsynchronousHandler;
+import com.kevin.confcenter.common.utils.threadPool.CommonThreadPool;
+import com.kevin.confcenter.common.utils.threadPool.ThreadPoolAdaptor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -26,7 +30,12 @@ public class LogAspect {
     @Autowired
     private LogService logService;
 
-    private ThreadLocal<ServiceContext> local = new ThreadLocal<>();
+    private ThreadLocal<ThreadPoolAdaptor<ServiceContext>> local = new ThreadLocal<>();
+
+    /**
+     * 线程池
+     */
+    private CommonThreadPool threadPool = CommonThreadPool.getInstance();
 
     /**
      * 切点
@@ -39,11 +48,8 @@ public class LogAspect {
     @Before("logAspect()")
     public void before(JoinPoint joinPoint) {
         try {
-            Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-            Object[] args = joinPoint.getArgs();
-            ServiceContext context = createServiceContext(method, args);
-            logService.before(context);
-            local.set(context);
+            ThreadPoolAdaptor adaptor = asynBefore(joinPoint);
+            local.set(adaptor);
         } catch (Exception e) {
             LOGGER.error("log aspect handle before:{}", e.getMessage(), e);
         }
@@ -51,37 +57,99 @@ public class LogAspect {
 
     @AfterReturning("logAspect()")
     public void after(JoinPoint joinPoint) {
-        ServiceContext context = local.get();
+        ThreadPoolAdaptor<ServiceContext> adaptor = local.get();
         local.remove();
-        if (context != null) {
-            context.setResult(true);
-            try {
-                logService.after(context);
-            } catch (Exception e) {
-                LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
-            }
+        if (adaptor == null) {
+            return;
+        }
+        try {
+            asynAfter(adaptor, null);
+        } catch (Exception e) {
+            LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
         }
     }
 
     @AfterThrowing(value = "logAspect()", throwing = "throwable")
     public void exception(Throwable throwable) {
-        ServiceContext context = local.get();
+        ThreadPoolAdaptor<ServiceContext> adaptor = local.get();
         local.remove();
-        if (context != null) {
-            context.setResult(false);
-            context.setMessage(throwable.getMessage());
-            try {
-                logService.after(context);
-            } catch (Exception e) {
-                LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
-            }
+        if (adaptor == null) {
+            return;
+        }
+        try {
+            asynAfter(adaptor, throwable);
+        } catch (Exception e) {
+            LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
         }
     }
 
-    private ServiceContext createServiceContext(Method method, Object[] args) {
+    /**
+     * 异步执行
+     *
+     * @param joinPoint
+     * @return
+     */
+    private ThreadPoolAdaptor asynBefore(JoinPoint joinPoint) {
+        Long userId =AuthHelper.getUserId();
+        ThreadPoolAdaptor adaptor = threadPool.execute(new AsynchronousHandler<ServiceContext>() {
+            @Override
+            public void executeAfter(Throwable t) {
+
+            }
+
+            @Override
+            public void executeBefore(Thread t) {
+
+            }
+
+            @Override
+            public ServiceContext call() throws Exception {
+                Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+                Object[] args = joinPoint.getArgs();
+                ServiceContext context = createServiceContext(method, args,userId);
+                logService.before(context);
+                return context;
+            }
+        });
+        return adaptor;
+    }
+
+    private void asynAfter(ThreadPoolAdaptor<ServiceContext> adaptor, Throwable throwable) {
+        threadPool.execute(new AsynchronousHandler<Object>() {
+            @Override
+            public Object call() throws Exception {
+                try {
+                    ServiceContext context = adaptor.getResult();
+                    if (throwable == null) {
+                        context.setResult(true);
+                    } else {
+                        context.setResult(false);
+                        context.setMessage(throwable.getMessage());
+                        logService.after(context);
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
+                }
+                return null;
+            }
+
+            @Override
+            public void executeAfter(Throwable t) {
+
+            }
+
+            @Override
+            public void executeBefore(Thread t) {
+
+            }
+        });
+    }
+
+    private ServiceContext createServiceContext(Method method, Object[] args,Long userId) {
         ServiceContext context = new ServiceContext();
         context.setParams(args);
         context.setAnnotations(method.getAnnotations());
+        context.setUserId(userId);
         return context;
     }
 }

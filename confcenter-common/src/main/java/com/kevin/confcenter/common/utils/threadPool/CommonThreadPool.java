@@ -86,10 +86,10 @@ public final class CommonThreadPool {
      */
     private static ThreadPoolParameterVO initConfig() {
         ThreadPoolParameterVO vo = new ThreadPoolParameterVO();
-        Configuration configuration = CommonConfigUtil.getConfig(FILE_NAME);
-        if (configuration == null) {
+        if(!CommonConfigUtil.isExist(FILE_NAME)) {
             return vo;
         }
+        Configuration configuration = CommonConfigUtil.getConfig(FILE_NAME);
         vo.setCorePoolSize(configuration.getInteger("corePoolSize", vo.getCorePoolSize()));
         vo.setMaximumPoolSize(configuration.getInteger("maximumPoolSize", vo.getMaximumPoolSize()));
         vo.setKeepAliveTime(configuration.getLong("keepAliveTime", vo.getKeepAliveTime()));
