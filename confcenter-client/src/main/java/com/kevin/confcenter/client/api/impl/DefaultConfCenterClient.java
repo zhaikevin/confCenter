@@ -80,7 +80,7 @@ public class DefaultConfCenterClient implements ConfCenterClient {
         this.clientConf = clientConf;
         this.listeners = listeners;
         this.initZk();
-        threadPool = new CommonThreadPool(clientConf.getPoolSize());
+        threadPool = CommonThreadPool.getInstance();
         dataStorageManager = new DataStorageManager(this.listeners, threadPool, confCenterZookeeper);
         clientZookeeper = new ClientZookeeper(zkClient, confCenterZookeeper, dataStorageManager);
         clientZookeeper.loadDataFromZk();

@@ -61,7 +61,7 @@ public class CommonConfigUtil {
             configMap.put(configFilename, config);
             return config;
         } catch (ConfigurationException e) {
-            LOGGER.error("get config with " + configFilename + " failed.", e);
+            LOGGER.warn("get config with " + configFilename + " failed.", e);
             return null;
         }
     }

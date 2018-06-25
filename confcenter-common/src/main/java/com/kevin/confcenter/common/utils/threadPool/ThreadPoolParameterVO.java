@@ -46,10 +46,8 @@ public class ThreadPoolParameterVO {
      */
     private String threadName = "conf-center-threadPool-";
 
-    private boolean isDiscard = false;
-
-    public static int getCorePoolSize() {
-        return CORE_POOL_SIZE;
+    public int getCorePoolSize() {
+        return corePoolSize;
     }
 
     public void setCorePoolSize(int corePoolSize) {
@@ -64,20 +62,16 @@ public class ThreadPoolParameterVO {
         this.maximumPoolSize = maximumPoolSize;
     }
 
-    public static int getMaximumPoolsize() {
-        return MAXIMUM_POOLSIZE;
-    }
-
-    public static int getInitialCapacity() {
-        return INITIAL_CAPACITY;
+    public int getInitialCapacity() {
+        return initialCapacity;
     }
 
     public void setInitialCapacity(int initialCapacity) {
         this.initialCapacity = initialCapacity;
     }
 
-    public static int getKeepAliveTime() {
-        return KEEP_ALIVE_TIME;
+    public long getKeepAliveTime() {
+        return keepAliveTime;
     }
 
     public void setKeepAliveTime(long keepAliveTime) {
@@ -100,14 +94,6 @@ public class ThreadPoolParameterVO {
         this.threadName = threadName;
     }
 
-    public boolean isDiscard() {
-        return isDiscard;
-    }
-
-    public void setDiscard(boolean discard) {
-        isDiscard = discard;
-    }
-
     @Override
     public String toString() {
         return "ThreadPoolParameterVO{" +
@@ -117,7 +103,6 @@ public class ThreadPoolParameterVO {
                 ", keepAliveTime=" + keepAliveTime +
                 ", unit=" + unit +
                 ", threadName='" + threadName + '\'' +
-                ", isDiscard=" + isDiscard +
                 '}';
     }
 }
