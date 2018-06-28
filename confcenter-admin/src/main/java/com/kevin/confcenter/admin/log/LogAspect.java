@@ -90,7 +90,7 @@ public class LogAspect {
      * @return
      */
     private ThreadPoolAdaptor asynBefore(JoinPoint joinPoint) {
-        Long userId =AuthHelper.getUserId();
+        Long userId = AuthHelper.getUserId();
         ThreadPoolAdaptor adaptor = threadPool.execute(new AsynchronousHandler<ServiceContext>() {
             @Override
             public void executeAfter(Throwable t) {
@@ -106,7 +106,7 @@ public class LogAspect {
             public ServiceContext call() throws Exception {
                 Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
                 Object[] args = joinPoint.getArgs();
-                ServiceContext context = createServiceContext(method, args,userId);
+                ServiceContext context = createServiceContext(method, args, userId);
                 logService.before(context);
                 return context;
             }
@@ -145,7 +145,7 @@ public class LogAspect {
         });
     }
 
-    private ServiceContext createServiceContext(Method method, Object[] args,Long userId) {
+    private ServiceContext createServiceContext(Method method, Object[] args, Long userId) {
         ServiceContext context = new ServiceContext();
         context.setParams(args);
         context.setAnnotations(method.getAnnotations());
