@@ -99,7 +99,7 @@ userCommon.rules = {
         {required: true, message: '邮箱不能为空', trigger: 'blur'},
         {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
     ]
-}
+};
 
 userCommon.formatStatus = function (status) {
     var statusList = userCommon.statusList;
