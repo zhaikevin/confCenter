@@ -179,8 +179,15 @@ export default {
         handleSearch() {
             this.reload(1,this.pageSize);
         },
-        reload(current,pageSize) {
-            this.getData(current, pageSize);
+        reload(current,pageSize,changeSize) {
+            if(changeSize) {
+                this.pageSize = pageSize;
+            }
+            if(pageSize) {
+                this.getData(current, pageSize);
+            } else {
+                this.getData(current,this.pageSize);
+            }
         },
         init() {
             this.reload(1,this.pageSize);

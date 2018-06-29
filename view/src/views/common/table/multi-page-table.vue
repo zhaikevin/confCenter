@@ -121,18 +121,13 @@ export default {
         },
         handleBackdata(data) {
             let clonedData = JSON.parse(JSON.stringify(data));
-            clonedData.forEach(item => {
-                delete item.editting;
-                delete item.edittingCell;
-                delete item.saving;
-            });
             return clonedData;
         },
         changePage: function(page) {
-            this.$emit("reload", page, this.pageSize);
+            this.$emit("reload", page);
         },
         changeSize: function(size) {
-            this.$emit("reload", this.current, size);
+            this.$emit("reload", this.current, size,true);
         }
     },
     watch: {
