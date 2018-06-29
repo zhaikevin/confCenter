@@ -24,7 +24,7 @@
             <Form ref="editUserForm" :model="editUserForm" :rules="rules" :label-width="100" label-position="right">
                 <Input v-model="editUserForm.id" v-show="false" />
                 <FormItem label="用户姓名" prop="userName">
-                    <Input v-model="editUserForm.userName" style="width:200px"></Input>
+                    <Input v-model="editUserForm.userName" style="width:200px" disabled="disabled"></Input>
                 </FormItem>
                 <FormItem label="邮箱" prop="mail">
                     <Input v-model="editUserForm.mail" style="width:200px"></Input>

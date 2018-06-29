@@ -14,7 +14,7 @@
                     <FormItem label="用户姓名：">
                         <span>{{ userForm.userName }}</span>
                     </FormItem>
-                    <FormItem label="用户姓名：" prop="mail">
+                    <FormItem label="邮箱：" prop="mail">
                         <div style="display:inline-block;width:150px;">
                             <Input v-model="userForm.mail"></Input>
                         </div>
