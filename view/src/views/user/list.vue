@@ -13,9 +13,9 @@
                 </Row>
             </Card>
             <div class="edittable-table-height-con">
-                <can-edit-table refs="userTable" v-model="tableData" :columns-list="columnsList" :total="total" 
-                :page-size="pageSize" @reload="reload"
-                @on-disable="disable" @on-enable="enable" @on-edit="showEditUser"></can-edit-table>
+                <multi-page-table refs="userTable" v-model="tableData" :columns-list="columnsList" :total="total" 
+                :page-size="pageSize" @reload="reload" :page-size-opts="[1,2]"
+                @on-disable="disable" @on-enable="enable" @on-edit="showEditUser"></multi-page-table>
             </div>
             </Col>
         </Row>
@@ -52,12 +52,12 @@
 
 <script>
 import util from '@/libs/util';
-import canEditTable from '../common/canEditTable.vue';
+import multiPageTable from '../common/table/multi-page-table.vue';
 import userCommon from './user_common.js';
 
 export default {
     components: {
-        canEditTable
+        multiPageTable
     },
     data() {
         return {
@@ -113,7 +113,7 @@ export default {
                 },
                 success: function(data) {
                     that.$Message.success('禁用成功');
-                    that.reload(1,this.pageSize);
+                    that.reload(1,that.pageSize);
                 },
                 vm: that
             });
@@ -129,7 +129,7 @@ export default {
                 },
                 success: function(data) {
                     that.$Message.success('启用成功');
-                    that.reload(1,this.pageSize);
+                    that.reload(1,that.pageSize);
                 },
                 vm: that
             });
@@ -166,7 +166,7 @@ export default {
                         data: data,
                         success: function(data) {
                             that.editUserModal = false;
-                            that.reload(1,this.pageSize);
+                            that.reload(1,that.pageSize);
                         },
                         enable: function() {
                             that.saveUserLoading = false;

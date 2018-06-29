@@ -1,14 +1,15 @@
 <style lang="less">
-@import './editable-table.less';
+@import './multi-page-table.less';
 </style>
 
 <template>
     <div>
         <Table :ref="refs" :columns="columnsList" :data="thisTableData" highlight-row border disabled-hover></Table>
-        <div style="margin: 10px;overflow: hidden">
+        <div v-if="multiPage" style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="total" :current="current" :page-size="pageSize" :page-size-opts="pageSizeOpts"
-                show-elevator show-total show-sizer @on-change="changePage" @on-page-size-change="changeSize"></Page>
+                <Page :total="total" :current="current" :page-size="pageSize" :page-size-opts="pageSizeOpts" 
+                show-elevator show-total show-sizer
+                @on-change="changePage" @on-page-size-change="changeSize"></Page>
             </div>
         </div>
     </div>
@@ -128,13 +129,20 @@ const cellInput = (vm, h, param, item) => {
     });
 };
 export default {
-    name: 'canEditTable',
+    name: 'multiPageTable',
     props: {
         refs: String,
         columnsList: Array,
         total: Number,
         pageSize: Number,
-        pageSizeOpts:Array,
+        pageSizeOpts: {
+            type: Array,
+            default: () => [10, 20, 30, 40, 50]
+        },
+        multiPage:{
+            type: Boolean,
+            default:true
+        },
         value: Array,
         url: String,
         editIncell: {
