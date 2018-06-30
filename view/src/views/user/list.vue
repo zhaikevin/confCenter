@@ -13,9 +13,13 @@
                 </Row>
             </Card>
             <div class="edittable-table-height-con">
-                <multi-page-table refs="userTable" v-model="tableData" :columns-list="columnsList" :total="total" 
-                :page-size="pageSize" @reload="reload" :page-size-opts="[1,2]"
-                @on-disable="disable" @on-enable="enable" @on-edit="showEditUser"></multi-page-table>
+                <multi-page-table refs="userTable" v-model="tableData" :columns-list="columnsList" @on-disable="disable" @on-enable="enable" @on-edit="showEditUser"></multi-page-table>
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;">
+                        <Page :total="total" :current="current" :page-size="pageSize" :page-size-opts="[1,2]" show-elevator 
+                        show-total show-sizer @on-change="changePage" @on-page-size-change="changeSize"></Page>
+                    </div>
+                </div>
             </div>
             </Col>
         </Row>
@@ -66,6 +70,7 @@ export default {
             tableData: [],
             total: 0,
             pageSize: 1,
+            current: 1,
             editUserModal: false,
             saveUserLoading: false,
             editUserForm: {
@@ -113,7 +118,7 @@ export default {
                 },
                 success: function(data) {
                     that.$Message.success('禁用成功');
-                    that.reload(1,that.pageSize);
+                    that.reload(1, that.pageSize);
                 },
                 vm: that
             });
@@ -129,7 +134,7 @@ export default {
                 },
                 success: function(data) {
                     that.$Message.success('启用成功');
-                    that.reload(1,that.pageSize);
+                    that.reload(1, that.pageSize);
                 },
                 vm: that
             });
@@ -166,7 +171,7 @@ export default {
                         data: data,
                         success: function(data) {
                             that.editUserModal = false;
-                            that.reload(1,that.pageSize);
+                            that.reload(1, that.pageSize);
                         },
                         enable: function() {
                             that.saveUserLoading = false;
@@ -177,20 +182,21 @@ export default {
             });
         },
         handleSearch() {
-            this.reload(1,this.pageSize);
+            this.reload(1, this.pageSize);
         },
-        reload(current,pageSize,changeSize) {
-            if(changeSize) {
-                this.pageSize = pageSize;
-            }
-            if(pageSize) {
-                this.getData(current, pageSize);
-            } else {
-                this.getData(current,this.pageSize);
-            }
+        reload(current, pageSize) {
+            this.current = current;
+            this.pageSize = pageSize;
+            this.getData(current, pageSize);
+        },
+        changePage: function(page) {
+            this.reload(page, this.pageSize);
+        },
+        changeSize: function(size) {
+            this.reload(this.page, size);
         },
         init() {
-            this.reload(1,this.pageSize);
+            this.reload(this.current, this.pageSize);
             this.columnsList = userCommon.tableColumns;
             this.statusList = userCommon.statusList;
             this.typeList = userCommon.typeList;

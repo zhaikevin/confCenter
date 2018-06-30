@@ -5,13 +5,6 @@
 <template>
     <div>
         <Table :ref="refs" :columns="columnsList" :data="thisTableData" highlight-row border disabled-hover></Table>
-        <div v-if="multiPage" style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="total" :current="current" :page-size="pageSize" :page-size-opts="pageSizeOpts" 
-                show-elevator show-total show-sizer
-                @on-change="changePage" @on-page-size-change="changeSize"></Page>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -68,31 +61,12 @@ export default {
     props: {
         refs: String,
         columnsList: Array,
-        total: Number,
-        pageSize: Number,
-        pageSizeOpts: {
-            type: Array,
-            default: () => [10, 20, 30, 40, 50]
-        },
-        multiPage:{
-            type: Boolean,
-            default:true
-        },
-        value: Array,
-        editIncell: {
-            type: Boolean,
-            default: false
-        },
-        hoverShow: {
-            type: Boolean,
-            default: false
-        }
+        value: Array
     },
     data() {
         return {
             columns: [],
-            thisTableData: [],
-            current: 1
+            thisTableData: []
         };
     },
     created() {
@@ -122,12 +96,6 @@ export default {
         handleBackdata(data) {
             let clonedData = JSON.parse(JSON.stringify(data));
             return clonedData;
-        },
-        changePage: function(page) {
-            this.$emit("reload", page);
-        },
-        changeSize: function(size) {
-            this.$emit("reload", this.current, size,true);
         }
     },
     watch: {
