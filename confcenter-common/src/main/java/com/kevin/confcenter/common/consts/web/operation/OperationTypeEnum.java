@@ -10,7 +10,7 @@ public enum OperationTypeEnum {
     /**
      * 枚举列表
      */
-    MODIFY((byte)1, "修改");
+    MODIFY((byte) 1, "修改"), INSERT((byte) 2, "新建");
 
     /**
      * 对应数值

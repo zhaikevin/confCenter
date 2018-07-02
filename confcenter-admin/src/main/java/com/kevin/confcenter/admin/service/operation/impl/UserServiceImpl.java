@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Log(handler = HandlerName.USER_CREATE_NAME)
-    public void create(User user) {
+    public Long create(User user) {
         User oldUser = userDao.getUserByName(user.getUserName());
         if (oldUser != null) {
             throw new BusinessException("用户名不能重复");
@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
         String password = Md5Util.getMd5Code(Consts.DEFAULT_PASSWORD);
         user.setPassword(password);
         userDao.insert(user);
+        return user.getId();
     }
 
     @Override

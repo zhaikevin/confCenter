@@ -1,7 +1,7 @@
-package com.kevin.confcenter.admin.service.Project.impl;
+package com.kevin.confcenter.admin.service.project.impl;
 
 import com.kevin.confcenter.admin.dao.project.ProjectDao;
-import com.kevin.confcenter.admin.service.Project.ProjectService;
+import com.kevin.confcenter.admin.service.project.ProjectService;
 import com.kevin.confcenter.common.bean.po.project.Project;
 import com.kevin.confcenter.common.bean.vo.PaginationResult;
 import com.kevin.confcenter.common.bean.vo.QueryParams;

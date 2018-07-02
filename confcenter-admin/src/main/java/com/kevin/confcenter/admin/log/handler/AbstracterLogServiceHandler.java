@@ -31,7 +31,7 @@ public abstract class AbstracterLogServiceHandler implements LogServiceHandler {
             message = message.substring(0, MAX_MSG_LENGTH - 1);
         }
         log.setErrorMsg(message);
-        if (context.getResult()) {
+        if (context.getSuccess()) {
             log.setResult(OperationResultEnum.SUCCESS.getVal());
         } else {
             log.setResult(OperationResultEnum.FAIL.getVal());

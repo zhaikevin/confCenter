@@ -1,6 +1,6 @@
 package com.kevin.confcenter.admin.controller.project;
 
-import com.kevin.confcenter.admin.service.Project.ProjectService;
+import com.kevin.confcenter.admin.service.project.ProjectService;
 import com.kevin.confcenter.common.bean.vo.QueryParams;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import org.springframework.beans.factory.annotation.Autowired;

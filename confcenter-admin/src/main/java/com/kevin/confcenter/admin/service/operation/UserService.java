@@ -41,7 +41,7 @@ public interface UserService {
      *
      * @param user
      */
-    void create(User user);
+    Long create(User user);
 
     /**
      * 修改用户

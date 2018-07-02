@@ -1,4 +1,4 @@
-package com.kevin.confcenter.admin.service.Project;
+package com.kevin.confcenter.admin.service.project;
 
 import com.kevin.confcenter.common.bean.po.project.Project;
 import com.kevin.confcenter.common.bean.vo.PaginationResult;

@@ -55,15 +55,15 @@ public class LogAspect {
         }
     }
 
-    @AfterReturning("logAspect()")
-    public void after(JoinPoint joinPoint) {
+    @AfterReturning(value = "logAspect()", returning = "result")
+    public void after(JoinPoint joinPoint, Object result) {
         ThreadPoolAdaptor<ServiceContext> adaptor = local.get();
         local.remove();
         if (adaptor == null) {
             return;
         }
         try {
-            asynAfter(adaptor, null);
+            asynAfter(adaptor, true, result);
         } catch (Exception e) {
             LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
         }
@@ -77,7 +77,7 @@ public class LogAspect {
             return;
         }
         try {
-            asynAfter(adaptor, throwable);
+            asynAfter(adaptor, false, throwable.getMessage());
         } catch (Exception e) {
             LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
         }
@@ -114,19 +114,19 @@ public class LogAspect {
         return adaptor;
     }
 
-    private void asynAfter(ThreadPoolAdaptor<ServiceContext> adaptor, Throwable throwable) {
+    private void asynAfter(ThreadPoolAdaptor<ServiceContext> adaptor, boolean isSuccess, Object result) {
         threadPool.execute(new AsynchronousHandler<Object>() {
             @Override
             public Object call() throws Exception {
                 try {
                     ServiceContext context = adaptor.getResult();
-                    if (throwable == null) {
-                        context.setResult(true);
+                    context.setSuccess(isSuccess);
+                    if (isSuccess) {
+                        context.setResult(result);
                     } else {
-                        context.setResult(false);
-                        context.setMessage(throwable.getMessage());
-                        logService.after(context);
+                        context.setMessage(String.valueOf(result));
                     }
+                    logService.after(context);
                 } catch (Exception e) {
                     LOGGER.error("log aspect handle after:{}", e.getMessage(), e);
                 }

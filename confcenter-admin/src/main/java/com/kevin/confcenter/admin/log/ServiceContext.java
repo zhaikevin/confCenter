@@ -5,17 +5,40 @@ import java.util.Arrays;
 
 public class ServiceContext {
 
+    /**
+     * 参数，aop方法的入参
+     */
     private Object[] params;
 
+    /**
+     * 注解，aop方法上的注解
+     */
     private Annotation[] annotations;
 
+    /**
+     * 属性，before方法获取的
+     */
     private Object attribute;
 
-    private Boolean result;
+    /**
+     * 结果是否成功
+     */
+    private Boolean isSuccess;
 
+    /**
+     * 异常信息
+     */
     private String message;
 
+    /**
+     * 操作人id
+     */
     private Long userId;
+
+    /**
+     * 执行结果
+     */
+    private Object result;
 
     public Object[] getParams() {
         return params;
@@ -41,12 +64,12 @@ public class ServiceContext {
         this.attribute = attribute;
     }
 
-    public Boolean getResult() {
-        return result;
+    public Boolean getSuccess() {
+        return isSuccess;
     }
 
-    public void setResult(Boolean result) {
-        this.result = result;
+    public void setSuccess(Boolean success) {
+        isSuccess = success;
     }
 
     public String getMessage() {
@@ -65,15 +88,24 @@ public class ServiceContext {
         this.userId = userId;
     }
 
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
+    }
+
     @Override
     public String toString() {
         return "ServiceContext{" +
                 "params=" + Arrays.toString(params) +
                 ", annotations=" + Arrays.toString(annotations) +
                 ", attribute=" + attribute +
-                ", result=" + result +
+                ", isSuccess=" + isSuccess +
                 ", message='" + message + '\'' +
                 ", userId=" + userId +
+                ", result=" + result +
                 '}';
     }
 }
