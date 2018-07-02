@@ -85,12 +85,12 @@
 </template>
 
 <script>
-import multiPageTable from '../common/table/multi-page-table.vue';
+import commonTable from '../common/table/common-table.vue';
 import tableData from './components/table_data.js';
 export default {
     name: 'editable-table',
     components: {
-        multiPageTable
+        commonTable
     },
     data () {
         return {

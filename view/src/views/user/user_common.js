@@ -98,6 +98,12 @@ userCommon.rules = {
     mail: [
         {required: true, message: '邮箱不能为空', trigger: 'blur'},
         {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
+    ],
+    status: [
+        {required: true, message: '状态不能为空', pattern: /.+/, trigger: 'change'}
+    ],
+    type: [
+        {required: true, message: '账户类型不能为空', pattern: /.+/, trigger: 'change'}
     ]
 };
 

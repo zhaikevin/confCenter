@@ -1,5 +1,5 @@
 <style lang="less">
-@import './multi-page-table.less';
+@import './common-table.less';
 </style>
 
 <template>
@@ -57,7 +57,7 @@ const deleteButton = (vm, h, currentRow, index, item) => {
         ]);
 };
 export default {
-    name: 'multiPageTable',
+    name: 'commonTable',
     props: {
         refs: String,
         columnsList: Array,
@@ -68,9 +68,6 @@ export default {
             columns: [],
             thisTableData: []
         };
-    },
-    created() {
-        this.init();
     },
     methods: {
         init() {
@@ -97,6 +94,9 @@ export default {
             let clonedData = JSON.parse(JSON.stringify(data));
             return clonedData;
         }
+    },
+    created() {
+        this.init();
     },
     watch: {
         value(data) {

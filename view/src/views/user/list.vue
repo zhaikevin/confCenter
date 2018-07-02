@@ -9,59 +9,37 @@
             <Col>
             <Card>
                 <Row>
+                    <Button @click="showAddUserModal = true" type="primary">新建</Button>
                     <Input v-model="searchName" icon="search" @on-change="handleSearch" placeholder="请输入姓名搜索..." style="width: 200px" />
                 </Row>
             </Card>
             <div class="edittable-table-height-con">
-                <multi-page-table refs="userTable" v-model="tableData" :columns-list="columnsList" @on-disable="disable" @on-enable="enable" @on-edit="showEditUser"></multi-page-table>
+                <common-table refs="userTable" v-model="tableData" :columns-list="columnsList" @on-disable="disable" @on-enable="enable" @on-edit="showEditUser"></common-table>
                 <div style="margin: 10px;overflow: hidden">
                     <div style="float: right;">
-                        <Page :total="total" :current="current" :page-size="pageSize" :page-size-opts="[1,2]" show-elevator 
-                        show-total show-sizer @on-change="changePage" @on-page-size-change="changeSize"></Page>
+                        <Page :total="total" :current="current" :page-size="pageSize" show-elevator show-total show-sizer @on-change="changePage" @on-page-size-change="changeSize"></Page>
                     </div>
                 </div>
             </div>
             </Col>
         </Row>
-        <Modal v-model="editUserModal" :closable='false' :mask-closable=false :width="400">
-            <h3 slot="header" style="color:#2D8CF0">修改用户</h3>
-            <Form ref="editUserForm" :model="editUserForm" :rules="rules" :label-width="100" label-position="right">
-                <Input v-model="editUserForm.id" v-show="false" />
-                <FormItem label="用户姓名" prop="userName">
-                    <Input v-model="editUserForm.userName" style="width:200px" disabled="disabled"></Input>
-                </FormItem>
-                <FormItem label="邮箱" prop="mail">
-                    <Input v-model="editUserForm.mail" style="width:200px"></Input>
-                </FormItem>
-                <FormItem label="状态" prop="status">
-                    <Select v-model="editUserForm.status" style="width:200px">
-                        <Option v-for="item in statusList" :value="item.value" :key="item.value">{{ item.label }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="账户类型" prop="type">
-                    <Select v-model="editUserForm.type" style="width:200px">
-                        <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}
-                        </Option>
-                    </Select>
-                </FormItem>
-            </Form>
-            <div slot="footer">
-                <Button type="text" @click="cancelEditUser">取消</Button>
-                <Button type="primary" :loading="saveUserLoading" @click="saveEditUser">保存</Button>
-            </div>
-        </Modal>
+        <add-user-modal refs="addUser" v-model="showAddUserModal" @close="closeAddUserModal"></add-user-modal>
+        <edit-user-modal refs="editUser" v-model="showEditUserModal" @close="closeEditUserModal" :edit-id="editId"></edit-user-modal>
     </div>
 </template>
 
 <script>
 import util from '@/libs/util';
-import multiPageTable from '../common/table/multi-page-table.vue';
+import commonTable from '../common/table/common-table.vue';
 import userCommon from './user_common.js';
+import addUserModal from './add.vue';
+import editUserModal from './edit.vue'
 
 export default {
     components: {
-        multiPageTable
+        commonTable,
+        addUserModal,
+        editUserModal
     },
     data() {
         return {
@@ -69,20 +47,11 @@ export default {
             columnsList: [],
             tableData: [],
             total: 0,
-            pageSize: 1,
+            pageSize: 10,
             current: 1,
-            editUserModal: false,
-            saveUserLoading: false,
-            editUserForm: {
-                id: '',
-                userName: '',
-                mail: '',
-                status: '',
-                type: ''
-            },
-            statusList: [],
-            typeList: [],
-            rules: {}
+            showAddUserModal: false,
+            showEditUserModal:false,
+            editId: 0
         };
     },
     methods: {
@@ -139,47 +108,21 @@ export default {
                 vm: that
             });
         },
+        closeAddUserModal(isReload) {
+            this.showAddUserModal = false;
+            if(isReload) {
+                this.reload(1,this.pageSize);
+            }
+        },
+        closeEditUserModal(isReload) {
+            this.showEditUserModal = false;
+            if(isReload) {
+                this.reload(1,this.pageSize);
+            }
+        },
         showEditUser(val, index) {
-            this.editUserModal = true;
-            var that = this;
-            var id = this.tableData[index].id;
-            util.ajax({
-                method: 'get',
-                url: 'user/detail',
-                params: {
-                    'id': id
-                },
-                success: function(data) {
-                    util.copyData(that.editUserForm, data);
-                },
-                vm: that
-            });
-        },
-        cancelEditUser() {
-            this.editUserModal = false;
-            this.$refs.editUserForm.resetFields();
-        },
-        saveEditUser() {
-            this.$refs.editUserForm.validate((valid) => {
-                if (valid) {
-                    this.saveUserLoading = true;
-                    var data = JSON.parse(JSON.stringify(this.editUserForm));
-                    var that = this;
-                    util.ajax({
-                        method: 'post',
-                        url: 'user/modify',
-                        data: data,
-                        success: function(data) {
-                            that.editUserModal = false;
-                            that.reload(1, that.pageSize);
-                        },
-                        enable: function() {
-                            that.saveUserLoading = false;
-                        },
-                        vm: that
-                    });
-                }
-            });
+            this.showEditUserModal = true;
+            this.editId = this.tableData[index].id;
         },
         handleSearch() {
             this.reload(1, this.pageSize);
@@ -198,9 +141,6 @@ export default {
         init() {
             this.reload(this.current, this.pageSize);
             this.columnsList = userCommon.tableColumns;
-            this.statusList = userCommon.statusList;
-            this.typeList = userCommon.typeList;
-            this.rules = userCommon.rules;
         }
     },
     created() {
