@@ -1,5 +1,5 @@
 
-package com.kevin.confcenter.common.utils.threadPool;
+package com.kevin.confcenter.common.bean.vo;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class ThreadPoolParameterVO {
 
-    private static final int CORE_POOL_SIZE = 5;
+    private static final int CORE_POOL_SIZE = 200;
 
-    private static final int MAXIMUM_POOLSIZE = 200;
+    private static final int MAXIMUM_POOLSIZE = 500;
 
-    private static final int INITIAL_CAPACITY = 1000000;
+    private static final int INITIAL_CAPACITY = 10000;
 
     private static final int KEEP_ALIVE_TIME = 120;
 

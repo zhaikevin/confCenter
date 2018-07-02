@@ -12,7 +12,6 @@ import com.kevin.confcenter.common.bean.vo.ZKConfig;
 import com.kevin.confcenter.common.exception.IllegalParameterException;
 import com.kevin.confcenter.common.utils.ConfCenterZookeeper;
 import com.kevin.confcenter.common.utils.ZkUtil;
-import com.kevin.confcenter.common.utils.threadPool.CommonThreadPool;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -66,11 +65,6 @@ public class DefaultConfCenterClient implements ConfCenterClient {
     private List<DataChangeListener> listeners;
 
     /**
-     * 线程池
-     */
-    private CommonThreadPool threadPool;
-
-    /**
      * 调度
      */
     private ScheduleManager scheduleManager;
@@ -80,8 +74,7 @@ public class DefaultConfCenterClient implements ConfCenterClient {
         this.clientConf = clientConf;
         this.listeners = listeners;
         this.initZk();
-        threadPool = CommonThreadPool.getInstance();
-        dataStorageManager = new DataStorageManager(this.listeners, threadPool, confCenterZookeeper);
+        dataStorageManager = new DataStorageManager(this.listeners, confCenterZookeeper);
         clientZookeeper = new ClientZookeeper(zkClient, confCenterZookeeper, dataStorageManager);
         clientZookeeper.loadDataFromZk();
         HeartBeatManager heartBeatManager = new HeartBeatManager(this.clientConf);

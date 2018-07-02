@@ -6,8 +6,6 @@ import com.kevin.confcenter.common.consts.DataChangeTypeEnum;
 import com.kevin.confcenter.common.consts.SourceTypeEnum;
 import com.kevin.confcenter.common.utils.CommonUtil;
 import com.kevin.confcenter.common.utils.ConfCenterZookeeper;
-import com.kevin.confcenter.common.utils.threadPool.AsynchronousHandler;
-import com.kevin.confcenter.common.utils.threadPool.CommonThreadPool;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -44,19 +42,13 @@ public class DataStorageManager {
     private List<DataChangeListener> listeners;
 
     /**
-     * 线程池
-     */
-    private CommonThreadPool threadPool;
-
-    /**
      * conf zk
      */
     private ConfCenterZookeeper confCenterZookeeper;
 
-    public DataStorageManager(List<DataChangeListener> listeners, CommonThreadPool threadPool,
+    public DataStorageManager(List<DataChangeListener> listeners,
                               ConfCenterZookeeper confCenterZookeeper) {
         this.listeners = listeners;
-        this.threadPool = threadPool;
         this.confCenterZookeeper = confCenterZookeeper;
     }
 
@@ -256,32 +248,12 @@ public class DataStorageManager {
      * @param dataSource
      * @param changeType
      */
-    private void executeCallBack(final ClientDataSource dataSource, final DataChangeTypeEnum changeType) {
+    private void executeCallBack(ClientDataSource dataSource, DataChangeTypeEnum changeType) {
         if (CollectionUtils.isEmpty(listeners)) {
             return;
         }
         for (final DataChangeListener listener : listeners) {
-            threadPool.execute(new AsynchronousHandler() {
-                @Override
-                public void executeAfter(Throwable t) {
-
-                }
-
-                @Override
-                public void executeBefore(Thread t) {
-
-                }
-
-                @Override
-                public Object call() throws Exception {
-                    try {
-                        listener.execute(dataSource, changeType);
-                    } catch (Exception e) {
-                        LOGGER.error("execute call back failed:{}", e.getMessage(), e);
-                    }
-                    return null;
-                }
-            });
+            ExecuteCallBackTask.execute(listener, dataSource, changeType);
         }
     }
 
