@@ -221,13 +221,14 @@ export const appRouter = [
         ]
     },
     {
-        path: '/user',
+        path: '/operation',
         icon: 'ios-grid-view',
         name: 'operation',
         title: '运维管理',
         component: Main,
         children: [
-            { path: 'index', title: '用户管理', name: 'user-table', icon: 'arrow-move', component: () => import('@/views/user/list.vue') }
+            { path: 'user', title: '用户管理', name: 'user-table', icon: 'arrow-move', component: () => import('@/views/user/list.vue') },
+            { path: 'menu', title: '菜单管理', name: 'menu-manager', icon: 'arrow-move', component: () => import('@/views/menu/menu.vue') }
         ]
     }
 ];

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kevin.confcenter.admin.dao.operation.MenuDao">
+    <resultMap id="BaseResultMap" type="com.kevin.confcenter.common.bean.po.operation.Menu">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="component" jdbcType="VARCHAR" property="component"/>
+        <result column="access" jdbcType="TINYINT" property="access"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <resultMap id="ChildMenuMap" type="com.kevin.confcenter.common.bean.vo.web.operation.MenuChildNode">
+        <result property="id" column="child_id"/>
+        <result property="title" column="child_title"/>
+        <result property="parentId" column="parent_id"/>
+    </resultMap>
+
+    <resultMap id="MenuMap" type="com.kevin.confcenter.common.bean.vo.web.operation.MenuParentNode">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <association property="children" resultMap="ChildMenuMap"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, parent_id, path, icon, name, title, component, access, remark
+    </sql>
+
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from conf_center_menu
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="getMenuList" resultMap="MenuMap">
+        select m1.id id, m1.title title,m2.id child_id,m2.title child_title,m2.parent_id
+        from conf_center_menu m1
+        left join conf_center_menu m2 on m1.id = m2.parent_id
+        where m1.parent_id is null and m1.status = 1 and m2.status = 1
+    </select>
+
+    <insert id="insert" parameterType="com.kevin.confcenter.common.bean.po.operation.Menu"
+            useGeneratedKeys="true" keyProperty="id">
+    insert into conf_center_menu (id, parent_id, path, 
+      icon, name, title, 
+      component, access, status,remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{path,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{component,jdbcType=VARCHAR}, #{access,jdbcType=TINYINT},#{status,jdbcType=TINYINT},
+      #{remark,jdbcType=VARCHAR}
+      )
+    </insert>
+
+    <update id="update" parameterType="com.kevin.confcenter.common.bean.po.operation.Menu">
+        update conf_center_menu
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="path != null">
+                path = #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="component != null">
+                component = #{component,jdbcType=VARCHAR},
+            </if>
+            <if test="access != null">
+                access = #{access,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="delete" parameterType="java.lang.Long">
+        update conf_center_menu set status = 0
+        where id = #id# or parent_id = #id#
+    </update>
+</mapper>

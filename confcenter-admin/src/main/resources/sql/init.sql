@@ -44,3 +44,20 @@ CREATE TABLE `conf_center_operation_log` (
   KEY `INDEX_TARGET_TYPE` (`target_type`) USING BTREE,
   KEY `INDEX_TARGET_ID` (`target_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志';
+
+-- ----------------------------
+-- Table structure for `conf_center_menu`
+-- ----------------------------
+CREATE TABLE `conf_center_menu` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `parent_id` bigint(20) DEFAULT NULL COMMENT '父节点id',
+  `path` varchar(255) NOT NULL COMMENT '路径',
+  `icon` varchar(255) DEFAULT 'ios-grid-view' COMMENT '图标',
+  `name` varchar(255) NOT NULL COMMENT '名称',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `component` varchar(255) DEFAULT 'Main' COMMENT '组件',
+  `access` tinyint(4) NOT NULL DEFAULT '1' COMMENT '0：控制权限，1：不控制权限',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，0：无效，1：有效',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单';
