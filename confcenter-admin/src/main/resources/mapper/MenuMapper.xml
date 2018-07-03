@@ -10,7 +10,6 @@
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="component" jdbcType="VARCHAR" property="component"/>
         <result column="access" jdbcType="TINYINT" property="access"/>
-        <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
@@ -41,19 +40,18 @@
         select m1.id id, m1.title title,m2.id child_id,m2.title child_title,m2.parent_id
         from conf_center_menu m1
         left join conf_center_menu m2 on m1.id = m2.parent_id
-        where m1.parent_id is null and m1.status = 1 and m2.status = 1
+        where m1.parent_id is null
     </select>
 
     <insert id="insert" parameterType="com.kevin.confcenter.common.bean.po.operation.Menu"
             useGeneratedKeys="true" keyProperty="id">
     insert into conf_center_menu (id, parent_id, path, 
       icon, name, title, 
-      component, access, status,remark
+      component, access, remark
       )
     values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{path,jdbcType=VARCHAR}, 
       #{icon,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{component,jdbcType=VARCHAR}, #{access,jdbcType=TINYINT},#{status,jdbcType=TINYINT},
-      #{remark,jdbcType=VARCHAR}
+      #{component,jdbcType=VARCHAR}, #{access,jdbcType=TINYINT},#{remark,jdbcType=VARCHAR}
       )
     </insert>
 
@@ -81,9 +79,6 @@
             <if test="access != null">
                 access = #{access,jdbcType=TINYINT},
             </if>
-            <if test="status != null">
-                status = #{status,jdbcType=TINYINT},
-            </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
@@ -92,7 +87,7 @@
     </update>
 
     <update id="delete" parameterType="java.lang.Long">
-        update conf_center_menu set status = 0
+        delete from conf_center_menu
         where id = #id# or parent_id = #id#
     </update>
 </mapper>

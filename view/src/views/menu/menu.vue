@@ -10,7 +10,7 @@
             <Button  type="info">修改</Button>
             <Button  type="error">删除</Button>
         </Row>
-        <Tree class="margin-top-20" :data="data" show-checkbox>
+        <Tree class="margin-top-20" :data="data" @on-select-change="onSelectChange">
         </Tree>
         </Card>
     </div>
@@ -21,7 +21,8 @@ import util from '@/libs/util';
 export default {
     data() {
         return {
-            data: []
+            data: [],
+            selectedNode: {}
         };
     },
     methods: {
@@ -35,6 +36,11 @@ export default {
                 },
                 vm: that
             });
+        },
+        onSelectChange(item) {
+            if(item && item instanceof Array && item.length > 0) {
+                this.selectedNode = item[0].id;
+            }
         },
         init() {
             this.getData();

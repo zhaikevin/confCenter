@@ -57,7 +57,6 @@ CREATE TABLE `conf_center_menu` (
   `title` varchar(255) NOT NULL COMMENT '标题',
   `component` varchar(255) DEFAULT 'Main' COMMENT '组件',
   `access` tinyint(4) NOT NULL DEFAULT '1' COMMENT '0：控制权限，1：不控制权限',
-  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态，0：无效，1：有效',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单';

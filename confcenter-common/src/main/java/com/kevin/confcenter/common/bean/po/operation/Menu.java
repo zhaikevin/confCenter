@@ -53,11 +53,6 @@ public class Menu implements Serializable {
     private Byte access;
 
     /**
-     * 状态
-     */
-    private Byte status;
-
-    /**
      * 备注,对应数据表中的字段:conf_center_menu.remark
      */
     private String remark;
@@ -126,14 +121,6 @@ public class Menu implements Serializable {
         this.access = access;
     }
 
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -153,7 +140,6 @@ public class Menu implements Serializable {
                 ", title='" + title + '\'' +
                 ", component='" + component + '\'' +
                 ", access=" + access +
-                ", status=" + status +
                 ", remark='" + remark + '\'' +
                 '}';
     }
