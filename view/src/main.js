@@ -30,6 +30,7 @@ new Vue({
     },
     created () {
         let tagsList = [];
+        console.log(appRouter);
         appRouter.map((item) => {
             if (item.children.length <= 1) {
                 tagsList.push(item.children[0]);
