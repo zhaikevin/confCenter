@@ -36,7 +36,7 @@ export default {
             var that = this;
             util.ajax({
                 method: 'get',
-                url: 'menu/list',
+                url: 'menu/nodeList',
                 success: function(data) {
                     that.data = data;
                 },

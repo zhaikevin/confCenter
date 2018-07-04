@@ -13,15 +13,38 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
-    <resultMap id="ChildMenuMap" type="com.kevin.confcenter.common.bean.vo.web.operation.MenuChildNode">
+    <resultMap id="ChildNodeMap" type="com.kevin.confcenter.common.bean.vo.web.operation.MenuChildNode">
         <result property="id" column="child_id"/>
         <result property="title" column="child_title"/>
         <result property="parentId" column="parent_id"/>
     </resultMap>
 
-    <resultMap id="MenuMap" type="com.kevin.confcenter.common.bean.vo.web.operation.MenuParentNode">
+    <resultMap id="NodeMap" type="com.kevin.confcenter.common.bean.vo.web.operation.MenuParentNode">
         <result property="id" column="id"/>
         <result property="title" column="title"/>
+        <association property="children" resultMap="ChildNodeMap"/>
+    </resultMap>
+
+    <resultMap id="ChildMenuMap" type="com.kevin.confcenter.common.bean.vo.web.operation.MenuVO">
+        <result property="id" column="child_id"/>
+        <result property="parentId" column="child_parent_id"/>
+        <result property="path" column="child_path"/>
+        <result property="icon" column="child_icon"/>
+        <result property="name" column="child_name"/>
+        <result property="title" column="child_title"/>
+        <result property="component" column="child_component"/>
+        <result property="access" column="child_access"/>
+    </resultMap>
+
+    <resultMap id="MenuMap" type="com.kevin.confcenter.common.bean.vo.web.operation.MenuVO">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="path" column="path"/>
+        <result property="icon" column="icon"/>
+        <result property="name" column="name"/>
+        <result property="title" column="title"/>
+        <result property="component" column="component"/>
+        <result property="access" column="access"/>
         <association property="children" resultMap="ChildMenuMap"/>
     </resultMap>
 
@@ -36,8 +59,17 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="getMenuList" resultMap="MenuMap">
+    <select id="getNodeList" resultMap="NodeMap">
         select m1.id id, m1.title title,m2.id child_id,m2.title child_title,m2.parent_id
+        from conf_center_menu m1
+        left join conf_center_menu m2 on m1.id = m2.parent_id
+        where m1.parent_id is null
+    </select>
+
+    <select id="getMenuList" resultMap="MenuMap">
+        select m1.id,m1.parent_id,m1.path,m1.icon,m1.name,m1.title,m1.component,m1.access,
+        m2.id child_id,m2.parent_id child_parent_id,m2.path child_path,m2.icon child_icon,
+        m2.name child_name,m2.title child_title,m2.component child_component,m2.access child_access
         from conf_center_menu m1
         left join conf_center_menu m2 on m1.id = m2.parent_id
         where m1.parent_id is null

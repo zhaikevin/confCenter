@@ -4,6 +4,7 @@ import com.kevin.confcenter.admin.service.operation.MenuService;
 import com.kevin.confcenter.common.bean.po.operation.Menu;
 import com.kevin.confcenter.common.bean.vo.ResultInfo;
 import com.kevin.confcenter.common.bean.vo.web.operation.MenuParentNode;
+import com.kevin.confcenter.common.bean.vo.web.operation.MenuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,19 +25,35 @@ public class MenuController {
     private MenuService menuService;
 
     /**
-     * 列表
+     * Tree node列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/nodeList", method = RequestMethod.GET)
+    public ResultInfo getNodeList() {
+        List<MenuParentNode> list = menuService.getNodeList();
+        return ResultInfo.success(list);
+    }
+
+    /**
+     * 获取父节点
+     *
+     * @return
+     */
+    @RequestMapping(value = "/parentNodes", method = RequestMethod.GET)
+    public ResultInfo getParentNodes() {
+        List<MenuParentNode> list = menuService.getParentNodes();
+        return ResultInfo.success(list);
+    }
+
+    /**
+     * 菜单列表
      *
      * @return
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResultInfo getMenuList() {
-        List<MenuParentNode> list = menuService.getMenuList();
-        return ResultInfo.success(list);
-    }
-
-    @RequestMapping(value = "/parentNodes", method = RequestMethod.GET)
-    public ResultInfo getParentNodes() {
-        List<MenuParentNode> list = menuService.getParentNodes();
+        List<MenuVO> list = menuService.getMenuList();
         return ResultInfo.success(list);
     }
 

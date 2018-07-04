@@ -4,6 +4,7 @@ import com.kevin.confcenter.admin.dao.operation.MenuDao;
 import com.kevin.confcenter.admin.service.operation.MenuService;
 import com.kevin.confcenter.common.bean.po.operation.Menu;
 import com.kevin.confcenter.common.bean.vo.web.operation.MenuParentNode;
+import com.kevin.confcenter.common.bean.vo.web.operation.MenuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,18 @@ public class MenuServiceImpl implements MenuService {
     private MenuDao menuDao;
 
     @Override
-    public List<MenuParentNode> getMenuList() {
-        return menuDao.getMenuList();
+    public List<MenuParentNode> getNodeList() {
+        return menuDao.getNodeList();
     }
 
     @Override
     public List<MenuParentNode> getParentNodes() {
         return menuDao.getParentNodes();
+    }
+
+    @Override
+    public List<MenuVO> getMenuList() {
+        return menuDao.getMenuList();
     }
 
     @Override

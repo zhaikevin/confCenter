@@ -2,6 +2,7 @@ package com.kevin.confcenter.admin.dao.operation;
 
 import com.kevin.confcenter.common.bean.po.operation.Menu;
 import com.kevin.confcenter.common.bean.vo.web.operation.MenuParentNode;
+import com.kevin.confcenter.common.bean.vo.web.operation.MenuVO;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface MenuDao {
      *
      * @return List<MenuParentNode>
      */
-    List<MenuParentNode> getMenuList();
+    List<MenuParentNode> getNodeList();
 
     /**
      * 获取父结点
@@ -25,6 +26,13 @@ public interface MenuDao {
      * @return
      */
     List<MenuParentNode> getParentNodes();
+
+    /**
+     * 获取菜单列表
+     *
+     * @return
+     */
+    List<MenuVO> getMenuList();
 
     /**
      * 根据id获取
