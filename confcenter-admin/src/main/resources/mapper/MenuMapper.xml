@@ -43,6 +43,11 @@
         where m1.parent_id is null
     </select>
 
+    <select id="getParentNodes" resultType="com.kevin.confcenter.common.bean.vo.web.operation.MenuParentNode">
+        select id,title from conf_center_menu
+        where parent_id is null
+    </select>
+
     <insert id="insert" parameterType="com.kevin.confcenter.common.bean.po.operation.Menu"
             useGeneratedKeys="true" keyProperty="id">
     insert into conf_center_menu (id, parent_id, path, 

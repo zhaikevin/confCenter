@@ -20,6 +20,13 @@ public interface MenuService {
     List<MenuParentNode> getMenuList();
 
     /**
+     * 获取父结点
+     *
+     * @return
+     */
+    List<MenuParentNode> getParentNodes();
+
+    /**
      * 根据id获取
      *
      * @param id

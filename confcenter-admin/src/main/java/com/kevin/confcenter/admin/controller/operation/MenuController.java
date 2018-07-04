@@ -34,6 +34,12 @@ public class MenuController {
         return ResultInfo.success(list);
     }
 
+    @RequestMapping(value = "/parentNodes", method = RequestMethod.GET)
+    public ResultInfo getParentNodes() {
+        List<MenuParentNode> list = menuService.getParentNodes();
+        return ResultInfo.success(list);
+    }
+
     /**
      * 获取详情
      *

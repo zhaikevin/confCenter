@@ -26,6 +26,11 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    public List<MenuParentNode> getParentNodes() {
+        return menuDao.getParentNodes();
+    }
+
+    @Override
     public Menu getById(Long id) {
         return menuDao.getById(id);
     }

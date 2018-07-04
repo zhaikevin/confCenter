@@ -27,7 +27,7 @@
                 </FormItem>
             </Form>
             <div slot="footer">
-                <Button type="text" @click="cancelAddUser">取消</Button>
+                <Button type="info" @click="cancelAddUser">取消</Button>
                 <Button type="primary" :loading="saveUserLoading" @click="saveAddUser">保存</Button>
             </div>
         </Modal>
