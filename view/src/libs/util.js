@@ -102,11 +102,12 @@ util.oneOf = function (ele, targetArr) {
 };
 
 util.showThisRoute = function (itAccess, currentAccess) {
-    if (typeof itAccess === 'object' && Array.isArray(itAccess)) {
-        return util.oneOf(currentAccess, itAccess);
-    } else {
-        return itAccess === currentAccess;
-    }
+    // if (typeof itAccess === 'object' && Array.isArray(itAccess)) {
+    //     return util.oneOf(currentAccess, itAccess);
+    // } else {
+    //     return itAccess === currentAccess;
+    // }
+    return true;
 };
 
 util.getRouterObjByName = function (routers, name) {
@@ -343,6 +344,18 @@ util.copyData = function (target, source) {
             target[key] = source[key];
         }
     }
+};
+
+util.formatMenu = function (menus) {
+    menus.forEach(item => {
+        item.component = () => import(item.component);
+        if (item.children) {
+            item.children.forEach(child => {
+                child.component = () => import(child.component);
+            });
+        }
+    });
+    return menus;
 };
 
 export default util;

@@ -3,7 +3,7 @@ import iView from 'iview';
 import Util from '../libs/util';
 import VueRouter from 'vue-router';
 import Cookies from 'js-cookie';
-import {routers, otherRouter, appRouter} from './router';
+import { routers, otherRouter, appRouter } from './router';
 
 Vue.use(VueRouter);
 
@@ -16,6 +16,28 @@ const RouterConfig = {
 export const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
+    //store路径，我也不知道为啥是这个
+    var path = router.app.$options.store;
+    let menus = path.state.app.menus;
+    let menusReload = path.state.app.menusReload;
+    if (menus && menus.length > 0 && !menusReload) {
+        before(to, from, next, menus);
+    } else {
+        Util.ajax({
+            method: 'get',
+            url: 'menu/list',
+            success: function (data) {
+                path.commit('setMenus', data);
+                path.commit('updateMenulist');
+                path.commit('setTagsList');
+                path.commit('increateRoute');
+                before(to,from,next,Util.formatMenu(data));
+            }
+        });
+    }
+});
+
+function before(to, from, next, menus) {
     iView.LoadingBar.start();
     Util.title(to.meta.title);
     if (Cookies.get('locking') === '1' && to.name !== 'locking') { // 判断当前是否是锁定状态
@@ -36,22 +58,24 @@ router.beforeEach((to, from, next) => {
                 name: 'home_index'
             });
         } else {
-            const curRouterObj = Util.getRouterObjByName([otherRouter, ...appRouter], to.name);
-            if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
-                if (curRouterObj.access === parseInt(Cookies.get('access'))) {
-                    Util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
-                } else {
-                    next({
-                        replace: true,
-                        name: 'error-403'
-                    });
-                }
-            } else { // 没有配置权限的路由, 直接通过
-                Util.toDefaultPage([...routers], to.name, router, next);
-            }
+            //权限控制以后再弄
+            Util.toDefaultPage([otherRouter, ...menus], to.name, router, next); 
+            // const curRouterObj = Util.getRouterObjByName([otherRouter, ...menus], to.name);
+            // if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
+            //     if (curRouterObj.access === parseInt(Cookies.get('access'))) {
+            //         Util.toDefaultPage([otherRouter, ...menus], to.name, router, next); // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
+            //     } else {
+            //         next({
+            //             replace: true,
+            //             name: 'error-403'
+            //         });
+            //     }
+            // } else { // 没有配置权限的路由, 直接通过
+            //     Util.toDefaultPage([...routers], to.name, router, next);
+            // }
         }
     }
-});
+};
 
 router.afterEach((to) => {
     Util.openNewPage(router.app, to.name, to.params, to.query);
